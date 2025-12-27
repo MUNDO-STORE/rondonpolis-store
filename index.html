@@ -353,7 +353,6 @@
         </div>
 
         <div id="servicos-vendas" class="service-grid">
-            
             <div class="service-card" style="border: 2px solid var(--warning);">
                 <div class="service-price">R$ 10,00</div>
                 <h3>ATIVIDADES INFANTIL (3 A 6 ANOS)</h3>
@@ -444,7 +443,7 @@
         let tries = 0;
         const maxTries = 3; 
         let spinning = false;
-        let currentRotation = 0; 
+        let currentRotation = 0; // Armazena a posição atual para não resetar
         const lockTime = 60; // 60 segundos
 
         const roulette = document.getElementById("roulette");
@@ -505,14 +504,15 @@
                 soundRoleta.play().catch(() => {});
             }
 
-            // Lógica de Giro Contínuo
+            // Lógica de Giro Acumulativo e Velocidade Multiplicada
             const segment = Math.floor(Math.random() * 6); // Escolhe fatia 0 a 5
-            const segmentDegrees = segment * 60; // Cada fatia tem 60 graus
+            const segmentDegrees = segment * 60; 
             
-            // Adiciona 5 voltas (1800 deg) + a posição da fatia ao total atual
-            currentRotation += 1800 + segmentDegrees;
+            // Multiplicamos a velocidade (mais voltas) e somamos à rotação atual para não resetar
+            // 3600 graus = 10 voltas completas (Alta velocidade)
+            currentRotation += (3600 + segmentDegrees);
             
-            // Gira a roleta (negativo para girar sentido horário corretamente com o conic-gradient)
+            // Aplica a rotação mantendo o histórico (sentido horário ajustado)
             roulette.style.transform = `rotate(-${currentRotation}deg)`;
 
             setTimeout(() => {
@@ -524,12 +524,15 @@
                 tries++;
                 triesEl.textContent = tries;
 
-                if (greenSegments.includes(segment)) {
+                // Cálculo para identificar onde parou (baseado no módulo de 360)
+                const finalPosition = (currentRotation % 360) / 60;
+                const landedSegment = Math.round(finalPosition) % 6;
+
+                if (greenSegments.includes(landedSegment)) {
                     if (soundWin) {
                         soundWin.currentTime = 0;
                         soundWin.play().catch(() => {});
                     }
-
                     result.style.color = "#00ff88";
                     result.innerHTML = "🟢 PARABÉNS! VOCÊ GANHOU! SÓ PAGA R$4,00";
                     spinBtn.textContent = "REDIRECIONANDO...";
@@ -546,7 +549,7 @@
                     }
                 }
                 spinning = false;
-            }, 4000);
+            }, 4000); // 4 segundos de animação
         };
     </script>
 </body>
