@@ -178,6 +178,15 @@
             width: 100%;
         }
 
+        .whatsapp-alert-text {
+            display: block;
+            color: var(--warning);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
         .service-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -350,6 +359,7 @@
 
         <div class="section-header">
             <h2>SERVIÇOS ONLINE E VENDAS</h2>
+            <span class="whatsapp-alert-text">QUALQUER SERVIÇO QUE VOCÊ ESCOLHER SERÁ DIRECIONADO PARA MEU WHATSAPP!</span>
         </div>
 
         <div id="servicos-vendas" class="service-grid">
@@ -445,7 +455,7 @@
         const maxTries = 3; 
         let spinning = false;
         let currentRotation = 0; 
-        const lockTime = 60;
+        const lockTime = 60; // 60 segundos
 
         const roulette = document.getElementById("roulette");
         const spinBtn = document.getElementById("spinBtn");
@@ -457,26 +467,19 @@
         const soundCaixa = document.getElementById("caixaSound");
         const soundWin = document.getElementById("winSound");
 
-        // FUNÇÃO DE SEGURANÇA: Destravar áudio no primeiro clique do usuário
-        function unlockAudio() {
-            soundRoleta.play().then(() => soundRoleta.pause()).catch(() => {});
-            soundCaixa.play().then(() => soundCaixa.pause()).catch(() => {});
-            soundWin.play().then(() => soundWin.pause()).catch(() => {});
-            document.removeEventListener('click', unlockAudio);
-        }
-        document.addEventListener('click', unlockAudio);
+        if (soundRoleta) soundRoleta.loop = true;
 
-        // Som de caixa ao clicar em qualquer botão de compra
-        document.querySelectorAll('.buy-btn').forEach(button => {
+        // Som nos botões de compra
+        document.querySelectorAll('#servicos-vendas .buy-btn').forEach(button => {
             button.addEventListener('click', () => {
-                try {
+                if (soundCaixa) {
                     soundCaixa.currentTime = 0;
-                    soundCaixa.play();
-                } catch(e) {}
+                    soundCaixa.play().catch(() => {});
+                }
             });
         });
 
-        const greenSegments = [0, 2, 4];
+        const greenSegments = [0, 2, 4]; // Fatias verdes
 
         function startCountdown() {
             let timeLeft = lockTime;
@@ -507,35 +510,35 @@
             spinBtn.textContent = "SORTEANDO...";
             result.textContent = "";
 
-            // Tocar som da roleta
-            try {
-                soundRoleta.loop = true;
+            if (soundRoleta) {
                 soundRoleta.currentTime = 0;
-                soundRoleta.play();
-            } catch(e) {}
+                soundRoleta.play().catch(() => {});
+            }
 
-            const segment = Math.floor(Math.random() * 6); 
-            const segmentDegrees = segment * 60; 
+            // Lógica de Giro Contínuo
+            const segment = Math.floor(Math.random() * 6); // Escolhe fatia 0 a 5
+            const segmentDegrees = segment * 60; // Cada fatia tem 60 graus
+            
+            // Adiciona 5 voltas (1800 deg) + a posição da fatia ao total atual
             currentRotation += 1800 + segmentDegrees;
             
+            // Gira a roleta (negativo para girar sentido horário corretamente com o conic-gradient)
             roulette.style.transform = `rotate(-${currentRotation}deg)`;
 
             setTimeout(() => {
-                // Parar som da roleta
-                try {
+                if (soundRoleta) {
                     soundRoleta.pause();
                     soundRoleta.currentTime = 0;
-                } catch(e) {}
+                }
 
                 tries++;
                 triesEl.textContent = tries;
 
                 if (greenSegments.includes(segment)) {
-                    // Tocar som de vitória
-                    try {
+                    if (soundWin) {
                         soundWin.currentTime = 0;
-                        soundWin.play();
-                    } catch(e) {}
+                        soundWin.play().catch(() => {});
+                    }
 
                     result.style.color = "#00ff88";
                     result.innerHTML = "🟢 PARABÉNS! VOCÊ GANHOU! SÓ PAGA R$4,00";
