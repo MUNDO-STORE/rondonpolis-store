@@ -160,7 +160,15 @@
             min-height: 40px;
         }
 
-        /* --- SEÇÃO DE SERVIÇOS --- */
+        .countdown {
+            margin-top: 15px;
+            font-weight: bold;
+            color: var(--warning);
+            font-size: 1.1rem;
+        }
+
+        .counter { margin: 10px 0; font-weight: bold; }
+
         .section-header {
             text-align: center;
             margin-bottom: 40px;
@@ -250,7 +258,6 @@
 
         .buy-btn:hover { background: #128c7e; }
 
-        /* --- BOTÕES SOCIAIS --- */
         .social-section { 
             margin: 40px auto 80px; 
             text-align: center;
@@ -435,9 +442,10 @@
 
     <script>
         let tries = 0;
-        const maxTries = 3;
+        const maxTries = 3; 
         let spinning = false;
-        const lockTime = 60;
+        let currentRotation = 0; 
+        const lockTime = 60; // 60 segundos
 
         const roulette = document.getElementById("roulette");
         const spinBtn = document.getElementById("spinBtn");
@@ -451,8 +459,8 @@
 
         if (soundRoleta) soundRoleta.loop = true;
 
-        const botoesServicos = document.querySelectorAll('#servicos-vendas .buy-btn');
-        botoesServicos.forEach(button => {
+        // Som nos botões de compra
+        document.querySelectorAll('#servicos-vendas .buy-btn').forEach(button => {
             button.addEventListener('click', () => {
                 if (soundCaixa) {
                     soundCaixa.currentTime = 0;
@@ -461,14 +469,17 @@
             });
         });
 
-        const greenSegments = [0, 2, 4]; 
+        const greenSegments = [0, 2, 4]; // Fatias verdes
 
         function startCountdown() {
             let timeLeft = lockTime;
             spinBtn.disabled = true;
+            spinBtn.textContent = "BLOQUEADO";
+
             const interval = setInterval(() => {
                 timeLeft--;
-                countdown.textContent = `⏳ Muitas tentativas! Aguarde ${timeLeft}s para resetar`;
+                countdown.textContent = `⏳ Limite atingido! Aguarde ${timeLeft}s para liberar o botão.`;
+                
                 if (timeLeft <= 0) {
                     clearInterval(interval);
                     tries = 0;
@@ -494,9 +505,15 @@
                 soundRoleta.play().catch(() => {});
             }
 
-            const segment = Math.floor(Math.random() * 6);
-            const rotation = (tries + 1) * 3600 + (segment * 60);
-            roulette.style.transform = `rotate(-${rotation}deg)`;
+            // Lógica de Giro Contínuo
+            const segment = Math.floor(Math.random() * 6); // Escolhe fatia 0 a 5
+            const segmentDegrees = segment * 60; // Cada fatia tem 60 graus
+            
+            // Adiciona 5 voltas (1800 deg) + a posição da fatia ao total atual
+            currentRotation += 1800 + segmentDegrees;
+            
+            // Gira a roleta (negativo para girar sentido horário corretamente com o conic-gradient)
+            roulette.style.transform = `rotate(-${currentRotation}deg)`;
 
             setTimeout(() => {
                 if (soundRoleta) {
@@ -514,18 +531,18 @@
                     }
 
                     result.style.color = "#00ff88";
-                    result.innerHTML = "🟢 PARABÉNS! VOCÊ GANHOU O PACK!";
+                    result.innerHTML = "🟢 PARABÉNS! VOCÊ GANHOU! SÓ PAGA R$4,00";
                     spinBtn.textContent = "REDIRECIONANDO...";
                     setTimeout(() => { window.location.href = "https://wa.link/rhz7fa"; }, 3000);
                 } else {
                     result.style.color = "#ff4757";
                     result.innerHTML = "🔴 NÃO FOI DESSA VEZ!";
+                    
                     if (tries >= maxTries) {
-                        spinBtn.textContent = "TENTATIVAS ESGOTADAS";
                         startCountdown();
                     } else {
                         spinBtn.disabled = false;
-                        spinBtn.textContent = "PRÓXIMA TENTATIVA";
+                        spinBtn.textContent = "TENTAR NOVAMENTE";
                     }
                 }
                 spinning = false;
