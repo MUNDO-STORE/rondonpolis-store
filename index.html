@@ -213,7 +213,7 @@
         .service-desc {
             font-size: 0.9rem;
             color: #ccc;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-grow: 1;
             line-height: 1.6;
         }
@@ -223,16 +223,17 @@
             margin-bottom: 20px;
             font-size: 0.85rem;
             color: #eee;
+            text-align: left;
         }
 
         .service-list li {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: flex;
             align-items: flex-start;
             gap: 8px;
         }
 
-        .service-list li i { color: var(--success); margin-top: 4px; }
+        .service-list li i { color: var(--success); margin-top: 4px; font-size: 10px; }
 
         .buy-btn {
             background: #25d366;
@@ -349,14 +350,28 @@
             <div class="service-card" style="border: 2px solid var(--warning);">
                 <div class="service-price">R$ 10,00</div>
                 <h3>ATIVIDADES INFANTIL (3 A 6 ANOS)</h3>
-                <p class="service-desc">ATIVIDADES PRONTAS PARA IMPRIMIR!</p>
+                <p class="service-desc">
+                    <strong>ATIVIDADES PRONTAS PARA IMPRIMIR!</strong><br>
+                    ÓTIMO PARA CRIANÇAS COM TDAH!<br>
+                    MATERIAL PROFESSOR E USO PARTICULAR!
+                </p>
                 <a href="https://wa.link/7toim8" target="_blank" class="buy-btn">COMPRAR AQUI ATIVIDADES INFANTIL!</a>
             </div>
 
             <div class="service-card">
                 <div class="service-price">R$ 50,00</div>
                 <h3>PACK DJ PROFISSIONAL</h3>
-                <p class="service-desc">Material 100% Hospedado Telegram!</p>
+                <p class="service-desc" style="color: var(--success); font-weight: bold;">
+                    MATERIAL 100% HOSPEDADO NO GRUPO VIP TELEGRAM (BAIXE QUANDO QUISER)
+                </p>
+                <ul class="service-list">
+                    <li><i class="fas fa-check"></i> +4 TERABYTES de músicas (SEM VINHETAS)</li>
+                    <li><i class="fas fa-check"></i> +1 TERABYTE de efeitos (SFX)</li>
+                    <li><i class="fas fa-check"></i> Softwares e apps Android para DJ</li>
+                    <li><i class="fas fa-check"></i> Videoclipes & Pack Gospel</li>
+                    <li><i class="fas fa-check"></i> Playlists: Casamento, Formatura, Natal e +</li>
+                    <li><i class="fas fa-check"></i> Academia: Zumba, Ioga e Capoeira!</li>
+                </ul>
                 <a href="https://wa.link/msxo61" target="_blank" class="buy-btn">CLICK AQUI PARA COMPRAR NOSSO PACK!</a>
             </div>
 
@@ -370,7 +385,9 @@
             <div class="service-card">
                 <div class="service-price">R$ 20,00</div>
                 <h3>ATIVADOR WINDOWS 10/11 + OFFICE</h3>
-                <p class="service-desc">PRECISANDO ATIVAR SEU WINDOWS?</p>
+                <p class="service-desc">
+                    PRECISANDO ATIVAR SEU WINDOWS - OFFICE OU AMBOS?
+                </p>
                 <a href="https://wa.link/4r4lu0" target="_blank" class="buy-btn">CLICK AQUI PARA ATIVAR!</a>
             </div>
 
@@ -391,7 +408,10 @@
             <div class="service-card">
                 <div class="service-price">R$ 25,00</div>
                 <h3>PACOTÃO JOGOS RETRO PC</h3>
-                <p class="service-desc">GRUPO VIP RETRO!</p>
+                <p class="service-desc">
+                    <strong>JOGOS RETRO PARA PC E PACOTÃO DE EMULADORES</strong><br>
+                    MAIS DE 2 TERA DE PURA NOSTÁLGIA!
+                </p>
                 <a href="https://wa.link/qqos2a" target="_blank" class="buy-btn">COMPRAR PACOTÃO!</a>
             </div>
         </div>
@@ -425,14 +445,12 @@
         const result = document.getElementById("resultMessage");
         const countdown = document.getElementById("countdown");
         
-        // Sons
         const soundRoleta = document.getElementById("roletaSound");
         const soundCaixa = document.getElementById("caixaSound");
         const soundWin = document.getElementById("winSound");
 
         if (soundRoleta) soundRoleta.loop = true;
 
-        // SOM DE CAIXA APENAS NA SEÇÃO "SERVIÇOS ONLINE E VENDAS"
         const botoesServicos = document.querySelectorAll('#servicos-vendas .buy-btn');
         botoesServicos.forEach(button => {
             button.addEventListener('click', () => {
