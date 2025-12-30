@@ -22,11 +22,50 @@
             --radius: 15px;
         }
 
+        /* --- NOVO FUNDO ANIMADO --- */
+        .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a1f27 0%, #0a0e14 100%);
+            overflow: hidden;
+        }
+
+        .bg-animated span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 51, 102, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+        }
+
+        @keyframes animate {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+
+        /* Estilizando tamanhos e posições das bolhas */
+        .bg-animated span:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .bg-animated span:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .bg-animated span:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .bg-animated span:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .bg-animated span:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .bg-animated span:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+        .bg-animated span:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
+        .bg-animated span:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+        /* --- FIM DO FUNDO ANIMADO --- */
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--dark);
+            background: transparent; /* Alterado para mostrar o fundo animado */
             color: var(--light);
             min-height: 100vh;
             display: flex;
@@ -34,7 +73,8 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #1a1f27, #0a0e14);
+            background: rgba(26, 31, 39, 0.8); /* Leve transparência */
+            backdrop-filter: blur(10px); /* Efeito de vidro */
             padding: 40px 20px;
             text-align: center;
             border-bottom: 3px solid var(--secondary);
@@ -64,7 +104,6 @@
             font-weight: 800;
         }
 
-        /* --- ESTILO MEGA SENA --- */
         .mega-sena-container {
             max-width: 600px;
             margin: 20px auto;
@@ -76,6 +115,7 @@
             justify-content: space-between;
             gap: 20px;
             border: 1px solid var(--success);
+            backdrop-filter: blur(5px);
         }
         .mega-box {
             background: #000;
@@ -133,7 +173,8 @@
         }
 
         .roulette-section {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, .05);
+            backdrop-filter: blur(10px);
             padding: 30px;
             border-radius: var(--radius);
             text-align: center;
@@ -141,6 +182,7 @@
             flex: 1;
             min-width: 300px;
             max-width: 550px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .roulette-title {
@@ -262,7 +304,8 @@
         }
 
         .service-card {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, .05);
+            backdrop-filter: blur(5px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: var(--radius);
             padding: 15px;
@@ -273,7 +316,7 @@
 
         .service-card:hover {
             transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
             border-color: var(--accent);
         }
 
@@ -362,6 +405,7 @@
             border-radius: var(--radius);
             max-width: 600px;
             margin: 0 auto;
+            backdrop-filter: blur(5px);
         }
 
         .whatsapp-group-card h2 { color: #25d366; margin-bottom: 10px; }
@@ -379,6 +423,7 @@
             text-align: center;
             color: #888;
             border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.5);
         }
 
         @media (max-width: 600px) {
@@ -390,6 +435,11 @@
     </style>
 </head>
 <body>
+
+    <div class="bg-animated">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+    </div>
 
     <audio id="roletaSound" src="roleta.mp3" preload="auto"></audio>
     <audio id="caixaSound" src="caixa.mp3" preload="auto"></audio>
@@ -417,7 +467,6 @@
     </header>
 
     <div class="container">
-        
         <div class="dual-roulette-container">
             <section class="roulette-section">
                 <h2 class="roulette-title">
@@ -462,7 +511,6 @@
         </div>
 
         <div id="servicos-vendas" class="service-grid">
-            
             <div class="service-card" style="border: 2px solid var(--success);">
                 <div class="service-price">TOTALMENTE GRÁTIS!</div>
                 <h3>CRIE SEU CURRÍCULUM GRÁTIS!</h3>
@@ -545,13 +593,10 @@
     </footer>
 
     <script>
-        // LÓGICA MEGA SENA
         function gerarMega() {
             const btn = document.getElementById('megaBtn');
             const slots = document.querySelectorAll('.mega-num');
             btn.disabled = true;
-            
-            // Adiciona classe de animação
             slots.forEach(slot => slot.classList.add('jumping'));
 
             setTimeout(() => {
@@ -571,7 +616,6 @@
         }
 
         const maxTries = 3; 
-        const lockTime = 60; 
         const greenSegments = [0, 2, 4]; 
         const soundRoleta = document.getElementById("roletaSound");
         const soundCaixa = document.getElementById("caixaSound");
