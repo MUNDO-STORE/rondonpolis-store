@@ -64,24 +64,74 @@
             font-weight: 800;
         }
 
+        /* --- ESTILO MEGA SENA --- */
+        .mega-sena-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border: 1px solid var(--success);
+        }
+        .mega-box {
+            background: #000;
+            border: 2px solid var(--success);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            min-width: 250px;
+            justify-content: center;
+        }
+        .mega-num {
+            width: 35px;
+            height: 35px;
+            background: var(--success);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.1rem;
+        }
+        .jumping { animation: jump 0.3s infinite alternate; }
+        @keyframes jump { 
+            from { transform: translateY(0); } 
+            to { transform: translateY(-10px); } 
+        }
+        .mega-btn {
+            background: var(--success);
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            flex: 1;
+        }
+        .mega-btn:disabled { background: #555; cursor: not-allowed; }
+
         .container {
-            max-width: 1200px; /* Aumentado para caber 2 roletas */
+            max-width: 1200px;
             margin: auto;
             padding: 40px 20px;
             flex: 1;
         }
 
-        /* --- CONTAINER DAS DUAS ROLETAS --- */
         .dual-roulette-container {
             display: flex;
             justify-content: center;
             align-items: flex-start;
             gap: 30px;
-            flex-wrap: wrap; /* Quebra linha no celular */
+            flex-wrap: wrap;
             margin-bottom: 60px;
         }
 
-        /* --- ROLETA INDIVIDUAL --- */
         .roulette-section {
             background: var(--card-bg);
             padding: 30px;
@@ -89,7 +139,7 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,.4);
             flex: 1;
-            min-width: 300px; /* Tamanho mínimo para celular */
+            min-width: 300px;
             max-width: 550px;
         }
 
@@ -100,7 +150,7 @@
             font-weight: 700;
             line-height: 1.4;
             text-transform: uppercase;
-            min-height: 85px; /* Alinha os titulos */
+            min-height: 85px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -335,6 +385,7 @@
             h1 { font-size: 1.8rem; }
             .roulette-wheel { width: 220px; height: 220px; }
             .roulette-title { font-size: 1rem; min-height: auto;}
+            .mega-sena-container { flex-direction: column; }
         }
     </style>
 </head>
@@ -351,27 +402,35 @@
         <div class="highlight-box">
             TODO NOSSO MATERIAL É PAGAMENTO ÚNICO — SEM MENSALIDADES!
         </div>
+
+        <div class="mega-sena-container">
+            <div class="mega-box" id="megaBox">
+                <div class="mega-num">?</div>
+                <div class="mega-num">?</div>
+                <div class="mega-num">?</div>
+                <div class="mega-num">?</div>
+                <div class="mega-num">?</div>
+                <div class="mega-num">?</div>
+            </div>
+            <button class="mega-btn" id="megaBtn" onclick="gerarMega()">CLICK AQUI PARA GERAR 6 NÚMEROS DA MEGA-SENA!</button>
+        </div>
     </header>
 
     <div class="container">
         
         <div class="dual-roulette-container">
-
             <section class="roulette-section">
                 <h2 class="roulette-title">
                     GIRE A ROLETA SE GANHAR VOCÊ PAGA SOMENTE R$4,00 PACK COM 25 MIL MÚSICAS MP3 SEM VINHETAS ATUALIZADAS E GANHA VIDEOCLIPES!
                 </h2>
-
                 <div class="color-legend">
                     <div class="legend-item"><div class="dot green"></div><span>VERDE: GANHA!</span></div>
                     <div class="legend-item"><div class="dot red"></div><span>VERMELHO: NÃO!</span></div>
                 </div>
-
                 <div class="roulette-wheel">
                     <div class="pointer"></div>
                     <div id="roulette" class="roulette"></div>
                 </div>
-
                 <p id="resultMessage" class="result-message"></p>
                 <div class="counter">Tentativas: <span id="tries">0</span> / 3</div>
                 <button id="spinBtn" class="spin-button">GIRAR ROLETA 1</button>
@@ -382,24 +441,21 @@
                 <h2 class="roulette-title" style="color: #00d4ff;">
                     GIRE A ROLETA SE GANHAR VOCÊ PAGA SOMENTE R$1,00 PACK COM 15 MIL MÚSICAS MP3 SEM VINHETAS ATUALIZADAS E GANHA VIDEOCLIPES!
                 </h2>
-
                 <div class="color-legend">
                     <div class="legend-item"><div class="dot green"></div><span>VERDE: GANHA!</span></div>
                     <div class="legend-item"><div class="dot red"></div><span>VERMELHO: NÃO!</span></div>
                 </div>
-
                 <div class="roulette-wheel">
                     <div class="pointer"></div>
                     <div id="roulette2" class="roulette"></div>
                 </div>
-
                 <p id="resultMessage2" class="result-message"></p>
                 <div class="counter">Tentativas: <span id="tries2">0</span> / 3</div>
                 <button id="spinBtn2" class="spin-button">GIRAR ROLETA 2</button>
                 <div id="countdown2" class="countdown"></div>
             </section>
-
         </div>
+
         <div class="section-header">
             <h2>SERVIÇOS ONLINE E VENDAS</h2>
             <span class="whatsapp-alert-text">QUALQUER SERVIÇO QUE VOCÊ ESCOLHER SERÁ DIRECIONADO PARA MEU WHATSAPP!</span>
@@ -407,6 +463,15 @@
 
         <div id="servicos-vendas" class="service-grid">
             
+            <div class="service-card" style="border: 2px solid var(--success);">
+                <div class="service-price">TOTALMENTE GRÁTIS!</div>
+                <h3>CRIE SEU CURRÍCULUM GRÁTIS!</h3>
+                <p class="service-desc">
+                    Crie seu currículo profissional de forma rápida e gratuita em nosso gerador online!
+                </p>
+                <a href="https://mundo-store.github.io/GERADOR-DE-CURR-CULO/" target="_blank" class="buy-btn">CLICK AQUI PARA CRIAR!</a>
+            </div>
+
             <div class="service-card" style="border: 2px solid var(--accent);">
                 <div class="service-price">R$ 60,00</div>
                 <h3>FORMATAÇÃO COMPUTADORES</h3>
@@ -428,14 +493,17 @@
                 <a href="https://wa.link/in102d" target="_blank" class="buy-btn">CLICK AQUI PARA CHAMAR!</a>
             </div>
 
-            <div class="service-card">
-                <div class="service-price">R$ 20,00</div>
-                <h3>ATIVADOR WINDOWS 10/11 + OFFICE</h3>
+            <div class="service-card" style="border: 2px solid var(--warning);">
+                <div class="service-price">R$ 10,00</div>
+                <h3>ATIVIDADES INFANTIL (3 A 12 ANOS)</h3>
                 <p class="service-desc">
-                    PRECISANDO ATIVAR SEU WINDOWS - OFFICE OU AMBOS?<br>
-                    <strong>ATENDO TODOS OS DIAS E FERIADOS!</strong>
+                    <strong>ATIVIDADES PRONTAS PARA IMPRIMIR!</strong><br>
+                    ÓTIMO PARA CRIANÇAS COM TDAH!<br>
+                    MATERIAL PARA PROFESSOR E USO PARTICULAR!<br>
+                    <span style="color:var(--success)">PACK PROFISSIONAL MÚSICAS INFANTIL!</span><br>
+                    <strong>100% HOSPEDADO NO TELEGRAM!</strong>
                 </p>
-                <a href="https://wa.link/4r4lu0" target="_blank" class="buy-btn">CLICK AQUI PARA ATIVAR!</a>
+                <a href="https://wa.link/7toim8" target="_blank" class="buy-btn">COMPRAR AQUI ATIVIDADES INFANTIL!</a>
             </div>
 
             <div class="service-card">
@@ -444,36 +512,11 @@
                 <p class="service-desc" style="color: var(--success); font-weight: bold; margin-bottom: 5px;">
                     MATERIAL 100% HOSPEDADO NO GRUPO VIP TELEGRAM (BAIXE QUANDO QUISER)
                 </p>
-                <p class="service-desc" style="font-size: 0.8rem;">
-                    🎧🔥 ATENÇÃO DJs E WEB RÁDIOS! 🔥🎧<br>
-                    Se você quer material PROFISSIONAL, organizado e pronto para tocar, essa é a sua chance 👇
-                </p>
                 <ul class="service-list">
-                    <li><i class="fas fa-check"></i> 💿 PACK DE MÚSICAS PROFISSIONAL</li>
                     <li><i class="fas fa-check"></i> +4 TERAS de músicas SEM VINHETAS</li>
-                    <li><i class="fas fa-check"></i> +1 TERA de EFEITOS SONOROS PROFISSIONAIS</li>
-                    <li><i class="fas fa-check"></i> PACK GOSPEL PROFISSIONAL</li>
-                    <li><i class="fas fa-check"></i> PACK RETRÔ / FLASHBACK</li>
-                    <li><i class="fas fa-check"></i> DISCOGRAFIAS COMPLETAS</li>
-                    <li><i class="fas fa-check"></i> SOFTWARES PARA DJ</li>
-                    <li><i class="fas fa-check"></i> VIDEOCLIPES (EVENTOS E WEB RÁDIO)</li>
+                    <li><i class="fas fa-check"></i> PACK GOSPEL / RETRÔ / FLASHBACK</li>
                 </ul>
-                <p class="service-desc" style="font-size: 0.75rem;">
-                    📦 Tudo que conseguimos é jogado diretamente nos grupos, sempre atualizando!<br>
-                    💡 Ideal para: DJs Profissionais, Web Rádios, Festas e Igrejas.
-                </p>
                 <a href="https://wa.link/msxo61" target="_blank" class="buy-btn">CLICK AQUI PARA COMPRAR NOSSO PACK!</a>
-            </div>
-
-            <div class="service-card" style="border: 2px solid var(--warning);">
-                <div class="service-price">R$ 10,00</div>
-                <h3>ATIVIDADES INFANTIL (3 A 6 ANOS)</h3>
-                <p class="service-desc">
-                    <strong>ATIVIDADES PRONTAS PARA IMPRIMIR!</strong><br>
-                    ÓTIMO PARA CRIANÇAS COM TDAH!<br>
-                    MATERIAL PROFESSOR E USO PARTICULAR!
-                </p>
-                <a href="https://wa.link/7toim8" target="_blank" class="buy-btn">COMPRAR AQUI ATIVIDADES INFANTIL!</a>
             </div>
 
             <div class="service-card">
@@ -481,15 +524,6 @@
                 <h3>PACK SUPER NINTENDO COMPLETO</h3>
                 <p class="service-desc">JOGUE NO CELULAR, TV OU PC!</p>
                 <a href="https://wa.link/cllsye" target="_blank" class="buy-btn">JOGAR AGORA!</a>
-            </div>
-
-            <div class="service-card">
-                <div class="service-price">R$ 25,00</div>
-                <h3>PACOTÃO JOGOS RETRO PC</h3>
-                <p class="service-desc">
-                    <strong>MAIS DE 2 TERA DE PURA NOSTÁLGIA!</strong>
-                </p>
-                <a href="https://wa.link/qqos2a" target="_blank" class="buy-btn">COMPRAR PACOTÃO!</a>
             </div>
         </div>
 
@@ -511,6 +545,31 @@
     </footer>
 
     <script>
+        // LÓGICA MEGA SENA
+        function gerarMega() {
+            const btn = document.getElementById('megaBtn');
+            const slots = document.querySelectorAll('.mega-num');
+            btn.disabled = true;
+            
+            // Adiciona classe de animação
+            slots.forEach(slot => slot.classList.add('jumping'));
+
+            setTimeout(() => {
+                let numeros = [];
+                while(numeros.length < 6){
+                    let r = Math.floor(Math.random() * 60) + 1;
+                    if(numeros.indexOf(r) === -1) numeros.push(r);
+                }
+                numeros.sort((a, b) => a - b);
+
+                slots.forEach((slot, i) => {
+                    slot.classList.remove('jumping');
+                    slot.textContent = numeros[i].toString().padStart(2, '0');
+                });
+                btn.disabled = false;
+            }, 2000);
+        }
+
         const maxTries = 3; 
         const lockTime = 60; 
         const greenSegments = [0, 2, 4]; 
@@ -520,178 +579,73 @@
 
         if (soundRoleta) soundRoleta.loop = true;
 
-        // Som para botões de compra
-        document.querySelectorAll('#servicos-vendas .buy-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                if (soundCaixa) {
-                    soundCaixa.currentTime = 0;
-                    soundCaixa.play().catch(() => {});
-                }
-            });
-        });
-
-        /* ============================
-           LÓGICA ROLETA 1 (ORIGINAL)
-           ============================ */
+        /* ROLETA 1 */
         let tries1 = 0;
         let spinning1 = false;
         let currentRotation1 = 0; 
-
         const roulette1 = document.getElementById("roulette");
         const spinBtn1 = document.getElementById("spinBtn");
-        const triesEl1 = document.getElementById("tries");
         const result1 = document.getElementById("resultMessage");
-        const countdown1 = document.getElementById("countdown");
-
-        function startCountdown1() {
-            let timeLeft = lockTime;
-            spinBtn1.disabled = true;
-            spinBtn1.textContent = "BLOQUEADO";
-
-            const interval = setInterval(() => {
-                timeLeft--;
-                countdown1.textContent = `⏳ Aguarde ${timeLeft}s para tentar de novo.`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(interval);
-                    tries1 = 0;
-                    triesEl1.textContent = "0";
-                    countdown1.textContent = "";
-                    result1.textContent = "";
-                    spinBtn1.disabled = false;
-                    spinBtn1.textContent = "GIRAR ROLETA 1";
-                }
-            }, 1000);
-        }
 
         spinBtn1.onclick = () => {
             if (spinning1 || tries1 >= maxTries) return;
-
             spinning1 = true;
             spinBtn1.disabled = true;
             spinBtn1.textContent = "SORTEANDO...";
-            result1.textContent = "";
-
-            if (soundRoleta) {
-                soundRoleta.currentTime = 0;
-                soundRoleta.play().catch(() => {});
-            }
-
+            if (soundRoleta) soundRoleta.play();
             const segment = Math.floor(Math.random() * 6); 
-            const segmentDegrees = segment * 60; 
-            currentRotation1 += 1800 + segmentDegrees;
+            currentRotation1 += 1800 + (segment * 60);
             roulette1.style.transform = `rotate(-${currentRotation1}deg)`;
-
             setTimeout(() => {
-                if (soundRoleta) {
-                    soundRoleta.pause();
-                    soundRoleta.currentTime = 0;
-                }
+                if (soundRoleta) { soundRoleta.pause(); soundRoleta.currentTime = 0; }
                 tries1++;
-                triesEl1.textContent = tries1;
+                document.getElementById("tries").textContent = tries1;
                 if (greenSegments.includes(segment)) {
-                    if (soundWin) {
-                        soundWin.currentTime = 0;
-                        soundWin.play().catch(() => {});
-                    }
+                    if (soundWin) soundWin.play();
                     result1.style.color = "#00ff88";
                     result1.innerHTML = "🟢 PARABÉNS! SÓ PAGA R$4,00";
-                    spinBtn1.textContent = "REDIRECIONANDO...";
-                    setTimeout(() => { window.location.href = "https://wa.link/rhz7fa"; }, 3000);
+                    setTimeout(() => { window.location.href = "https://wa.link/rhz7fa"; }, 2000);
                 } else {
                     result1.style.color = "#ff4757";
                     result1.innerHTML = "🔴 NÃO FOI DESSA VEZ!";
-                    if (tries1 >= maxTries) {
-                        startCountdown1();
-                    } else {
-                        spinBtn1.disabled = false;
-                        spinBtn1.textContent = "TENTAR NOVAMENTE";
-                    }
+                    spinBtn1.disabled = false;
+                    spinBtn1.textContent = "TENTAR NOVAMENTE";
                 }
                 spinning1 = false;
             }, 4000);
         };
 
-        /* ============================
-           LÓGICA ROLETA 2 (NOVA)
-           ============================ */
+        /* ROLETA 2 */
         let tries2 = 0;
         let spinning2 = false;
         let currentRotation2 = 0; 
-
         const roulette2 = document.getElementById("roulette2");
         const spinBtn2 = document.getElementById("spinBtn2");
-        const triesEl2 = document.getElementById("tries2");
         const result2 = document.getElementById("resultMessage2");
-        const countdown2 = document.getElementById("countdown2");
-
-        function startCountdown2() {
-            let timeLeft = lockTime;
-            spinBtn2.disabled = true;
-            spinBtn2.textContent = "BLOQUEADO";
-
-            const interval = setInterval(() => {
-                timeLeft--;
-                countdown2.textContent = `⏳ Aguarde ${timeLeft}s para tentar de novo.`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(interval);
-                    tries2 = 0;
-                    triesEl2.textContent = "0";
-                    countdown2.textContent = "";
-                    result2.textContent = "";
-                    spinBtn2.disabled = false;
-                    spinBtn2.textContent = "GIRAR ROLETA 2";
-                }
-            }, 1000);
-        }
 
         spinBtn2.onclick = () => {
             if (spinning2 || tries2 >= maxTries) return;
-
             spinning2 = true;
             spinBtn2.disabled = true;
             spinBtn2.textContent = "SORTEANDO...";
-            result2.textContent = "";
-
-            if (soundRoleta) {
-                soundRoleta.currentTime = 0;
-                soundRoleta.play().catch(() => {});
-            }
-
+            if (soundRoleta) soundRoleta.play();
             const segment = Math.floor(Math.random() * 6); 
-            const segmentDegrees = segment * 60; 
-            currentRotation2 += 1800 + segmentDegrees;
+            currentRotation2 += 1800 + (segment * 60);
             roulette2.style.transform = `rotate(-${currentRotation2}deg)`;
-
             setTimeout(() => {
-                if (soundRoleta) {
-                    soundRoleta.pause();
-                    soundRoleta.currentTime = 0;
-                }
+                if (soundRoleta) { soundRoleta.pause(); soundRoleta.currentTime = 0; }
                 tries2++;
-                triesEl2.textContent = tries2;
+                document.getElementById("tries2").textContent = tries2;
                 if (greenSegments.includes(segment)) {
-                    if (soundWin) {
-                        soundWin.currentTime = 0;
-                        soundWin.play().catch(() => {});
-                    }
+                    if (soundWin) soundWin.play();
                     result2.style.color = "#00ff88";
                     result2.innerHTML = "🟢 PARABÉNS! SÓ PAGA R$1,00";
-                    spinBtn2.textContent = "REDIRECIONANDO...";
-                    
-                    // === REDIRECIONAMENTO NOVO AQUI ===
-                    setTimeout(() => { window.location.href = "https://wa.link/sqsfkc"; }, 3000);
-
+                    setTimeout(() => { window.location.href = "https://wa.link/sqsfkc"; }, 2000);
                 } else {
                     result2.style.color = "#ff4757";
                     result2.innerHTML = "🔴 NÃO FOI DESSA VEZ!";
-                    if (tries2 >= maxTries) {
-                        startCountdown2();
-                    } else {
-                        spinBtn2.disabled = false;
-                        spinBtn2.textContent = "TENTAR NOVAMENTE";
-                    }
+                    spinBtn2.disabled = false;
+                    spinBtn2.textContent = "TENTAR NOVAMENTE";
                 }
                 spinning2 = false;
             }, 4000);
