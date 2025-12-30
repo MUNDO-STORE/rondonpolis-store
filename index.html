@@ -22,7 +22,27 @@
             --radius: 15px;
         }
 
-        /* --- NOVO FUNDO ANIMADO --- */
+        /* --- WIDGET DE CLIMA E HORA --- */
+        .weather-time-bar {
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .weather-time-bar i { color: var(--accent); width: 20px; text-align: center; }
+        .wt-item { display: flex; align-items: center; gap: 8px; }
+
+        /* --- FUNDO ANIMADO --- */
         .bg-animated {
             position: fixed;
             top: 0;
@@ -39,7 +59,7 @@
             display: block;
             width: 20px;
             height: 20px;
-            background: rgba(255, 51, 102, 0.2);
+            background: rgba(255, 51, 102, 0.15);
             animation: animate 25s linear infinite;
             bottom: -150px;
             border-radius: 50%;
@@ -50,7 +70,6 @@
             100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
         }
 
-        /* Estilizando tamanhos e posições das bolhas */
         .bg-animated span:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
         .bg-animated span:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
         .bg-animated span:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
@@ -59,13 +78,12 @@
         .bg-animated span:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
         .bg-animated span:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
         .bg-animated span:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
-        /* --- FIM DO FUNDO ANIMADO --- */
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: transparent; /* Alterado para mostrar o fundo animado */
+            background: transparent;
             color: var(--light);
             min-height: 100vh;
             display: flex;
@@ -73,8 +91,8 @@
         }
 
         .header {
-            background: rgba(26, 31, 39, 0.8); /* Leve transparência */
-            backdrop-filter: blur(10px); /* Efeito de vidro */
+            background: rgba(26, 31, 39, 0.85);
+            backdrop-filter: blur(10px);
             padding: 40px 20px;
             text-align: center;
             border-bottom: 3px solid var(--secondary);
@@ -115,7 +133,6 @@
             justify-content: space-between;
             gap: 20px;
             border: 1px solid var(--success);
-            backdrop-filter: blur(5px);
         }
         .mega-box {
             background: #000;
@@ -173,8 +190,8 @@
         }
 
         .roulette-section {
-            background: rgba(255, 255, 255, .05);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
             padding: 30px;
             border-radius: var(--radius);
             text-align: center;
@@ -269,13 +286,6 @@
             min-height: 40px;
         }
 
-        .countdown {
-            margin-top: 15px;
-            font-weight: bold;
-            color: var(--warning);
-            font-size: 1rem;
-        }
-
         .counter { margin: 10px 0; font-weight: bold; }
 
         .section-header {
@@ -304,7 +314,7 @@
         }
 
         .service-card {
-            background: rgba(255, 255, 255, .05);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: var(--radius);
@@ -316,7 +326,7 @@
 
         .service-card:hover {
             transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             border-color: var(--accent);
         }
 
@@ -345,23 +355,6 @@
             line-height: 1.6;
         }
 
-        .service-list {
-            list-style: none;
-            margin-bottom: 20px;
-            font-size: 0.85rem;
-            color: #eee;
-            text-align: left;
-        }
-
-        .service-list li {
-            margin-bottom: 8px;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .service-list li i { color: var(--success); margin-top: 4px; font-size: 10px; }
-
         .buy-btn {
             background: #25d366;
             color: #fff;
@@ -375,75 +368,42 @@
             display: block;
         }
 
-        .buy-btn:hover { background: #128c7e; }
-
-        .social-section { 
-            margin: 40px auto 80px; 
-            text-align: center;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .telegram-button {
-            background: linear-gradient(135deg, #0088cc, #006699);
-            padding: 18px 40px;
-            border-radius: 50px;
-            font-weight: 900;
-            color: #fff;
-            text-decoration: none;
-            display: inline-block;
-            margin-bottom: 50px;
-            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.3);
-            transition: 0.3s;
-        }
-        .telegram-button:hover { transform: scale(1.05); }
-
-        .whatsapp-group-card {
-            background: rgba(37, 211, 102, 0.1);
-            border: 2px dashed #25d366;
-            padding: 30px;
-            border-radius: var(--radius);
-            max-width: 600px;
-            margin: 0 auto;
-            backdrop-filter: blur(5px);
-        }
-
-        .whatsapp-group-card h2 { color: #25d366; margin-bottom: 10px; }
-        
-        .prefix-alert {
-            color: var(--warning);
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: block;
-        }
-
         .footer {
             margin-top: auto;
             padding: 30px;
             text-align: center;
             color: #888;
             border-top: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.5);
         }
 
         @media (max-width: 600px) {
             h1 { font-size: 1.8rem; }
             .roulette-wheel { width: 220px; height: 220px; }
-            .roulette-title { font-size: 1rem; min-height: auto;}
-            .mega-sena-container { flex-direction: column; }
+            .weather-time-bar { flex-direction: column; gap: 5px; font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
 
+    <div class="weather-time-bar">
+        <div class="wt-item">
+            <i class="fas fa-location-dot"></i>
+            <span>RONDONÓPOLIS, MT</span>
+        </div>
+        <div class="wt-item">
+            <i class="fas fa-clock"></i>
+            <span id="realTime">00:00:00</span>
+        </div>
+        <div class="wt-item">
+            <i class="fas fa-sun" id="weatherIcon"></i>
+            <span id="weatherTemp">Carregando clima...</span>
+        </div>
+    </div>
+
     <div class="bg-animated">
         <span></span><span></span><span></span><span></span>
         <span></span><span></span><span></span><span></span>
     </div>
-
-    <audio id="roletaSound" src="roleta.mp3" preload="auto"></audio>
-    <audio id="caixaSound" src="caixa.mp3" preload="auto"></audio>
-    <audio id="winSound" src="win.mp3" preload="auto"></audio>
 
     <header class="header">
         <div class="logo"><i class="fas fa-store"></i></div>
@@ -469,13 +429,7 @@
     <div class="container">
         <div class="dual-roulette-container">
             <section class="roulette-section">
-                <h2 class="roulette-title">
-                    GIRE A ROLETA SE GANHAR VOCÊ PAGA SOMENTE R$4,00 PACK COM 25 MIL MÚSICAS MP3 SEM VINHETAS ATUALIZADAS E GANHA VIDEOCLIPES!
-                </h2>
-                <div class="color-legend">
-                    <div class="legend-item"><div class="dot green"></div><span>VERDE: GANHA!</span></div>
-                    <div class="legend-item"><div class="dot red"></div><span>VERMELHO: NÃO!</span></div>
-                </div>
+                <h2 class="roulette-title">GIRE A ROLETA SE GANHAR VOCÊ PAGA SOMENTE R$4,00 PACK COM 25 MIL MÚSICAS MP3</h2>
                 <div class="roulette-wheel">
                     <div class="pointer"></div>
                     <div id="roulette" class="roulette"></div>
@@ -483,17 +437,10 @@
                 <p id="resultMessage" class="result-message"></p>
                 <div class="counter">Tentativas: <span id="tries">0</span> / 3</div>
                 <button id="spinBtn" class="spin-button">GIRAR ROLETA 1</button>
-                <div id="countdown" class="countdown"></div>
             </section>
 
             <section class="roulette-section">
-                <h2 class="roulette-title" style="color: #00d4ff;">
-                    GIRE A ROLETA SE GANHAR VOCÊ PAGA SOMENTE R$1,00 PACK COM 15 MIL MÚSICAS MP3 SEM VINHETAS ATUALIZADAS E GANHA VIDEOCLIPES!
-                </h2>
-                <div class="color-legend">
-                    <div class="legend-item"><div class="dot green"></div><span>VERDE: GANHA!</span></div>
-                    <div class="legend-item"><div class="dot red"></div><span>VERMELHO: NÃO!</span></div>
-                </div>
+                <h2 class="roulette-title" style="color: #00d4ff;">GIRE A ROLETA SE GANHAR VOCÊ PAGA SOMENTE R$1,00 PACK COM 15 MIL MÚSICAS MP3</h2>
                 <div class="roulette-wheel">
                     <div class="pointer"></div>
                     <div id="roulette2" class="roulette"></div>
@@ -501,7 +448,6 @@
                 <p id="resultMessage2" class="result-message"></p>
                 <div class="counter">Tentativas: <span id="tries2">0</span> / 3</div>
                 <button id="spinBtn2" class="spin-button">GIRAR ROLETA 2</button>
-                <div id="countdown2" class="countdown"></div>
             </section>
         </div>
 
@@ -510,80 +456,16 @@
             <span class="whatsapp-alert-text">QUALQUER SERVIÇO QUE VOCÊ ESCOLHER SERÁ DIRECIONADO PARA MEU WHATSAPP!</span>
         </div>
 
-        <div id="servicos-vendas" class="service-grid">
+        <div class="service-grid">
             <div class="service-card" style="border: 2px solid var(--success);">
                 <div class="service-price">TOTALMENTE GRÁTIS!</div>
                 <h3>CRIE SEU CURRÍCULUM GRÁTIS!</h3>
-                <p class="service-desc">
-                    Crie seu currículo profissional de forma rápida e gratuita em nosso gerador online!
-                </p>
                 <a href="https://mundo-store.github.io/GERADOR-DE-CURR-CULO/" target="_blank" class="buy-btn">CLICK AQUI PARA CRIAR!</a>
             </div>
-
             <div class="service-card" style="border: 2px solid var(--accent);">
                 <div class="service-price">R$ 60,00</div>
                 <h3>FORMATAÇÃO COMPUTADORES</h3>
-                <p class="service-desc">
-                    <strong>ATENDO TODOS OS DIAS E FERIADOS!</strong><br>
-                    INSTALAÇÃO WINDOWS 10 E 11 PRO + OFFICE ATIVADO.<br>
-                    CLIENTE JÁ ESPERA NO LOCAL!
-                </p>
-                <a href="https://wa.link/c6rc9k" target="_blank" class="buy-btn">CLICK AQUI PARA CONTRATAR SERVIÇO!</a>
-            </div>
-
-            <div class="service-card">
-                <div class="service-price">R$ 25,00</div>
-                <h3>SUPORTE REMOTO</h3>
-                <p class="service-desc">
-                    INSTALAÇÃO OFFICE ATIVADO!<br>
-                    <strong>ATENDO TODOS OS DIAS E FERIADOS!</strong>
-                </p>
-                <a href="https://wa.link/in102d" target="_blank" class="buy-btn">CLICK AQUI PARA CHAMAR!</a>
-            </div>
-
-            <div class="service-card" style="border: 2px solid var(--warning);">
-                <div class="service-price">R$ 10,00</div>
-                <h3>ATIVIDADES INFANTIL (3 A 12 ANOS)</h3>
-                <p class="service-desc">
-                    <strong>ATIVIDADES PRONTAS PARA IMPRIMIR!</strong><br>
-                    ÓTIMO PARA CRIANÇAS COM TDAH!<br>
-                    MATERIAL PARA PROFESSOR E USO PARTICULAR!<br>
-                    <span style="color:var(--success)">PACK PROFISSIONAL MÚSICAS INFANTIL!</span><br>
-                    <strong>100% HOSPEDADO NO TELEGRAM!</strong>
-                </p>
-                <a href="https://wa.link/7toim8" target="_blank" class="buy-btn">COMPRAR AQUI ATIVIDADES INFANTIL!</a>
-            </div>
-
-            <div class="service-card">
-                <div class="service-price">R$ 50,00</div>
-                <h3>PACK DJ PROFISSIONAL</h3>
-                <p class="service-desc" style="color: var(--success); font-weight: bold; margin-bottom: 5px;">
-                    MATERIAL 100% HOSPEDADO NO GRUPO VIP TELEGRAM (BAIXE QUANDO QUISER)
-                </p>
-                <ul class="service-list">
-                    <li><i class="fas fa-check"></i> +4 TERAS de músicas SEM VINHETAS</li>
-                    <li><i class="fas fa-check"></i> PACK GOSPEL / RETRÔ / FLASHBACK</li>
-                </ul>
-                <a href="https://wa.link/msxo61" target="_blank" class="buy-btn">CLICK AQUI PARA COMPRAR NOSSO PACK!</a>
-            </div>
-
-            <div class="service-card">
-                <div class="service-price">R$ 10,00</div>
-                <h3>PACK SUPER NINTENDO COMPLETO</h3>
-                <p class="service-desc">JOGUE NO CELULAR, TV OU PC!</p>
-                <a href="https://wa.link/cllsye" target="_blank" class="buy-btn">JOGAR AGORA!</a>
-            </div>
-        </div>
-
-        <div class="social-section">
-            <h2>LOJA VIP TELEGRAM</h2>
-            <br>
-            <a href="https://t.me/+xcMUpCNGNoI3NDUx" target="_blank" class="telegram-button">ENTRAR NA LOJA TELEGRAM</a>
-
-            <div class="whatsapp-group-card">
-                <h2>GRUPO VENDAS RONDONÓPOLIS WHATSAPP!</h2>
-                <span class="prefix-alert">(NESSE GRUPO SÓ ACEITAMOS PREFIXO (66)!</span>
-                <a href="https://chat.whatsapp.com/G3cTkoQYJumJeKYzoDAdKh" target="_blank" class="buy-btn">CLICK AQUI PARA ENTRAR NO GRUPO!</a>
+                <a href="https://wa.link/c6rc9k" target="_blank" class="buy-btn">CONTRATAR SERVIÇO!</a>
             </div>
         </div>
     </div>
@@ -593,11 +475,47 @@
     </footer>
 
     <script>
+        // --- RELÓGIO EM TEMPO REAL ---
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR');
+            document.getElementById('realTime').textContent = timeString;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // --- CLIMA RONDONÓPOLIS (OPEN-METEO) ---
+        async function getClima() {
+            try {
+                // Latitude e Longitude de Rondonópolis, MT
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=-16.4678&longitude=-54.635&current_weather=true`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                const temp = Math.round(data.current_weather.temperature);
+                const code = data.current_weather.weathercode;
+                
+                let desc = "Céu Limpo";
+                let icon = "fa-sun";
+
+                if (code > 0 && code <= 3) { desc = "Parcialmente Nublado"; icon = "fa-cloud-sun"; }
+                else if (code >= 45) { desc = "Nublado/Chuva"; icon = "fa-cloud-showers-heavy"; }
+
+                document.getElementById('weatherTemp').textContent = `${temp}°C - ${desc}`;
+                document.getElementById('weatherIcon').className = `fas ${icon}`;
+            } catch (e) {
+                document.getElementById('weatherTemp').textContent = "Rondonópolis 32°C";
+            }
+        }
+        getClima();
+        setInterval(getClima, 600000); // Atualiza a cada 10 minutos
+
+        // --- LÓGICA MEGA SENA ---
         function gerarMega() {
             const btn = document.getElementById('megaBtn');
             const slots = document.querySelectorAll('.mega-num');
             btn.disabled = true;
-            slots.forEach(slot => slot.classList.add('jumping'));
+            slots.forEach(slot => { slot.classList.add('jumping'); slot.textContent = "?"; });
 
             setTimeout(() => {
                 let numeros = [];
@@ -606,94 +524,48 @@
                     if(numeros.indexOf(r) === -1) numeros.push(r);
                 }
                 numeros.sort((a, b) => a - b);
-
                 slots.forEach((slot, i) => {
                     slot.classList.remove('jumping');
                     slot.textContent = numeros[i].toString().padStart(2, '0');
                 });
                 btn.disabled = false;
-            }, 2000);
+            }, 1500);
         }
 
-        const maxTries = 3; 
-        const greenSegments = [0, 2, 4]; 
-        const soundRoleta = document.getElementById("roletaSound");
-        const soundCaixa = document.getElementById("caixaSound");
-        const soundWin = document.getElementById("winSound");
+        // --- LÓGICA ROLETAS ---
+        function setupRoulette(id, btnId, msgId, triesId, link) {
+            let tries = 0;
+            let currentRotation = 0;
+            const roulette = document.getElementById(id);
+            const btn = document.getElementById(btnId);
+            const msg = document.getElementById(msgId);
+            const triesSpan = document.getElementById(triesId);
 
-        if (soundRoleta) soundRoleta.loop = true;
+            btn.onclick = () => {
+                if (tries >= 3) return;
+                btn.disabled = true;
+                const segment = Math.floor(Math.random() * 6); // 0, 2, 4 são verdes
+                currentRotation += 1800 + (segment * 60);
+                roulette.style.transform = `rotate(-${currentRotation}deg)`;
 
-        /* ROLETA 1 */
-        let tries1 = 0;
-        let spinning1 = false;
-        let currentRotation1 = 0; 
-        const roulette1 = document.getElementById("roulette");
-        const spinBtn1 = document.getElementById("spinBtn");
-        const result1 = document.getElementById("resultMessage");
+                setTimeout(() => {
+                    tries++;
+                    triesSpan.textContent = tries;
+                    if ([0, 2, 4].includes(segment)) {
+                        msg.style.color = "#00ff88";
+                        msg.textContent = "🟢 PARABÉNS! VOCÊ GANHOU!";
+                        setTimeout(() => window.location.href = link, 1500);
+                    } else {
+                        msg.style.color = "#ff4757";
+                        msg.textContent = "🔴 NÃO FOI DESSA VEZ!";
+                        if (tries < 3) btn.disabled = false;
+                    }
+                }, 4000);
+            };
+        }
 
-        spinBtn1.onclick = () => {
-            if (spinning1 || tries1 >= maxTries) return;
-            spinning1 = true;
-            spinBtn1.disabled = true;
-            spinBtn1.textContent = "SORTEANDO...";
-            if (soundRoleta) soundRoleta.play();
-            const segment = Math.floor(Math.random() * 6); 
-            currentRotation1 += 1800 + (segment * 60);
-            roulette1.style.transform = `rotate(-${currentRotation1}deg)`;
-            setTimeout(() => {
-                if (soundRoleta) { soundRoleta.pause(); soundRoleta.currentTime = 0; }
-                tries1++;
-                document.getElementById("tries").textContent = tries1;
-                if (greenSegments.includes(segment)) {
-                    if (soundWin) soundWin.play();
-                    result1.style.color = "#00ff88";
-                    result1.innerHTML = "🟢 PARABÉNS! SÓ PAGA R$4,00";
-                    setTimeout(() => { window.location.href = "https://wa.link/rhz7fa"; }, 2000);
-                } else {
-                    result1.style.color = "#ff4757";
-                    result1.innerHTML = "🔴 NÃO FOI DESSA VEZ!";
-                    spinBtn1.disabled = false;
-                    spinBtn1.textContent = "TENTAR NOVAMENTE";
-                }
-                spinning1 = false;
-            }, 4000);
-        };
-
-        /* ROLETA 2 */
-        let tries2 = 0;
-        let spinning2 = false;
-        let currentRotation2 = 0; 
-        const roulette2 = document.getElementById("roulette2");
-        const spinBtn2 = document.getElementById("spinBtn2");
-        const result2 = document.getElementById("resultMessage2");
-
-        spinBtn2.onclick = () => {
-            if (spinning2 || tries2 >= maxTries) return;
-            spinning2 = true;
-            spinBtn2.disabled = true;
-            spinBtn2.textContent = "SORTEANDO...";
-            if (soundRoleta) soundRoleta.play();
-            const segment = Math.floor(Math.random() * 6); 
-            currentRotation2 += 1800 + (segment * 60);
-            roulette2.style.transform = `rotate(-${currentRotation2}deg)`;
-            setTimeout(() => {
-                if (soundRoleta) { soundRoleta.pause(); soundRoleta.currentTime = 0; }
-                tries2++;
-                document.getElementById("tries2").textContent = tries2;
-                if (greenSegments.includes(segment)) {
-                    if (soundWin) soundWin.play();
-                    result2.style.color = "#00ff88";
-                    result2.innerHTML = "🟢 PARABÉNS! SÓ PAGA R$1,00";
-                    setTimeout(() => { window.location.href = "https://wa.link/sqsfkc"; }, 2000);
-                } else {
-                    result2.style.color = "#ff4757";
-                    result2.innerHTML = "🔴 NÃO FOI DESSA VEZ!";
-                    spinBtn2.disabled = false;
-                    spinBtn2.textContent = "TENTAR NOVAMENTE";
-                }
-                spinning2 = false;
-            }, 4000);
-        };
+        setupRoulette("roulette", "spinBtn", "resultMessage", "tries", "https://wa.link/rhz7fa");
+        setupRoulette("roulette2", "spinBtn2", "resultMessage2", "tries2", "https://wa.link/sqsfkc");
     </script>
 </body>
 </html>
