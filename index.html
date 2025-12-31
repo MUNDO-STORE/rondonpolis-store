@@ -645,8 +645,11 @@
                     MATERIAL 100% HOSPEDADO NO GRUPO VIP TELEGRAM (BAIXE QUANDO QUISER)
                 </p>
                 <ul class="service-list">
-                    <li><i class="fas fa-check"></i> +4 TERAS de músicas SEM VINHETAS</li>
-                    <li><i class="fas fa-check"></i> PACK GOSPEL / RETRÔ / FLASHBACK</li>
+                    <li><i class="fas fa-check"></i> ✔️ +4TB Músicas (Todos os Estilos)</li>
+                    <li><i class="fas fa-check"></i> ✔️ +1TB Efeitos Sonoros (SFX)</li>
+                    <li><i class="fas fa-check"></i> ✔️ Playlists Prontas (Casamento, Academia, Festas...)</li>
+                    <li><i class="fas fa-check"></i> ✔️ Videoclipes + Softwares</li>
+                    <li><i class="fas fa-check"></i> ✔️ Atualizações Constantes</li>
                 </ul>
                 <a href="https://wa.link/msxo61" target="_blank" class="buy-btn">CLICK AQUI PARA COMPRAR NOSSO PACK!</a>
             </div>
@@ -683,10 +686,8 @@
             const expirationTime = localStorage.getItem('counterExpireTime');
             let count = localStorage.getItem('visitorCount');
 
-            // Se não existir tempo de expiração ou se o tempo já passou de 24h
             if (!expirationTime || now > expirationTime) {
-                count = 0; // Reseta para zero
-                // Define nova expiração para daqui a 24 horas
+                count = 0;
                 const tomorrow = now + (24 * 60 * 60 * 1000); 
                 localStorage.setItem('counterExpireTime', tomorrow);
             }
@@ -694,7 +695,6 @@
             count = parseInt(count) + 1;
             localStorage.setItem('visitorCount', count);
 
-            // Efeito visual de contagem
             let start = 0;
             const duration = 2000;
             const obj = document.getElementById('visitorCount');
