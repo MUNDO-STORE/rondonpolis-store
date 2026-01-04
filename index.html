@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>RONDONÓPOLIS STORE E REGIÃO! - Sorteio e Serviços</title>
+    <title>RONDONÓPOLIS STORE - Sorteio e Serviços</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800;900&display=swap" rel="stylesheet">
@@ -351,6 +351,56 @@
             flex: 1;
         }
 
+        /* SEÇÃO DE JOGOS: ROLETAS E RASPADINHA */
+        .games-section {
+            margin-bottom: 60px;
+        }
+
+        .games-section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 50px;
+            color: white;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .games-section-title:after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: var(--secondary);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 992px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        .game-container {
+            background: rgba(15, 20, 30, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 2px solid var(--secondary);
+            backdrop-filter: blur(5px);
+        }
+
+        /* ESTILOS DA ROLETA */
         .dual-roulette-container {
             display: flex;
             justify-content: center;
@@ -465,6 +515,181 @@
         }
 
         .counter { margin: 10px 0; font-weight: bold; }
+
+        /* NOVOS ESTILOS PARA RASPADINHA (COPIADOS DO MUNDO STORE) */
+        .scratch-container {
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            padding: 0;
+        }
+
+        .scratch-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #fff;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .scratch-subtitle {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .scratch-desc {
+            font-size: 16px;
+            opacity: .9;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: #ddd;
+            text-align: center;
+        }
+
+        .scratch-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .scratch-card {
+            position: relative;
+            height: 100px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #1a1a2e;
+            border: 2px solid rgba(0, 255, 153, 0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .scratch-card:hover {
+            transform: scale(1.05);
+            border-color: #00ff99;
+        }
+
+        .scratch-card span {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #00ff99;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .scratch-canvas {
+            position: absolute;
+            inset: 0;
+            cursor: pointer;
+            z-index: 3;
+            border-radius: 10px;
+        }
+
+        .scratch-result {
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .scratch-button {
+            background: linear-gradient(90deg, #00ff99, #00ccff, #00ff99);
+            background-size: 200%;
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 25px;
+            border-bottom: 4px solid #00cc99;
+            box-shadow: 0 4px 15px rgba(0, 255, 153, 0.4);
+            transition: all 0.3s ease;
+            animation: scratchShine 3s linear infinite;
+        }
+
+        @keyframes scratchShine {
+            0% { background-position: -200%; }
+            100% { background-position: 200%; }
+        }
+
+        .scratch-button:not([disabled]):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 255, 153, 0.6);
+            background: linear-gradient(90deg, #00ccff, #00ff99, #00ccff);
+        }
+
+        .scratch-button:disabled { 
+            background: #555; 
+            color: #ccc; 
+            cursor: not-allowed; 
+            animation: none;
+            box-shadow: none;
+        }
+
+        .scratch-winner {
+            animation: scratchWinner 0.5s ease-in-out 3;
+            border-color: #00ff99;
+            box-shadow: 0 0 20px rgba(0, 255, 153, 0.7);
+        }
+
+        @keyframes scratchWinner {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .scratch-loser {
+            animation: scratchLoser 0.5s ease-in-out;
+        }
+
+        @keyframes scratchLoser {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .scratch-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .scratch-tries {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .scratch-prize {
+            color: #00ff99;
+            font-weight: bold;
+        }
 
         .section-header {
             text-align: center;
@@ -618,6 +843,24 @@
             .roulette-title { font-size: 1rem; min-height: auto;}
             .mega-sena-container { flex-direction: column; }
             .weather-time-bar { font-size: 0.75rem; gap: 10px; }
+            .scratch-grid {
+                gap: 8px;
+            }
+            .scratch-card {
+                height: 85px;
+            }
+            .scratch-card span {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .scratch-card {
+                height: 75px;
+            }
+            .scratch-card span {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
@@ -666,10 +909,14 @@
     <audio id="roletaSound" src="roleta.mp3" preload="auto"></audio>
     <audio id="caixaSound" src="caixa.mp3" preload="auto"></audio>
     <audio id="winSound" src="win.mp3" preload="auto"></audio>
+    <!-- Som da raspadinha -->
+    <audio id="scratch-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-scratch-sound-2789.mp3" type="audio/mpeg">
+    </audio>
 
     <header class="header">
         <div class="logo"><i class="fas fa-store"></i></div>
-        <h1>RONDONÓPOLIS STORE E REGIÃO!</h1>
+        <h1>RONDONÓPOLIS STORE</h1>
         <p class="subtitle">SORTEIO PACK MÚSICA E CATÁLOGO DE SERVIÇOS!</p>
         <div class="highlight-box">
             TODO NOSSO MATERIAL É PAGAMENTO ÚNICO — SEM MENSALIDADES!
@@ -689,43 +936,59 @@
     </header>
 
     <div class="container">
-        <div class="dual-roulette-container">
-            <section class="roulette-section">
-                <h2 class="roulette-title">
-                    GIRE A ROLETA SE GANHAR VOCÊ PAGA SOMENTE R$4,00 PACK COM 25 MIL MÚSICAS MP3 SEM VINHETAS ATUALIZADAS E GANHA VIDEOCLIPES!
-                </h2>
-                <div class="color-legend">
-                    <div class="legend-item"><div class="dot green"></div><span>VERDE: GANHA!</span></div>
-                    <div class="legend-item"><div class="dot red"></div><span>VERMELHO: NÃO!</span></div>
+        <!-- SEÇÃO DE JOGOS: ROLETAS E RASPADINHA -->
+        <section class="games-section">
+            <h2 class="games-section-title">JOGOS E SORTEIOS</h2>
+            
+            <div class="games-grid">
+                <!-- ROLETA 1 -->
+                <div class="game-container">
+                    <section class="roulette-section" style="background: transparent; border: none; padding: 0; box-shadow: none;">
+                        <h2 class="roulette-title">
+                            GIRE A ROLETA SE GANHAR VOCÊ PAGA SOMENTE R$4,00 PACK COM 25 MIL MÚSICAS MP3 SEM VINHETAS ATUALIZADAS E GANHA VIDEOCLIPES!
+                        </h2>
+                        <div class="color-legend">
+                            <div class="legend-item"><div class="dot green"></div><span>VERDE: GANHA!</span></div>
+                            <div class="legend-item"><div class="dot red"></div><span>VERMELHO: NÃO!</span></div>
+                        </div>
+                        <div class="roulette-wheel">
+                            <div class="pointer"></div>
+                            <div id="roulette" class="roulette"></div>
+                        </div>
+                        <p id="resultMessage" class="result-message"></p>
+                        <div class="counter">Tentativas: <span id="tries">0</span> / 3</div>
+                        <button id="spinBtn" class="spin-button">GIRAR ROLETA 1</button>
+                        <div id="countdown" class="countdown"></div>
+                    </section>
                 </div>
-                <div class="roulette-wheel">
-                    <div class="pointer"></div>
-                    <div id="roulette" class="roulette"></div>
-                </div>
-                <p id="resultMessage" class="result-message"></p>
-                <div class="counter">Tentativas: <span id="tries">0</span> / 3</div>
-                <button id="spinBtn" class="spin-button">GIRAR ROLETA 1</button>
-                <div id="countdown" class="countdown"></div>
-            </section>
 
-            <section class="roulette-section">
-                <h2 class="roulette-title" style="color: #00d4ff;">
-                    GIRE A ROLETA SE GANHAR VOCÊ PAGA SOMENTE R$1,00 PACK COM 15 MIL MÚSICAS MP3 SEM VINHETAS ATUALIZADAS E GANHA VIDEOCLIPES!
-                </h2>
-                <div class="color-legend">
-                    <div class="legend-item"><div class="dot green"></div><span>VERDE: GANHA!</span></div>
-                    <div class="legend-item"><div class="dot red"></div><span>VERMELHO: NÃO!</span></div>
+                <!-- NOVA RASPADINHA (COPIADA DO MUNDO STORE) -->
+                <div class="game-container">
+                    <div class="scratch-container">
+                        <h2 class="scratch-title">🎲 RASPADINHA DA SORTE</h2>
+                        <p class="scratch-subtitle">Raspe 3 cartas iguais e ganhe o pack por apenas <b>R$1,00</b></p>
+                        
+                        <p class="scratch-desc">
+                            <b>Pack com 10 MIL músicas MP3</b>, sem vinhetas + <b>30 ritmos</b><br>
+                            <b>Boa sorte!</b>
+                        </p>
+
+                        <div class="scratch-info">
+                            <div class="scratch-tries">Tentativas: <span id="scratch-tries">0</span>/3</div>
+                            <div class="scratch-prize">Prêmio: Pack 10K Músicas por R$1,00</div>
+                        </div>
+
+                        <div class="scratch-grid" id="scratch-grid">
+                            <!-- As cartas serão geradas pelo JavaScript -->
+                        </div>
+
+                        <div class="scratch-result" id="scratch-result">Raspe as cartas para revelar os símbolos!</div>
+
+                        <button id="scratch-reset" class="scratch-button">NOVA RASPADINHA</button>
+                    </div>
                 </div>
-                <div class="roulette-wheel">
-                    <div class="pointer"></div>
-                    <div id="roulette2" class="roulette"></div>
-                </div>
-                <p id="resultMessage2" class="result-message"></p>
-                <div class="counter">Tentativas: <span id="tries2">0</span> / 3</div>
-                <button id="spinBtn2" class="spin-button">GIRAR ROLETA 2</button>
-                <div id="countdown2" class="countdown"></div>
-            </section>
-        </div>
+            </div>
+        </section>
 
         <div class="section-header">
             <h2>SERVIÇOS ONLINE E VENDAS</h2>
@@ -842,7 +1105,7 @@
     </div>
 
     <footer class="footer">
-        © 2026 RONDONÓPOLIS STORE E REGIÃO! — Todos os direitos reservados!
+        © 2026 RONDONÓPOLIS STORE — Todos os direitos reservados!
     </footer>
 
     <script>
@@ -972,43 +1235,359 @@
             };
         }
 
-        /* ROLETA 2 */
-        let tries2 = 0;
-        let spinning2 = false;
-        let currentRotation2 = 0; 
-        const roulette2 = document.getElementById("roulette2");
-        const spinBtn2 = document.getElementById("spinBtn2");
-        const result2 = document.getElementById("resultMessage2");
+        // ============================================
+        // NOVO CÓDIGO DA RASPADINHA (COPIADO DO MUNDO STORE)
+        // ============================================
+        function initScratch() {
+            const grid = document.getElementById('scratch-grid');
+            const result = document.getElementById('scratch-result');
+            const resetBtn = document.getElementById('scratch-reset');
+            const triesElement = document.getElementById('scratch-tries');
 
-        if(spinBtn2) {
-            spinBtn2.onclick = () => {
-                if (spinning2 || tries2 >= maxTries) return;
-                spinning2 = true;
-                spinBtn2.disabled = true;
-                spinBtn2.textContent = "SORTEANDO...";
-                if (soundRoleta) soundRoleta.play();
-                const segment = Math.floor(Math.random() * 6); 
-                currentRotation2 += 1800 + (segment * 60);
-                roulette2.style.transform = `rotate(-${currentRotation2}deg)`;
-                setTimeout(() => {
-                    if (soundRoleta) { soundRoleta.pause(); soundRoleta.currentTime = 0; }
-                    tries2++;
-                    document.getElementById("tries2").textContent = tries2;
-                    if (greenSegments.includes(segment)) {
-                        if (soundWin) soundWin.play();
-                        result2.style.color = "#00ff88";
-                        result2.innerHTML = "🟢 PARABÉNS! SÓ PAGA R$1,00";
-                        setTimeout(() => { window.location.href = "https://wa.link/sqsfkc"; }, 2000);
-                    } else {
-                        result2.style.color = "#ff4757";
-                        result2.innerHTML = "🔴 NÃO FOI DESSA VEZ!";
-                        spinBtn2.disabled = false;
-                        spinBtn2.textContent = "TENTAR NOVAMENTE";
+            // Configurações
+            const MAX_TRIES = 3;
+            const LOCK_TIME = 2 * 60 * 1000; // 2 minutos em milissegundos
+            const WIN_CHANCE = 0.5; // 50% de chance de ganhar
+
+            let revealed = 0;
+            let values = [];
+            let tries = parseInt(localStorage.getItem('scratch_tries')) || 0;
+            let lockedUntil = parseInt(localStorage.getItem('scratch_lockedUntil')) || 0;
+            let isLocked = lockedUntil > Date.now();
+
+            // Atualizar contador de tentativas
+            triesElement.textContent = tries;
+
+            // Inicializar a raspadinha
+            function criarRaspadinha() {
+                if (isLocked) {
+                    lockScratch();
+                    return;
+                }
+
+                grid.innerHTML = '';
+                result.textContent = 'Raspe as cartas para revelar os símbolos!';
+                result.style.color = '#fff';
+                revealed = 0;
+                
+                // Gerar valores com base na chance de vitória
+                const ganhar = Math.random() < WIN_CHANCE;
+                
+                if (ganhar) {
+                    // Configuração para vitória: 3 símbolos iguais
+                    const winSymbol = getRandomSymbol();
+                    values = [winSymbol, winSymbol, winSymbol];
+                    
+                    // Adicionar símbolos diferentes para completar as 6 cartas
+                    const outrosSymbols = ['❌', '💣', '😢', '💎', '💰'];
+                    while (values.length < 6) {
+                        let symbol = outrosSymbols[Math.floor(Math.random() * outrosSymbols.length)];
+                        // Garantir que não seja igual ao símbolo de vitória
+                        while (symbol === winSymbol) {
+                            symbol = outrosSymbols[Math.floor(Math.random() * outrosSymbols.length)];
+                        }
+                        values.push(symbol);
                     }
-                    spinning2 = false;
-                }, 4000);
-            };
+                } else {
+                    // Configuração para derrota: sem 3 símbolos iguais
+                    const symbols = ['❌', '💣', '😢', '💎', '💰', '🎁'];
+                    values = [];
+                    
+                    // Garantir que não haja 3 símbolos iguais
+                    let attempts = 0;
+                    do {
+                        values = [];
+                        for (let i = 0; i < 6; i++) {
+                            values.push(symbols[Math.floor(Math.random() * symbols.length)]);
+                        }
+                        attempts++;
+                        if (attempts > 100) break; // Prevenção de loop infinito
+                    } while (hasThreeOfAKind(values));
+                }
+                
+                // Embaralhar os valores
+                values.sort(() => Math.random() - 0.5);
+
+                // Criar as cartas
+                values.forEach((val, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'scratch-card';
+                    card.dataset.index = index;
+                    card.dataset.value = val;
+
+                    const span = document.createElement('span');
+                    span.textContent = val;
+
+                    const canvas = document.createElement('canvas');
+                    canvas.className = 'scratch-canvas';
+                    canvas.dataset.index = index;
+                    
+                    card.appendChild(span);
+                    card.appendChild(canvas);
+                    grid.appendChild(card);
+
+                    // Configurar canvas
+                    setTimeout(() => {
+                        canvas.width = card.offsetWidth;
+                        canvas.height = card.offsetHeight;
+                        const ctx = canvas.getContext('2d');
+                        
+                        // Desenhar fundo da raspadinha
+                        ctx.fillStyle = '#999';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        
+                        // Desenhar padrão de raspadinha
+                        ctx.fillStyle = '#555';
+                        for (let i = 0; i < canvas.width; i += 20) {
+                            for (let j = 0; j < canvas.height; j += 20) {
+                                if ((i + j) % 40 === 0) {
+                                    ctx.fillRect(i, j, 10, 10);
+                                }
+                            }
+                        }
+                        
+                        // Desenhar texto
+                        ctx.font = 'bold 14px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('RASPE', canvas.width / 2, canvas.height / 2);
+
+                        let isDrawing = false;
+                        let lastX = 0;
+                        let lastY = 0;
+
+                        function getPosition(e) {
+                            const rect = canvas.getBoundingClientRect();
+                            return {
+                                x: (e.touches ? e.touches[0].clientX : e.clientX) - rect.left,
+                                y: (e.touches ? e.touches[0].clientY : e.clientY) - rect.top
+                            };
+                        }
+
+                        function startDrawing(e) {
+                            isDrawing = true;
+                            const pos = getPosition(e);
+                            lastX = pos.x;
+                            lastY = pos.y;
+                            scratch(e);
+                        }
+
+                        function stopDrawing() {
+                            isDrawing = false;
+                            verificarRevelacao(canvas);
+                        }
+
+                        function scratch(e) {
+                            if (!isDrawing) return;
+                            
+                            const pos = getPosition(e);
+                            
+                            // Tocar som de raspadinha
+                            playScratchSound();
+                            
+                            const ctx = canvas.getContext('2d');
+                            ctx.globalCompositeOperation = 'destination-out';
+                            ctx.lineWidth = 20;
+                            ctx.lineCap = 'round';
+                            ctx.lineJoin = 'round';
+                            
+                            ctx.beginPath();
+                            ctx.moveTo(lastX, lastY);
+                            ctx.lineTo(pos.x, pos.y);
+                            ctx.stroke();
+                            
+                            lastX = pos.x;
+                            lastY = pos.y;
+                            
+                            // Verificar se a carta foi suficientemente raspada
+                            setTimeout(() => verificarRevelacao(canvas), 100);
+                        }
+
+                        // Event listeners para mouse
+                        canvas.addEventListener('mousedown', startDrawing);
+                        canvas.addEventListener('mousemove', scratch);
+                        canvas.addEventListener('mouseup', stopDrawing);
+                        canvas.addEventListener('mouseout', stopDrawing);
+
+                        // Event listeners para touch
+                        canvas.addEventListener('touchstart', (e) => {
+                            e.preventDefault();
+                            startDrawing(e);
+                        });
+                        canvas.addEventListener('touchmove', (e) => {
+                            e.preventDefault();
+                            scratch(e);
+                        });
+                        canvas.addEventListener('touchend', (e) => {
+                            e.preventDefault();
+                            stopDrawing();
+                        });
+                    }, 100);
+                });
+
+                // Habilitar o botão de reset
+                resetBtn.disabled = false;
+                resetBtn.textContent = 'NOVA RASPADINHA';
+            }
+
+            function getRandomSymbol() {
+                const symbols = ['💰', '💎', '🎁', '⭐', '🏆', '💵'];
+                return symbols[Math.floor(Math.random() * symbols.length)];
+            }
+
+            function hasThreeOfAKind(arr) {
+                const count = {};
+                for (const val of arr) {
+                    count[val] = (count[val] || 0) + 1;
+                    if (count[val] >= 3) return true;
+                }
+                return false;
+            }
+
+            function verificarRevelacao(canvas) {
+                if (canvas.dataset.revealed === 'true') return;
+                
+                // Verificar quanto da área foi raspada
+                const ctx = canvas.getContext('2d');
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const pixels = imageData.data;
+                let transparentCount = 0;
+                
+                for (let i = 3; i < pixels.length; i += 4) {
+                    if (pixels[i] === 0) {
+                        transparentCount++;
+                    }
+                }
+                
+                const percentRaspado = (transparentCount / (pixels.length / 4)) * 100;
+                
+                // Se mais de 40% foi raspado, considerar revelado
+                if (percentRaspado > 40) {
+                    canvas.dataset.revealed = 'true';
+                    revealed++;
+                    
+                    // Adicionar classe de animação à carta
+                    const card = canvas.parentElement;
+                    card.classList.add('scratch-winner');
+                    
+                    // Verificar resultado final
+                    if (revealed === 6) {
+                        verificarResultado();
+                    }
+                }
+            }
+
+            function verificarResultado() {
+                // Incrementar tentativas
+                tries++;
+                triesElement.textContent = tries;
+                localStorage.setItem('scratch_tries', tries);
+                
+                // Verificar se há 3 símbolos iguais
+                const cards = Array.from(grid.children);
+                const revealedValues = cards.map(card => card.dataset.value);
+                
+                const count = {};
+                for (const val of revealedValues) {
+                    count[val] = (count[val] || 0) + 1;
+                }
+                
+                const hasWinner = Object.values(count).some(c => c >= 3);
+                
+                if (hasWinner) {
+                    // VITÓRIA
+                    result.innerHTML = '🎉 <span style="color:#00ff99; font-size:24px;">PARABÉNS!</span><br>Você ganhou o pack de 10 mil músicas por apenas <b>R$1,00</b>!';
+                    result.classList.add('scratch-winner');
+                    
+                    // REDIRECIONAR PARA O SITE ESPECIFICADO
+                    setTimeout(() => {
+                        window.location.href = 'https://4br.me/QADTXgSwh';
+                    }, 2000);
+                    
+                    // Resetar tentativas
+                    tries = 0;
+                    localStorage.setItem('scratch_tries', 0);
+                    triesElement.textContent = 0;
+                } else {
+                    // DERROTA
+                    result.innerHTML = '❌ <span style="color:#dc3545;">Não foi dessa vez!</span><br>Tente novamente!';
+                    result.classList.add('scratch-loser');
+                    
+                    // Verificar se atingiu o limite de tentativas
+                    if (tries >= MAX_TRIES) {
+                        lockScratch();
+                    }
+                }
+                
+                // Desabilitar o botão de reset temporariamente
+                resetBtn.disabled = true;
+                setTimeout(() => {
+                    resetBtn.disabled = false;
+                }, 2000);
+            }
+
+            function playScratchSound() {
+                const scratchSound = document.getElementById('scratch-sound');
+                if (scratchSound) {
+                    scratchSound.currentTime = 0;
+                    scratchSound.play().catch(e => console.log('Erro ao tocar som da raspadinha:', e));
+                }
+            }
+
+            function lockScratch() {
+                isLocked = true;
+                const lockedUntilTime = Date.now() + LOCK_TIME;
+                localStorage.setItem('scratch_lockedUntil', lockedUntilTime);
+                lockedUntil = lockedUntilTime;
+                
+                result.innerHTML = `<span style="color:#ffc107;">⏳ Aguarde ${LOCK_TIME / 60000} minutos para jogar novamente!</span>`;
+                resetBtn.disabled = true;
+                resetBtn.textContent = 'AGUARDE...';
+                
+                // Atualizar contador
+                const updateTimer = () => {
+                    const remainingTime = lockedUntil - Date.now();
+                    if (remainingTime <= 0) {
+                        // Desbloquear
+                        isLocked = false;
+                        localStorage.removeItem('scratch_lockedUntil');
+                        localStorage.setItem('scratch_tries', 0);
+                        tries = 0;
+                        triesElement.textContent = 0;
+                        resetBtn.disabled = false;
+                        resetBtn.textContent = 'NOVA RASPADINHA';
+                        result.textContent = 'Raspe as cartas para revelar os símbolos!';
+                        criarRaspadinha();
+                    } else {
+                        const minutes = Math.floor(remainingTime / 60000);
+                        const seconds = Math.floor((remainingTime % 60000) / 1000);
+                        result.innerHTML = `<span style="color:#ffc107;">⏳ Tente novamente em ${minutes}:${seconds.toString().padStart(2, '0')}</span>`;
+                        setTimeout(updateTimer, 1000);
+                    }
+                };
+                
+                updateTimer();
+            }
+
+            // Event listener para o botão de reset
+            resetBtn.addEventListener('click', () => {
+                if (!isLocked) {
+                    criarRaspadinha();
+                }
+            });
+
+            // Verificar estado inicial
+            if (isLocked) {
+                lockScratch();
+            } else {
+                criarRaspadinha();
+            }
         }
+
+        // Inicializar a raspadinha quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            initScratch();
+        });
     </script>
 </body>
 </html>
