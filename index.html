@@ -22,6 +22,132 @@
             --radius: 15px;
         }
 
+        /* --- BOTÃO FLUTUANTE CASSINO --- */
+        .floating-casino-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .casino-btn {
+            background: linear-gradient(135deg, #ff3366 0%, #ff0033 100%);
+            color: white;
+            padding: 18px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4),
+                        0 0 30px rgba(255, 0, 51, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border: 2px solid #ffcc00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        
+        .casino-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 35px rgba(255, 51, 102, 0.6),
+                        0 0 40px rgba(255, 0, 51, 0.7),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg, #ff0033 0%, #cc0029 100%);
+        }
+        
+        .casino-btn i {
+            font-size: 1.5rem;
+            color: #ffcc00;
+            animation: spin 4s linear infinite;
+        }
+        
+        .casino-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        
+        .casino-main-text {
+            font-size: 1rem;
+            color: white;
+        }
+        
+        .casino-subtext {
+            font-size: 0.8rem;
+            color: #ffcc00;
+            font-weight: 700;
+        }
+        
+        .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 204, 0, 0.6);
+            animation: pulse-ring 2s ease-out infinite;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsivo para o botão */
+        @media (max-width: 768px) {
+            .floating-casino-btn {
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+            }
+            
+            .casino-btn {
+                padding: 15px 20px;
+                font-size: 1rem;
+                justify-content: center;
+            }
+            
+            .casino-text {
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .floating-casino-btn {
+                bottom: 15px;
+                right: 15px;
+                left: 15px;
+            }
+            
+            .casino-btn {
+                padding: 14px 18px;
+                font-size: 0.9rem;
+            }
+            
+            .casino-main-text {
+                font-size: 0.9rem;
+            }
+            
+            .casino-subtext {
+                font-size: 0.75rem;
+            }
+        }
+
         /* --- CONTADOR PROFISSIONAL --- */
         .visitor-counter-wrapper {
             background: linear-gradient(90deg, rgba(255, 51, 102, 0.1), rgba(0, 212, 255, 0.1));
@@ -496,6 +622,18 @@
     </style>
 </head>
 <body>
+
+    <!-- BOTÃO FLUTUANTE CASSINO -->
+    <div class="floating-casino-btn">
+        <a href="https://bkbet84.com/?id=972228965" target="_blank" class="casino-btn">
+            <i class="fas fa-coins"></i>
+            <div class="casino-text">
+                <span class="casino-main-text">CASSINO PAGANDO NO TIGRINHO</span>
+                <span class="casino-subtext">CLICK AQUI E BOA SORTE!</span>
+            </div>
+            <div class="pulse-ring"></div>
+        </a>
+    </div>
 
     <div class="weather-time-bar">
         <div class="wt-item">
