@@ -691,6 +691,28 @@
             font-weight: bold;
         }
 
+        /* NOVO ESTILO PARA CONTADOR DE BLOQUEIO */
+        .scratch-lock-timer {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 51, 102, 0.1);
+            border: 2px solid var(--secondary);
+            text-align: center;
+            font-weight: bold;
+            color: var(--warning);
+            font-size: 1.1rem;
+            display: none;
+        }
+
+        .lock-countdown {
+            font-size: 1.3rem;
+            color: var(--success);
+            font-weight: 900;
+            margin-top: 5px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
         .section-header {
             text-align: center;
             margin-bottom: 40px;
@@ -983,8 +1005,17 @@
                         </div>
 
                         <div class="scratch-result" id="scratch-result">Raspe as cartas para revelar os símbolos!</div>
-
-                        <button id="scratch-reset" class="scratch-button">NOVA RASPADINHA</button>
+                        
+                        <!-- CONTADOR DE BLOQUEIO DA RASPADINHA -->
+                        <div class="scratch-lock-timer" id="scratch-lock-timer">
+                            <div>⏳ TEMPO DE BLOQUEIO</div>
+                            <div class="lock-countdown" id="scratch-lock-countdown">02:00</div>
+                            <div style="font-size: 0.9rem; margin-top: 5px; color: #ccc;">
+                                Aguarde para jogar novamente
+                            </div>
+                        </div>
+                        
+                        <!-- BOTÃO "NOVA RASPADINHA" REMOVIDO -->
                     </div>
                 </div>
             </div>
@@ -1236,13 +1267,14 @@
         }
 
         // ============================================
-        // NOVO CÓDIGO DA RASPADINHA (COPIADO DO MUNDO STORE)
+        // NOVO CÓDIGO DA RASPADINHA MODIFICADO
         // ============================================
         function initScratch() {
             const grid = document.getElementById('scratch-grid');
             const result = document.getElementById('scratch-result');
-            const resetBtn = document.getElementById('scratch-reset');
             const triesElement = document.getElementById('scratch-tries');
+            const lockTimer = document.getElementById('scratch-lock-timer');
+            const lockCountdown = document.getElementById('scratch-lock-countdown');
 
             // Configurações
             const MAX_TRIES = 3;
@@ -1254,14 +1286,56 @@
             let tries = parseInt(localStorage.getItem('scratch_tries')) || 0;
             let lockedUntil = parseInt(localStorage.getItem('scratch_lockedUntil')) || 0;
             let isLocked = lockedUntil > Date.now();
+            let lockInterval = null;
 
             // Atualizar contador de tentativas
             triesElement.textContent = tries;
 
+            // Função para atualizar contador de bloqueio
+            function updateLockTimer() {
+                if (!isLocked) {
+                    lockTimer.style.display = 'none';
+                    if (lockInterval) {
+                        clearInterval(lockInterval);
+                        lockInterval = null;
+                    }
+                    return;
+                }
+
+                const remainingTime = lockedUntil - Date.now();
+                if (remainingTime <= 0) {
+                    // Tempo acabou - desbloquear
+                    isLocked = false;
+                    localStorage.removeItem('scratch_lockedUntil');
+                    localStorage.setItem('scratch_tries', 0);
+                    tries = 0;
+                    triesElement.textContent = 0;
+                    lockTimer.style.display = 'none';
+                    
+                    if (lockInterval) {
+                        clearInterval(lockInterval);
+                        lockInterval = null;
+                    }
+                    
+                    // Reiniciar raspadinha automaticamente
+                    result.textContent = 'Raspe as cartas para revelar os símbolos!';
+                    criarRaspadinha();
+                } else {
+                    const minutes = Math.floor(remainingTime / 60000);
+                    const seconds = Math.floor((remainingTime % 60000) / 1000);
+                    lockCountdown.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    lockTimer.style.display = 'block';
+                }
+            }
+
             // Inicializar a raspadinha
             function criarRaspadinha() {
                 if (isLocked) {
-                    lockScratch();
+                    updateLockTimer();
+                    // Iniciar intervalo para atualizar contador
+                    if (!lockInterval) {
+                        lockInterval = setInterval(updateLockTimer, 1000);
+                    }
                     return;
                 }
 
@@ -1424,10 +1498,6 @@
                         });
                     }, 100);
                 });
-
-                // Habilitar o botão de reset
-                resetBtn.disabled = false;
-                resetBtn.textContent = 'NOVA RASPADINHA';
             }
 
             function getRandomSymbol() {
@@ -1515,15 +1585,20 @@
                     
                     // Verificar se atingiu o limite de tentativas
                     if (tries >= MAX_TRIES) {
-                        lockScratch();
+                        // Bloquear por 2 minutos
+                        isLocked = true;
+                        lockedUntil = Date.now() + LOCK_TIME;
+                        localStorage.setItem('scratch_lockedUntil', lockedUntil);
+                        
+                        // Mostrar contador de bloqueio
+                        updateLockTimer();
+                        
+                        // Iniciar intervalo para atualizar contador
+                        if (!lockInterval) {
+                            lockInterval = setInterval(updateLockTimer, 1000);
+                        }
                     }
                 }
-                
-                // Desabilitar o botão de reset temporariamente
-                resetBtn.disabled = true;
-                setTimeout(() => {
-                    resetBtn.disabled = false;
-                }, 2000);
             }
 
             function playScratchSound() {
@@ -1534,51 +1609,12 @@
                 }
             }
 
-            function lockScratch() {
-                isLocked = true;
-                const lockedUntilTime = Date.now() + LOCK_TIME;
-                localStorage.setItem('scratch_lockedUntil', lockedUntilTime);
-                lockedUntil = lockedUntilTime;
-                
-                result.innerHTML = `<span style="color:#ffc107;">⏳ Aguarde ${LOCK_TIME / 60000} minutos para jogar novamente!</span>`;
-                resetBtn.disabled = true;
-                resetBtn.textContent = 'AGUARDE...';
-                
-                // Atualizar contador
-                const updateTimer = () => {
-                    const remainingTime = lockedUntil - Date.now();
-                    if (remainingTime <= 0) {
-                        // Desbloquear
-                        isLocked = false;
-                        localStorage.removeItem('scratch_lockedUntil');
-                        localStorage.setItem('scratch_tries', 0);
-                        tries = 0;
-                        triesElement.textContent = 0;
-                        resetBtn.disabled = false;
-                        resetBtn.textContent = 'NOVA RASPADINHA';
-                        result.textContent = 'Raspe as cartas para revelar os símbolos!';
-                        criarRaspadinha();
-                    } else {
-                        const minutes = Math.floor(remainingTime / 60000);
-                        const seconds = Math.floor((remainingTime % 60000) / 1000);
-                        result.innerHTML = `<span style="color:#ffc107;">⏳ Tente novamente em ${minutes}:${seconds.toString().padStart(2, '0')}</span>`;
-                        setTimeout(updateTimer, 1000);
-                    }
-                };
-                
-                updateTimer();
-            }
-
-            // Event listener para o botão de reset
-            resetBtn.addEventListener('click', () => {
-                if (!isLocked) {
-                    criarRaspadinha();
-                }
-            });
-
             // Verificar estado inicial
             if (isLocked) {
-                lockScratch();
+                // Mostrar contador de bloqueio
+                updateLockTimer();
+                // Iniciar intervalo para atualizar contador
+                lockInterval = setInterval(updateLockTimer, 1000);
             } else {
                 criarRaspadinha();
             }
