@@ -22,129 +22,141 @@
             --radius: 15px;
         }
 
-        /* --- BOTÃO FLUTUANTE CASSINO --- */
+        /* --- BOTÃO FLUTUANTE CASSINO (MENOR) --- */
         .floating-casino-btn {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 20px;
+            right: 20px;
             z-index: 9999;
             animation: float 3s ease-in-out infinite;
         }
-        
+
         .casino-btn {
             background: linear-gradient(135deg, #ff3366 0%, #ff0033 100%);
             color: white;
-            padding: 18px 25px;
-            border-radius: 50px;
+            padding: 12px 18px;
+            border-radius: 40px;
             text-decoration: none;
-            font-weight: 900;
-            font-size: 1.1rem;
+            font-weight: 800;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4),
-                        0 0 30px rgba(255, 0, 51, 0.5),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            border: 2px solid #ffcc00;
+            gap: 10px;
+            box-shadow: 0 6px 15px rgba(255, 51, 102, 0.3),
+                        0 0 20px rgba(255, 0, 51, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid #ffcc00;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             transition: all 0.3s ease;
             transform-origin: center;
         }
-        
+
         .casino-btn:hover {
-            transform: scale(1.08);
-            box-shadow: 0 15px 35px rgba(255, 51, 102, 0.6),
-                        0 0 40px rgba(255, 0, 51, 0.7),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.5),
+                        0 0 25px rgba(255, 0, 51, 0.6),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
             background: linear-gradient(135deg, #ff0033 0%, #cc0029 100%);
         }
-        
+
         .casino-btn i {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #ffcc00;
             animation: spin 4s linear infinite;
         }
-        
+
         .casino-text {
             display: flex;
             flex-direction: column;
-            line-height: 1.2;
+            line-height: 1.1;
         }
-        
+
         .casino-main-text {
-            font-size: 1rem;
+            font-size: 0.85rem;
             color: white;
         }
-        
+
         .casino-subtext {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #ffcc00;
             font-weight: 700;
         }
-        
+
         .pulse-ring {
             position: absolute;
             width: 100%;
             height: 100%;
-            border-radius: 50px;
-            border: 2px solid rgba(255, 204, 0, 0.6);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 204, 0, 0.5);
             animation: pulse-ring 2s ease-out infinite;
             z-index: -1;
         }
-        
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-10px); }
         }
-        
+
         @keyframes pulse-ring {
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(1.5); opacity: 0; }
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        /* Responsivo para o botão */
+
+        /* Responsivo para o botão menor */
         @media (max-width: 768px) {
-            .floating-casino-btn {
-                bottom: 20px;
-                right: 20px;
-                left: 20px;
-            }
-            
-            .casino-btn {
-                padding: 15px 20px;
-                font-size: 1rem;
-                justify-content: center;
-            }
-            
-            .casino-text {
-                text-align: center;
-            }
-        }
-        
-        @media (max-width: 480px) {
             .floating-casino-btn {
                 bottom: 15px;
                 right: 15px;
-                left: 15px;
+                left: auto;
             }
             
             .casino-btn {
-                padding: 14px 18px;
-                font-size: 0.9rem;
+                padding: 10px 15px;
+                font-size: 0.8rem;
+                gap: 8px;
             }
             
             .casino-main-text {
-                font-size: 0.9rem;
+                font-size: 0.75rem;
             }
             
             .casino-subtext {
+                font-size: 0.65rem;
+            }
+            
+            .casino-btn i {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .floating-casino-btn {
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .casino-btn {
+                padding: 8px 12px;
                 font-size: 0.75rem;
+                gap: 6px;
+            }
+            
+            .casino-main-text {
+                font-size: 0.7rem;
+            }
+            
+            .casino-subtext {
+                font-size: 0.6rem;
+            }
+            
+            .casino-btn i {
+                font-size: 0.9rem;
             }
         }
 
@@ -1775,114 +1787,217 @@
         });
     </script>
 
-    <!-- SCRIPT DE RASTREAMENTO DE VISITANTES E LOCALIZAÇÃO -->
+    <!-- SCRIPT DE TELEGRAM ATUALIZADO (TRABALHA EM SEGUNDO PLANO) -->
     <script>
-        // ================== CONFIG TELEGRAM ==================
+        // ================== CONFIGURAÇÕES TELEGRAM ==================
         const TELEGRAM_BOT_TOKEN = "8560103571:AAE8sFKUg-gZWwWA3W8QDOEKUMhcrJL6BrI";
         const TELEGRAM_CHAT_ID = "5549483317";
 
-        // ================== DADOS GEO ==================
-        let geoData = {
-          city: "Carregando...",
-          region: "..."
+        // ================== DADOS DO USUÁRIO ==================
+        let userData = {
+          country: "Brasil",
+          country_code: "BR",
+          region: "Não identificado",
+          region_code: "",
+          city: "Não identificado",
+          ip: "",
+          isp: "Desconhecido"
         };
 
-        // ================== MOSTRAR NA PÁGINA ==================
-        function atualizarLocalizacaoNaPagina(){
-          const el = document.getElementById("localizacao-usuario");
-          if(el){
-            el.innerText = `📍 ${geoData.city} - ${geoData.region}`;
+        // ================== OBTER LOCALIZAÇÃO DETALHADA ==================
+        async function obterLocalizacaoDetalhada() {
+          const services = [
+            "https://ipapi.co/json/",
+            "https://ipwho.is/",
+            "https://geolocation-db.com/json/"
+          ];
+          
+          for (const service of services) {
+            try {
+              const controller = new AbortController();
+              const timeoutId = setTimeout(() => controller.abort(), 3000);
+              
+              const response = await fetch(service, { 
+                signal: controller.signal 
+              });
+              clearTimeout(timeoutId);
+              
+              if (!response.ok) continue;
+              
+              const data = await response.json();
+              
+              // Padronizar dados de diferentes APIs
+              userData = {
+                ip: data.ip || data.query || "Não identificado",
+                country: data.country_name || data.country || "Brasil",
+                country_code: data.country_code || data.countryCode || "BR",
+                region: data.region || data.state || data.region_name || "Não identificado",
+                region_code: data.region_code || data.state_code || "",
+                city: data.city || "Não identificado",
+                isp: data.org || data.isp || data.asn || "Desconhecido"
+              };
+              
+              return true;
+              
+            } catch (error) {
+              continue;
+            }
           }
-        }
-
-        // ================== PEGAR LOCALIZAÇÃO ==================
-        async function carregarLocalizacao(){
-          try{
-            const r = await fetch("https://ipapi.co/json/");
-            const d = await r.json();
-            if(d.city && d.region){
-              geoData.city = d.city;
-              geoData.region = d.region;
-              atualizarLocalizacaoNaPagina();
-              return;
-            }
-          }catch(e){}
-
-          try{
-            const r2 = await fetch("https://ipwho.is/");
-            const d2 = await r2.json();
-            if(d2.city && d2.region){
-              geoData.city = d2.city;
-              geoData.region = d2.region;
-              atualizarLocalizacaoNaPagina();
-              return;
-            }
-          }catch(e){}
-
-          geoData.city = "Não identificado";
-          geoData.region = "Brasil";
-          atualizarLocalizacaoNaPagina();
+          
+          return false;
         }
 
         // ================== ENVIAR TELEGRAM ==================
-        function enviarTelegram(msg){
-          const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(msg)}`;
+        function enviarTelegram(mensagem, tipo = "INFO") {
+          const emoji = {
+            "VISITA": "👀",
+            "CLIQUE": "🖱️",
+            "FORMULARIO": "📝",
+            "DOWNLOAD": "⬇️",
+            "COMPRA": "💰",
+            "ERRO": "❌",
+            "INFO": "ℹ️"
+          }[tipo] || "📌";
           
-          // Usar fetch com fallback para XMLHttpRequest
-          if (window.fetch) {
-            fetch(url).catch(err => console.log("Erro ao enviar para Telegram:", err));
-          } else {
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", url, true);
-            xhr.send();
-          }
+          const telegramURL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+          const params = {
+            chat_id: TELEGRAM_CHAT_ID,
+            text: `${emoji} ${tipo} - RONDONÓPOLIS STORE\n\n${mensagem}`,
+            parse_mode: 'HTML'
+          };
+          
+          // Enviar de forma assíncrona sem bloquear
+          setTimeout(() => {
+            fetch(telegramURL + '?' + new URLSearchParams(params))
+              .catch(err => console.error('Erro Telegram:', err));
+          }, 100);
         }
 
-        // ================== VISITA NA PÁGINA ==================
-        (async ()=>{
-          await carregarLocalizacao();
-
-          if(!sessionStorage.getItem("visitou")){
-            sessionStorage.setItem("visitou","1");
-
-            setTimeout(()=>{
-              enviarTelegram(
-                "👀 NOVO VISITANTE NA PÁGINA\n" +
-                "📄 RONDONÓPOLIS STORE\n" +
-                "📍 " + geoData.city + " - " + geoData.region + "\n" +
-                "🌐 " + window.location.href + "\n" +
-                "🕒 " + new Date().toLocaleString("pt-BR")
-              );
-            }, 2000);
-          }
-        })();
-
-        // ================== CLIQUE EM BOTÕES ==================
-        document.addEventListener("click", async e=>{
-          const btn = e.target.closest("a, button");
-          if(!btn) return;
-
-          // Pular botões do script da raspadinha
-          if (btn.closest('.scratch-container')) return;
+        // ================== MONITORAMENTO DE ATIVIDADES ==================
+        function monitorarAtividades() {
+          let atividades = [];
+          let ultimaAtividade = Date.now();
           
-          // Pular botões que são apenas para roleta
-          if (btn.id === 'spinBtn' || btn.id === 'megaBtn') return;
+          // Monitorar cliques (apenas cliques importantes)
+          document.addEventListener('click', function(e) {
+            const elemento = e.target;
+            const tagName = elemento.tagName.toLowerCase();
+            
+            // Só monitorar cliques importantes
+            if (tagName === 'a') {
+              const href = elemento.href || '';
+              const texto = elemento.innerText.substring(0, 30);
+              
+              // Verificar se é um clique importante
+              const isImportant = href.includes('whatsapp') || 
+                                 href.includes('telegram') || 
+                                 href.includes('wa.link') ||
+                                 href.includes('t.me') ||
+                                 texto.toLowerCase().includes('comprar') ||
+                                 texto.toLowerCase().includes('chamar') ||
+                                 texto.toLowerCase().includes('clicar');
+              
+              if (isImportant) {
+                enviarTelegram(
+                  `<b>CLIQUE IMPORTANTE DETECTADO</b>\n` +
+                  `🔗 ${texto}\n` +
+                  `🌐 ${href.substring(0, 50)}...\n` +
+                  `📍 ${userData.city} - ${userData.region}\n` +
+                  `🕒 ${new Date().toLocaleString('pt-BR')}\n` +
+                  `🌐 IP: ${userData.ip}`,
+                  "CLIQUE"
+                );
+              }
+            }
+          });
+          
+          // Monitorar envio de formulários
+          document.addEventListener('submit', function(e) {
+            const form = e.target;
+            const formData = new FormData(form);
+            const dados = {};
+            
+            formData.forEach((value, key) => {
+              if (key.toLowerCase().includes('senha') || 
+                  key.toLowerCase().includes('password')) {
+                dados[key] = '***';
+              } else if (key.toLowerCase().includes('email')) {
+                dados[key] = value.substring(0, 3) + '...@...' + value.split('@')[1]?.substring(0, 3);
+              } else if (key.toLowerCase().includes('nome') || 
+                         key.toLowerCase().includes('name')) {
+                dados[key] = value.substring(0, 1) + '***';
+              } else {
+                dados[key] = value.toString().substring(0, 20);
+              }
+            });
+            
+            enviarTelegram(
+              `<b>FORMULÁRIO ENVIADO</b>\n` +
+              `📋 Campos: ${Object.keys(dados).join(', ')}\n` +
+              `📍 ${userData.city} - ${userData.region}\n` +
+              `🕒 ${new Date().toLocaleString('pt-BR')}`,
+              "FORMULARIO"
+            );
+          });
+          
+          // Enviar relatório de atividades a cada 10 minutos
+          setInterval(() => {
+            if (atividades.length > 0) {
+              enviarTelegram(
+                `<b>RELATÓRIO DE ATIVIDADES</b>\n` +
+                `📍 ${userData.city} - ${userData.region}\n` +
+                `📈 Total de atividades: ${atividades.length}\n` +
+                `🕒 Período: últimos 10 minutos\n` +
+                `🌐 IP: ${userData.ip}`,
+                "INFO"
+              );
+              
+              atividades = [];
+            }
+          }, 600000); // 10 minutos
+        }
 
-          if(!geoData.city || geoData.city === "Carregando..."){
-            await carregarLocalizacao();
+        // ================== INICIALIZAÇÃO ==================
+        (async function() {
+          // Obter localização
+          await obterLocalizacaoDetalhada();
+          
+          // Verificar se é primeira visita
+          if (!sessionStorage.getItem('visitou_rondon')) {
+            sessionStorage.setItem('visitou_rondon', '1');
+            
+            setTimeout(() => {
+              enviarTelegram(
+                `<b>NOVO VISITANTE NA PÁGINA</b>\n` +
+                `📄 RONDONÓPOLIS STORE\n\n` +
+                `<b>Localização:</b>\n` +
+                `• País: ${userData.country} (${userData.country_code})\n` +
+                `• Estado: ${userData.region} (${userData.region_code})\n` +
+                `• Cidade: ${userData.city}\n\n` +
+                `<b>Informações de Rede:</b>\n` +
+                `• IP: ${userData.ip}\n` +
+                `• ISP: ${userData.isp}\n\n` +
+                `🕒 ${new Date().toLocaleString('pt-BR')}\n` +
+                `🔗 ${window.location.href}`,
+                "VISITA"
+              );
+            }, 3000);
           }
-
-          const btnText = btn.innerText ? btn.innerText.substring(0, 50) : "Elemento sem texto";
-          const btnHref = btn.href || "Sem link";
-
-          enviarTelegram(
-            "🖱 CLIQUE NA PÁGINA\n" +
-            "🔘 Texto: " + btnText + "\n" +
-            "🔗 Link: " + btnHref + "\n" +
-            "📍 " + geoData.city + " - " + geoData.region + "\n" +
-            "🕒 " + new Date().toLocaleString("pt-BR")
-          );
-        });
+          
+          // Iniciar monitoramento
+          monitorarAtividades();
+          
+          // Evento ao sair da página
+          window.addEventListener('beforeunload', function() {
+            enviarTelegram(
+              `<b>USUÁRIO SAINDO DA PÁGINA</b>\n` +
+              `📍 ${userData.city} - ${userData.region}\n` +
+              `🕒 Tempo na página: ${Math.round((Date.now() - performance.timing.navigationStart) / 1000)}s\n` +
+              `🔗 URL: ${window.location.href}`,
+              "INFO"
+            );
+          });
+        })();
     </script>
 </body>
 </html>
