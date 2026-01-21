@@ -22,7 +22,7 @@
             --radius: 15px;
         }
 
-        /* --- BOTÃO FLUTUANTE CASSINO (DIMINUÍDO) --- */
+        /* --- BOTÃO FLUTUANTE CASSINO --- */
         .floating-casino-btn {
             position: fixed;
             bottom: 30px;
@@ -34,16 +34,16 @@
         .casino-btn {
             background: linear-gradient(135deg, #ff3366 0%, #ff0033 100%);
             color: white;
-            padding: 14px 20px; /* DIMINUÍDO de 18px 25px */
+            padding: 18px 25px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 900;
-            font-size: 1rem; /* DIMINUÍDO de 1.1rem */
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
-            gap: 10px; /* DIMINUÍDO de 12px */
-            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.4),
-                        0 0 25px rgba(255, 0, 51, 0.5),
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4),
+                        0 0 30px rgba(255, 0, 51, 0.5),
                         inset 0 1px 0 rgba(255, 255, 255, 0.3);
             border: 2px solid #ffcc00;
             text-transform: uppercase;
@@ -54,14 +54,14 @@
         
         .casino-btn:hover {
             transform: scale(1.08);
-            box-shadow: 0 12px 30px rgba(255, 51, 102, 0.6),
-                        0 0 35px rgba(255, 0, 51, 0.7),
+            box-shadow: 0 15px 35px rgba(255, 51, 102, 0.6),
+                        0 0 40px rgba(255, 0, 51, 0.7),
                         inset 0 1px 0 rgba(255, 255, 255, 0.5);
             background: linear-gradient(135deg, #ff0033 0%, #cc0029 100%);
         }
         
         .casino-btn i {
-            font-size: 1.3rem; /* DIMINUÍDO de 1.5rem */
+            font-size: 1.5rem;
             color: #ffcc00;
             animation: spin 4s linear infinite;
         }
@@ -73,12 +73,12 @@
         }
         
         .casino-main-text {
-            font-size: 0.9rem; /* DIMINUÍDO de 1rem */
+            font-size: 1rem;
             color: white;
         }
         
         .casino-subtext {
-            font-size: 0.75rem; /* DIMINUÍDO de 0.8rem */
+            font-size: 0.8rem;
             color: #ffcc00;
             font-weight: 700;
         }
@@ -95,12 +95,12 @@
         
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); } /* DIMINUÍDO de -15px */
+            50% { transform: translateY(-15px); }
         }
         
         @keyframes pulse-ring {
             0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.4); opacity: 0; } /* DIMINUÍDO de 1.5 */
+            100% { transform: scale(1.5); opacity: 0; }
         }
         
         @keyframes spin {
@@ -117,21 +117,13 @@
             }
             
             .casino-btn {
-                padding: 12px 16px; /* DIMINUÍDO de 15px 20px */
-                font-size: 0.9rem; /* DIMINUÍDO de 1rem */
+                padding: 15px 20px;
+                font-size: 1rem;
                 justify-content: center;
             }
             
             .casino-text {
                 text-align: center;
-            }
-            
-            .casino-main-text {
-                font-size: 0.85rem; /* DIMINUÍDO de 0.9rem */
-            }
-            
-            .casino-subtext {
-                font-size: 0.7rem; /* DIMINUÍDO de 0.75rem */
             }
         }
         
@@ -143,153 +135,16 @@
             }
             
             .casino-btn {
-                padding: 11px 14px; /* DIMINUÍDO de 14px 18px */
-                font-size: 0.85rem; /* DIMINUÍDO de 0.9rem */
-            }
-            
-            .casino-main-text {
-                font-size: 0.8rem; /* DIMINUÍDO de 0.9rem */
-            }
-            
-            .casino-subtext {
-                font-size: 0.65rem; /* DIMINUÍDO de 0.75rem */
-            }
-        }
-
-        /* --- BOTÃO FLUTUANTE CHAT --- */
-        .floating-chat-btn {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            z-index: 9999;
-            animation: float-chat 3s ease-in-out infinite;
-        }
-        
-        .chat-btn {
-            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
-            color: white;
-            padding: 18px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 900;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 25px rgba(0, 136, 204, 0.4),
-                        0 0 30px rgba(0, 102, 153, 0.5),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            border: 2px solid #00d4ff;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            transform-origin: center;
-        }
-        
-        .chat-btn:hover {
-            transform: scale(1.08);
-            box-shadow: 0 15px 35px rgba(0, 136, 204, 0.6),
-                        0 0 40px rgba(0, 102, 153, 0.7),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
-            background: linear-gradient(135deg, #006699 0%, #004d73 100%);
-        }
-        
-        .chat-btn i {
-            font-size: 1.5rem;
-            color: #00d4ff;
-            animation: pulse-chat 2s ease-in-out infinite;
-        }
-        
-        .chat-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
-        
-        .chat-main-text {
-            font-size: 1rem;
-            color: white;
-        }
-        
-        /* REMOVIDO .chat-subtext - apenas uma linha de texto agora */
-        
-        .chat-ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50px;
-            border: 2px solid rgba(0, 212, 255, 0.6);
-            animation: pulse-ring-chat 2s ease-out infinite;
-            z-index: -1;
-        }
-        
-        @keyframes float-chat {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-10px) translateX(-5px); }
-            50% { transform: translateY(-5px) translateX(5px); }
-            75% { transform: translateY(-10px) translateX(-5px); }
-        }
-        
-        @keyframes pulse-ring-chat {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-        
-        @keyframes pulse-chat {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-        
-        /* Responsivo para o botão de chat */
-        @media (max-width: 768px) {
-            .floating-chat-btn {
-                bottom: 100px;
-                left: 20px;
-                right: auto;
-            }
-            
-            .chat-btn {
-                padding: 15px 20px;
-                font-size: 1rem;
-                justify-content: center;
-            }
-            
-            .chat-text {
-                text-align: center;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .floating-chat-btn {
-                bottom: 90px;
-                left: 15px;
-                right: auto;
-            }
-            
-            .chat-btn {
                 padding: 14px 18px;
                 font-size: 0.9rem;
             }
             
-            .chat-main-text {
+            .casino-main-text {
                 font-size: 0.9rem;
             }
-        }
-        
-        /* Ajuste para telas muito pequenas */
-        @media (max-width: 380px) {
-            .floating-chat-btn {
-                bottom: 85px;
-                left: 10px;
-            }
             
-            .chat-btn {
-                padding: 12px 15px;
-                font-size: 0.8rem;
-            }
-            
-            .chat-main-text {
-                font-size: 0.8rem;
+            .casino-subtext {
+                font-size: 0.75rem;
             }
         }
 
@@ -1082,7 +937,7 @@
 </head>
 <body>
 
-    <!-- BOTÃO FLUTUANTE CASSINO (DIMINUÍDO) -->
+    <!-- BOTÃO FLUTUANTE CASSINO -->
     <div class="floating-casino-btn">
         <a href="https://bkbet84.com/?id=972228965" target="_blank" class="casino-btn">
             <i class="fas fa-coins"></i>
@@ -1091,18 +946,6 @@
                 <span class="casino-subtext">CLICK AQUI E BOA SORTE!</span>
             </div>
             <div class="pulse-ring"></div>
-        </a>
-    </div>
-
-    <!-- BOTÃO FLUTUANTE CHAT RONDONÓPOLIS -->
-    <div class="floating-chat-btn">
-        <a href="https://store-chat.lumi.ing/" target="_blank" class="chat-btn">
-            <i class="fas fa-comments"></i>
-            <div class="chat-text">
-                <span class="chat-main-text">CHAT RONDONÓPOLIS</span>
-                <!-- REMOVIDO "TIRAR DÚVIDAS" -->
-            </div>
-            <div class="chat-ring"></div>
         </a>
     </div>
 
