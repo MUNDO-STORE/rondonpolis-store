@@ -22,13 +22,82 @@
             --radius: 15px;
         }
 
-        /* --- BOTÃO FLUTUANTE CASSINO (DIMINUÍDO) --- */
-        .floating-casino-btn {
+        /* --- CONTAINER DOS BOTÕES FLUTUANTES --- */
+        .floating-buttons-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        /* --- BOTÕES DE SERVIÇOS --- */
+        .floating-service-btn {
             animation: float 3s ease-in-out infinite;
+        }
+        
+        .service-btn {
+            background: linear-gradient(135deg, #00d4ff 0%, #0088cc 100%);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3),
+                        0 0 20px rgba(0, 136, 204, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid #00ff88;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .service-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.5),
+                        0 0 30px rgba(0, 136, 204, 0.6),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+        }
+        
+        .service-btn i {
+            font-size: 1.1rem;
+            color: #00ff88;
+        }
+        
+        /* BOTÃO SUPORTE REMOTO - COR DIFERENTE */
+        .floating-support-btn .service-btn {
+            background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.3),
+                        0 0 20px rgba(255, 153, 0, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid #ff3366;
+        }
+        
+        .floating-support-btn .service-btn:hover {
+            box-shadow: 0 10px 25px rgba(255, 204, 0, 0.5),
+                        0 0 30px rgba(255, 153, 0, 0.6);
+            background: linear-gradient(135deg, #ff9900 0%, #cc7700 100%);
+        }
+        
+        .floating-support-btn .service-btn i {
+            color: #ff3366;
+        }
+        
+        /* --- BOTÃO FLUTUANTE CASSINO (COM ANIMAÇÃO DE OCULTAR) --- */
+        .floating-casino-btn {
+            animation: float 3s ease-in-out infinite, hideShowCycle 40s infinite;
         }
         
         .casino-btn {
@@ -93,6 +162,20 @@
             z-index: -1;
         }
         
+        /* ANIMAÇÃO DE OCULTAR/MOSTRAR DO CASSINO */
+        @keyframes hideShowCycle {
+            0%, 25% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                visibility: visible;
+            }
+            25.1%, 100% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+                visibility: hidden;
+            }
+        }
+        
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -108,14 +191,14 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Responsivo para o botão */
+        /* Responsivo para os botões flutuantes */
         @media (max-width: 768px) {
-            .floating-casino-btn {
+            .floating-buttons-container {
                 bottom: 15px;
                 right: 15px;
             }
             
-            .casino-btn {
+            .service-btn, .casino-btn {
                 padding: 10px 15px;
                 font-size: 0.8rem;
             }
@@ -134,12 +217,12 @@
         }
         
         @media (max-width: 480px) {
-            .floating-casino-btn {
+            .floating-buttons-container {
                 bottom: 10px;
                 right: 10px;
             }
             
-            .casino-btn {
+            .service-btn, .casino-btn {
                 padding: 8px 12px;
                 font-size: 0.75rem;
             }
@@ -150,6 +233,10 @@
             
             .casino-subtext {
                 font-size: 0.6rem;
+            }
+            
+            .floating-buttons-container {
+                gap: 10px;
             }
         }
 
@@ -970,16 +1057,41 @@
 </head>
 <body>
 
-    <!-- BOTÃO FLUTUANTE CASSINO (DIMINUÍDO) -->
-    <div class="floating-casino-btn">
-        <a href="https://bkbet84.com/?id=972228965" target="_blank" class="casino-btn">
-            <i class="fas fa-coins"></i>
-            <div class="casino-text">
-                <span class="casino-main-text">CASSINO PAGANDO NO TIGRINHO</span>
-                <span class="casino-subtext">CLICK AQUI E BOA SORTE!</span>
-            </div>
-            <div class="pulse-ring"></div>
-        </a>
+    <!-- CONTAINER DOS BOTÕES FLUTUANTES -->
+    <div class="floating-buttons-container">
+        <!-- BOTÃO FORMATACAO PC E NOTEBOOK -->
+        <div class="floating-service-btn">
+            <a href="https://wa.link/h3aaow" target="_blank" class="service-btn">
+                <i class="fas fa-laptop"></i>
+                <div class="casino-text">
+                    <span class="casino-main-text">FORMATAÇÃO PC E NOTEBOOK</span>
+                    <span class="casino-subtext">R$80,00 - CLICK AQUI!</span>
+                </div>
+            </a>
+        </div>
+        
+        <!-- BOTÃO SUPORTE REMOTO -->
+        <div class="floating-service-btn floating-support-btn">
+            <a href="https://wa.link/pim5kg" target="_blank" class="service-btn">
+                <i class="fas fa-headset"></i>
+                <div class="casino-text">
+                    <span class="casino-main-text">SUPORTE REMOTO</span>
+                    <span class="casino-subtext">R$40,00 - CLICK AQUI!</span>
+                </div>
+            </a>
+        </div>
+        
+        <!-- BOTÃO FLUTUANTE CASSINO (COM ANIMAÇÃO DE OCULTAR) -->
+        <div class="floating-casino-btn">
+            <a href="https://bkbet84.com/?id=972228965" target="_blank" class="casino-btn">
+                <i class="fas fa-coins"></i>
+                <div class="casino-text">
+                    <span class="casino-main-text">CASSINO PAGANDO NO TIGRINHO</span>
+                    <span class="casino-subtext">CLICK AQUI E BOA SORTE!</span>
+                </div>
+                <div class="pulse-ring"></div>
+            </a>
+        </div>
     </div>
 
     <div class="weather-time-bar">
@@ -994,11 +1106,6 @@
         <div class="wt-item">
             <i class="fas fa-cloud-sun" id="weatherIcon"></i>
             <span id="weatherTemp">Carregando clima...</span>
-        </div>
-        <!-- NOVO ITEM ADICIONADO -->
-        <div class="wt-item">
-            <i class="fas fa-user"></i>
-            <span id="localizacao-usuario">Carregando...</span>
         </div>
     </div>
 
