@@ -1,2269 +1,2097 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Rondonópolis Store - Chat & Serviços</title>
-  
-  <!-- RESPONSIVO -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ff0000">
-  <meta name="description" content="Rondonópolis Store - Serviços de informática e chat comunitário">
-  
-  <!-- IOS -->
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  
-  <!-- Font Awesome para ícones -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <style>
-    :root {
-      --primary-color: #ff0000;
-      --secondary-color: #2c3e50;
-      --light-bg: #f5f5f5;
-      --dark-bg: #0d0d0d;
-      --text-color: #333;
-      --light-text: #fff;
-      --border-color: #ddd;
-      --online-color: #2ecc71;
-      --offline-color: #e74c3c;
-      --private-chat-bg: #fff8e1;
-      --card-bg: #1a1a1a;
-      --whatsapp-green: #25D366;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      background-color: var(--dark-bg);
-      color: var(--light-text);
-      transition: background 0.3s;
-      overflow-x: hidden;
-    }
-    
-    /* Layout para PC */
-    .pc-layout {
-      display: flex;
-      min-height: 100vh;
-    }
-    
-    /* Layout para Mobile */
-    .mobile-layout {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    
-    /* Painel lateral para PC */
-    .sidebar-pc {
-      width: 350px;
-      background-color: var(--card-bg);
-      border-right: 1px solid #333;
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-    }
-    
-    /* Conteúdo principal */
-    .main-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    
-    /* Banner de serviços */
-    .services-banner {
-      background: linear-gradient(to right, #0d0d0d, #1a1a1a);
-      color: white;
-      padding: 15px;
-      text-align: center;
-      border-bottom: 3px solid var(--primary-color);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      position: relative;
-      z-index: 10;
-      transition: opacity 0.5s ease-in-out;
-    }
-    
-    .services-banner.hidden {
-      opacity: 0;
-      height: 0;
-      padding: 0;
-      overflow: hidden;
-      border-bottom: none;
-    }
-    
-    .services-banner h2 {
-      color: var(--primary-color);
-      margin-bottom: 10px;
-      font-size: 1.3rem;
-    }
-    
-    .services-banner p {
-      margin: 5px 0;
-      font-size: 0.95rem;
-      line-height: 1.4;
-    }
-    
-    .services-banner .highlight {
-      color: #ffcc00;
-      font-weight: bold;
-    }
-    
-    /* Botão flutuante do WhatsApp */
-    .whatsapp-float {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-    }
-    
-    .whatsapp-button {
-      background-color: var(--whatsapp-green);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 15px 25px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-      transition: all 0.3s ease;
-      text-decoration: none;
-      z-index: 1001;
-    }
-    
-    .whatsapp-button:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-    }
-    
-    .whatsapp-button:active {
-      transform: translateY(-2px);
-    }
-    
-    .whatsapp-button i {
-      font-size: 1.5rem;
-    }
-    
-    .whatsapp-label {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      box-shadow: 0 3px 10px rgba(255, 0, 0, 0.3);
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.05);
-      }
-      100% {
-        transform: scale(1);
-      }
-    }
-    
-    /* Versão mobile do botão do WhatsApp */
-    .mobile .whatsapp-button {
-      padding: 12px 20px;
-      font-size: 14px;
-    }
-    
-    .mobile .whatsapp-float {
-      bottom: 80px; /* Acima do menu mobile */
-      right: 20px;
-    }
-    
-    .mobile .whatsapp-label {
-      font-size: 0.75rem;
-      padding: 6px 12px;
-    }
-    
-    /* Cabeçalho do chat */
-    .chat-header {
-      background-color: var(--secondary-color);
-      color: var(--light-text);
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .chat-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .chat-title h1 {
-      font-size: 1.5rem;
-    }
-    
-    .mobile .chat-title h1 {
-      font-size: 1.2rem;
-    }
-    
-    .controls {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .control-btn {
-      background: var(--primary-color);
-      border: none;
-      color: white;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      transition: transform 0.2s;
-    }
-    
-    .mobile .control-btn {
-      width: 35px;
-      height: 35px;
-      font-size: 1rem;
-    }
-    
-    .control-btn:hover {
-      transform: scale(1.1);
-    }
-    
-    /* PWA Installer */
-    .pwa-installer {
-      padding: 25px;
-      text-align: center;
-      background-color: rgba(0, 0, 0, 0.7);
-      border-bottom: 1px solid #333;
-    }
-    
-    .pwa-installer h3 {
-      color: var(--primary-color);
-      margin-bottom: 15px;
-      font-size: 1.3rem;
-    }
-    
-    .pwa-installer p {
-      color: #ccc;
-      margin-bottom: 15px;
-      font-size: 0.95rem;
-      line-height: 1.5;
-    }
-    
-    .btn {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    
-    .mobile .btn {
-      padding: 10px 20px;
-      font-size: 14px;
-    }
-    
-    .btn-install {
-      background: var(--primary-color);
-      color: var(--light-text);
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    
-    .btn-site {
-      background: #333;
-      color: var(--light-text);
-      width: 100%;
-    }
-    
-    .btn-install:hover, .btn-site:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-    }
-    
-    /* Perfil do usuário */
-    .user-profile {
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-bottom: 1px solid #333;
-    }
-    
-    .profile-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-    
-    .profile-pic-container {
-      position: relative;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 3px solid var(--primary-color);
-      cursor: pointer;
-    }
-    
-    .mobile .profile-pic-container {
-      width: 60px;
-      height: 60px;
-    }
-    
-    .profile-pic {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .profile-pic-overlay {
-      position: absolute;
-      bottom: 0;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      width: 100%;
-      text-align: center;
-      padding: 5px;
-      font-size: 0.8rem;
-    }
-    
-    .profile-info h3 {
-      font-size: 1.2rem;
-      margin-bottom: 5px;
-    }
-    
-    .mobile .profile-info h3 {
-      font-size: 1rem;
-    }
-    
-    .profile-info .status {
-      font-size: 0.9rem;
-      color: var(--online-color);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    
-    .profile-info .status i {
-      font-size: 0.7rem;
-    }
-    
-    .profile-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    
-    .form-group label {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #ccc;
-    }
-    
-    .form-group input, .form-group select {
-      padding: 10px 12px;
-      border: 1px solid #444;
-      border-radius: 5px;
-      font-size: 0.95rem;
-      background-color: #222;
-      color: white;
-    }
-    
-    .mobile .form-group input, .mobile .form-group select {
-      padding: 8px 10px;
-      font-size: 0.9rem;
-    }
-    
-    .save-profile {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 5px;
-    }
-    
-    .save-profile:hover {
-      opacity: 0.9;
-    }
-    
-    /* Lista de usuários */
-    .users-list {
-      padding: 20px;
-      flex: 1;
-      overflow-y: auto;
-    }
-    
-    .users-list h3 {
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #333;
-      color: #ccc;
-    }
-    
-    .user-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-bottom: 8px;
-      background-color: rgba(255, 255, 255, 0.05);
-    }
-    
-    .user-item:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    
-    .user-item.active {
-      background-color: rgba(255, 0, 0, 0.1);
-    }
-    
-    .user-item .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-    
-    .mobile .user-item .avatar {
-      width: 35px;
-      height: 35px;
-    }
-    
-    .user-item .user-info {
-      flex: 1;
-    }
-    
-    .user-item .user-name {
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: white;
-    }
-    
-    .mobile .user-item .user-name {
-      font-size: 0.9rem;
-    }
-    
-    .user-item .user-status {
-      font-size: 0.8rem;
-      color: #999;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    
-    .user-item .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: var(--offline-color);
-    }
-    
-    .user-item .status-dot.online {
-      background-color: var(--online-color);
-    }
-    
-    .private-chat-btn {
-      background: transparent;
-      border: none;
-      color: var(--primary-color);
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-    
-    /* Área do chat */
-    .chat-area {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background-color: #111;
-    }
-    
-    .chat-messages {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      background-color: #0a0a0a;
-    }
-    
-    .mobile .chat-messages {
-      padding: 15px;
-    }
-    
-    .message {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    
-    .message.own-message {
-      flex-direction: row-reverse;
-    }
-    
-    .message-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      align-self: flex-end;
-    }
-    
-    .mobile .message-avatar {
-      width: 35px;
-      height: 35px;
-    }
-    
-    .message-content {
-      max-width: 70%;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .message.own-message .message-content {
-      align-items: flex-end;
-    }
-    
-    .message-sender {
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 5px;
-      color: #aaa;
-    }
-    
-    .message-bubble {
-      padding: 12px 15px;
-      border-radius: 18px;
-      background-color: #222;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      position: relative;
-      word-wrap: break-word;
-      color: white;
-    }
-    
-    .message.own-message .message-bubble {
-      background-color: #2a2a2a;
-      border: 1px solid #444;
-    }
-    
-    .message-bubble img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin-top: 5px;
-    }
-    
-    .message-time {
-      font-size: 0.75rem;
-      color: #777;
-      margin-top: 5px;
-    }
-    
-    /* Solicitação de chat privado */
-    .private-chat-request {
-      background-color: var(--private-chat-bg);
-      border: 1px dashed #ffb300;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #333;
-    }
-    
-    .private-chat-request h4 {
-      color: #e65100;
-      margin-bottom: 10px;
-    }
-    
-    .private-chat-btns {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
-    
-    .accept-btn, .reject-btn {
-      padding: 8px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    
-    .accept-btn {
-      background-color: var(--online-color);
-      color: white;
-    }
-    
-    .reject-btn {
-      background-color: var(--offline-color);
-      color: white;
-    }
-    
-    /* Área de entrada de mensagens */
-    .chat-input-area {
-      padding: 15px;
-      border-top: 1px solid #333;
-      background-color: #111;
-    }
-    
-    .mobile .chat-input-area {
-      padding: 10px;
-    }
-    
-    .input-container {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-    }
-    
-    .emoji-btn, .image-btn, .send-btn {
-      background: transparent;
-      border: none;
-      font-size: 1.5rem;
-      color: #aaa;
-      cursor: pointer;
-      padding: 5px;
-    }
-    
-    .mobile .emoji-btn, .mobile .image-btn, .mobile .send-btn {
-      font-size: 1.3rem;
-    }
-    
-    .send-btn {
-      color: var(--primary-color);
-    }
-    
-    .message-input {
-      flex: 1;
-      padding: 12px 15px;
-      border: 1px solid #444;
-      border-radius: 25px;
-      resize: none;
-      font-size: 1rem;
-      max-height: 120px;
-      overflow-y: auto;
-      background-color: #222;
-      color: white;
-    }
-    
-    .mobile .message-input {
-      padding: 10px 12px;
-      font-size: 0.95rem;
-    }
-    
-    .message-input:focus {
-      outline: none;
-      border-color: var(--primary-color);
-    }
-    
-    .emoji-picker-container {
-      position: absolute;
-      bottom: 70px;
-      right: 20px;
-      background-color: #222;
-      border: 1px solid #444;
-      border-radius: 10px;
-      padding: 10px;
-      display: none;
-      z-index: 1000;
-      max-width: 300px;
-      max-height: 200px;
-      overflow-y: auto;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    }
-    
-    .emoji-picker-container.show {
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      gap: 5px;
-    }
-    
-    .emoji-picker-container span {
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 5px;
-      text-align: center;
-      transition: background 0.2s;
-      border-radius: 5px;
-    }
-    
-    .emoji-picker-container span:hover {
-      background-color: #444;
-    }
-    
-    /* Modal de imagem */
-    .image-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.9);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .image-modal.show {
-      display: flex;
-    }
-    
-    .image-modal-content {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 10px;
-    }
-    
-    .close-modal {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      color: white;
-      font-size: 2.5rem;
-      cursor: pointer;
-      z-index: 2001;
-    }
-    
-    /* Modal de configurações */
-    .settings-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.8);
-      z-index: 1500;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .settings-modal.show {
-      display: flex;
-    }
-    
-    .settings-content {
-      background-color: #222;
-      width: 90%;
-      max-width: 500px;
-      border-radius: 10px;
-      padding: 25px;
-      position: relative;
-      color: white;
-      border: 1px solid #444;
-    }
-    
-    .close-settings {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #aaa;
-    }
-    
-    .settings-content h2 {
-      margin-bottom: 20px;
-      color: var(--primary-color);
-    }
-    
-    .settings-option {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #444;
-    }
-    
-    .font-size-controls {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    
-    .font-btn {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    
-    .theme-options {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .theme-btn {
-      padding: 8px 15px;
-      border: 2px solid #444;
-      background: #333;
-      border-radius: 5px;
-      cursor: pointer;
-      color: white;
-    }
-    
-    .theme-btn.active {
-      border-color: var(--primary-color);
-      background-color: var(--primary-color);
-    }
-    
-    /* Menu móvel */
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background-color: #1a1a1a;
-      border-top: 1px solid #333;
-      z-index: 100;
-      padding: 10px;
-    }
-    
-    .mobile.mobile-menu {
-      display: flex;
-      justify-content: space-around;
-    }
-    
-    .mobile-menu-btn {
-      background: transparent;
-      border: none;
-      color: #aaa;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-      padding: 10px;
-      flex: 1;
-      font-size: 0.8rem;
-    }
-    
-    .mobile-menu-btn.active {
-      color: var(--primary-color);
-    }
-    
-    .mobile-menu-btn i {
-      font-size: 1.2rem;
-    }
-    
-    /* Classe para mensagens do sistema */
-    .system-message {
-      text-align: center;
-      margin: 15px 0;
-      color: #777;
-      font-size: 0.9rem;
-      font-style: italic;
-    }
-    
-    /* Estilos para modo tela cheia */
-    body.fullscreen {
-      padding: 0;
-    }
-    
-    body.fullscreen .container {
-      max-width: 100%;
-    }
-    
-    /* Animações */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .message {
-      animation: fadeIn 0.3s ease-out;
-    }
-    
-    /* Esconder elementos não necessários no mobile */
-    .mobile .sidebar-pc {
-      display: none;
-    }
-    
-    .mobile .pwa-installer.mobile-only {
-      display: block;
-    }
-    
-    .pc .pwa-installer.mobile-only {
-      display: none;
-    }
-    
-    /* Visibilidade condicional */
-    .mobile-only {
-      display: none;
-    }
-    
-    .pc-only {
-      display: block;
-    }
-    
-    .mobile .mobile-only {
-      display: block;
-    }
-    
-    .mobile .pc-only {
-      display: none;
-    }
-    
-    /* Páginas para mobile */
-    .mobile-page {
-      display: none;
-      flex: 1;
-      overflow-y: auto;
-    }
-    
-    .mobile-page.active {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    /* Botão flutuante para mobile (para nova mensagem) */
-    .floating-action-btn {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      background-color: var(--primary-color);
-      border-radius: 50%;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
-      z-index: 99;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s;
-    }
-    
-    .floating-action-btn:hover {
-      transform: scale(1.1);
-    }
-    
-    /* Ajustes para telas muito pequenas */
-    @media (max-width: 480px) {
-      .services-banner h2 {
-        font-size: 1.1rem;
-      }
-      
-      .services-banner p {
-        font-size: 0.85rem;
-      }
-      
-      .chat-title h1 {
-        font-size: 1rem;
-      }
-      
-      .message-bubble {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-      }
-      
-      .whatsapp-float {
-        bottom: 70px;
-        right: 15px;
-      }
-      
-      .whatsapp-button {
-        padding: 10px 15px;
-        font-size: 13px;
-      }
-      
-      .whatsapp-label {
-        font-size: 0.7rem;
-        padding: 5px 10px;
-      }
-    }
-    
-    /* Ajuste para quando o banner estiver oculto */
-    .services-banner.hidden + .whatsapp-float {
-      top: 20px;
-    }
-  </style>
-</head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>RONDONÓPOLIS STORE - Sorteio e Serviços</title>
 
-<body class="pc">
-  <!-- Layout para PC -->
-  <div class="pc-layout" id="pcLayout">
-    <!-- Painel lateral (PC) -->
-    <div class="sidebar-pc">
-      <!-- PWA Installer -->
-      <div class="pwa-installer pc-only">
-        <h3>Mundo Store App</h3>
-        <p>Instale nosso aplicativo para acessar mais rápido e receber notificações!</p>
-        <button class="btn btn-install" id="installBtnPc">
-          <i class="fas fa-download"></i> Instalar App
-        </button>
-        <button class="btn btn-site" onclick="location.href='https://mundo-store.github.io'">
-          <i class="fas fa-globe"></i> Acessar Site
-        </button>
-      </div>
-      
-      <!-- Perfil do usuário -->
-      <div class="user-profile">
-        <div class="profile-header">
-          <div class="profile-pic-container" id="profilePicContainer">
-            <img src="https://ui-avatars.com/api/?name=Usuario&background=ff0000&color=fff" alt="Foto de perfil" class="profile-pic" id="profilePic">
-            <div class="profile-pic-overlay">Alterar</div>
-          </div>
-          <div class="profile-info">
-            <h3 id="userNameDisplay">Usuário</h3>
-            <div class="status">
-              <i class="fas fa-circle"></i> Online
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #1a1f27;
+            --secondary: #ff3366;
+            --accent: #00d4ff;
+            --success: #00ff88;
+            --danger: #ff4757;
+            --warning: #ffcc00;
+            --dark: #0a0e14;
+            --light: #ffffff;
+            --card-bg: rgba(255, 255, 255, .05);
+            --radius: 15px;
+        }
+
+        /* --- BOTÃO FLUTUANTE CASSINO (DIMINUÍDO) --- */
+        .floating-casino-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .casino-btn {
+            background: linear-gradient(135deg, #ff3366 0%, #ff0033 100%);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.3),
+                        0 0 20px rgba(255, 0, 51, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid #ffcc00;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        
+        .casino-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.5),
+                        0 0 30px rgba(255, 0, 51, 0.6),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #ff0033 0%, #cc0029 100%);
+        }
+        
+        .casino-btn i {
+            font-size: 1.2rem;
+            color: #ffcc00;
+            animation: spin 4s linear infinite;
+        }
+        
+        .casino-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+        
+        .casino-main-text {
+            font-size: 0.85rem;
+            color: white;
+        }
+        
+        .casino-subtext {
+            font-size: 0.7rem;
+            color: #ffcc00;
+            font-weight: 700;
+        }
+        
+        .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 204, 0, 0.5);
+            animation: pulse-ring 2s ease-out infinite;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsivo para o botão */
+        @media (max-width: 768px) {
+            .floating-casino-btn {
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .casino-btn {
+                padding: 10px 15px;
+                font-size: 0.8rem;
+            }
+            
+            .casino-text {
+                text-align: center;
+            }
+            
+            .casino-main-text {
+                font-size: 0.75rem;
+            }
+            
+            .casino-subtext {
+                font-size: 0.65rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .floating-casino-btn {
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .casino-btn {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+            
+            .casino-main-text {
+                font-size: 0.7rem;
+            }
+            
+            .casino-subtext {
+                font-size: 0.6rem;
+            }
+        }
+
+        /* --- FUNDOS ANIMADOS E IMAGEM --- */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('fundo.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.7;
+            animation: bgFade 20s ease-in-out infinite;
+        }
+
+        .bg-animated {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, rgba(26, 31, 39, 0.7) 0%, rgba(10, 14, 20, 0.8) 100%);
+            overflow: hidden;
+        }
+
+        .bg-animated span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 51, 102, 0.15);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+        }
+
+        @keyframes animate {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+
+        @keyframes bgFade {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.4; }
+        }
+
+        .bg-animated span:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .bg-animated span:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .bg-animated span:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .bg-animated span:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .bg-animated span:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .bg-animated span:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+        .bg-animated span:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
+        .bg-animated span:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+
+        /* --- CONTADOR PROFISSIONAL --- */
+        .visitor-counter-wrapper {
+            background: linear-gradient(90deg, rgba(255, 51, 102, 0.1), rgba(0, 212, 255, 0.1));
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .counter-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+        .counter-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--light);
+            font-weight: 600;
+        }
+        .counter-number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--success);
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 0 0 10px var(--success);
+        }
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- WIDGET DE CLIMA E HORA --- */
+        .weather-time-bar {
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .weather-time-bar i { color: var(--accent); }
+        .wt-item { display: flex; align-items: center; gap: 8px; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: transparent;
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(26, 31, 39, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .logo i { font-size: 50px; color: var(--secondary); }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 10px 0;
+            text-transform: uppercase;
+        }
+
+        .subtitle { color: var(--warning); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+
+        .highlight-box {
+            margin: 30px auto;
+            max-width: 800px;
+            border: 2px solid var(--secondary);
+            padding: 20px;
+            border-radius: var(--radius);
+            background: rgba(255, 51, 102, .1);
+            font-weight: 800;
+        }
+
+        .mega-sena-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border: 1px solid var(--success);
+        }
+        .mega-box {
+            background: #000;
+            border: 2px solid var(--success);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            min-width: 250px;
+            justify-content: center;
+        }
+        .mega-num {
+            width: 35px;
+            height: 35px;
+            background: var(--success);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.1rem;
+        }
+        .jumping { animation: jump 0.3s infinite alternate; }
+        @keyframes jump { 
+            from { transform: translateY(0); } 
+            to { transform: translateY(-10px); } 
+        }
+        .mega-btn {
+            background: var(--success);
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            flex: 1;
+        }
+        .mega-btn:disabled { background: #555; cursor: not-allowed; }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 20px;
+            flex: 1;
+        }
+
+        /* SEÇÃO DE JOGOS: ROLETAS E RASPADINHA */
+        .games-section {
+            margin-bottom: 60px;
+        }
+
+        .games-section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 50px;
+            color: white;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .games-section-title:after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: var(--secondary);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 992px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        .game-container {
+            background: rgba(15, 20, 30, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 2px solid var(--secondary);
+            backdrop-filter: blur(5px);
+        }
+
+        /* ESTILOS DA ROLETA */
+        .dual-roulette-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        .roulette-section {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,.4);
+            flex: 1;
+            min-width: 300px;
+            max-width: 550px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .roulette-title {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 25px;
+            font-weight: 700;
+            line-height: 1.4;
+            text-transform: uppercase;
+            min-height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .color-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .dot { width: 15px; height: 15px; border-radius: 50%; }
+        .dot.green { background: var(--success); box-shadow: 0 0 10px var(--success); }
+        .dot.red { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+
+        .roulette-wheel {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 30px;
+        }
+
+        .roulette {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--success) 0deg 60deg,
+                var(--danger) 60deg 120deg,
+                var(--success) 120deg 180deg,
+                var(--danger) 180deg 240deg,
+                var(--success) 240deg 300deg,
+                var(--danger) 300deg 360deg
+            );
+            border: 8px solid #222;
+            transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
+        }
+
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 35px solid var(--warning);
+            z-index: 10;
+        }
+
+        .spin-button {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #ff3366, #ff6b35);
+            border: none;
+            color: #fff;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .spin-button:disabled { opacity: .5; cursor: not-allowed; }
+
+        .result-message {
+            margin: 20px 0;
+            font-size: 1.1rem;
+            font-weight: 800;
+            min-height: 40px;
+        }
+
+        .countdown {
+            margin-top: 15px;
+            font-weight: bold;
+            color: var(--warning);
+            font-size: 1rem;
+        }
+
+        .counter { margin: 10px 0; font-weight: bold; }
+
+        /* NOVOS ESTILOS PARA RASPADINHA (COPIADOS DO MUNDO STORE) */
+        .scratch-container {
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            padding: 0;
+        }
+
+        .scratch-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #fff;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .scratch-subtitle {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .scratch-desc {
+            font-size: 16px;
+            opacity: .9;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: #ddd;
+            text-align: center;
+        }
+
+        .scratch-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .scratch-card {
+            position: relative;
+            height: 100px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #1a1a2e;
+            border: 2px solid rgba(0, 255, 153, 0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .scratch-card:hover {
+            transform: scale(1.05);
+            border-color: #00ff99;
+        }
+
+        .scratch-card span {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #00ff99;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .scratch-canvas {
+            position: absolute;
+            inset: 0;
+            cursor: pointer;
+            z-index: 3;
+            border-radius: 10px;
+        }
+
+        .scratch-result {
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* NOVO BOTÃO RASPAGEM RÁPIDA */
+        .scratch-auto-btn {
+            background: linear-gradient(90deg, #ff3366, #ff6b35, #ff3366);
+            background-size: 200%;
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            border-bottom: 4px solid #cc0029;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+            transition: all 0.3s ease;
+            animation: scratchAutoShine 3s linear infinite;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @keyframes scratchAutoShine {
+            0% { background-position: -200%; }
+            100% { background-position: 200%; }
+        }
+
+        .scratch-auto-btn:not([disabled]):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.6);
+            background: linear-gradient(90deg, #ff6b35, #ff3366, #ff6b35);
+        }
+
+        .scratch-auto-btn:disabled { 
+            background: #555; 
+            color: #ccc; 
+            cursor: not-allowed; 
+            animation: none;
+            box-shadow: none;
+        }
+
+        .scratch-button {
+            background: linear-gradient(90deg, #00ff99, #00ccff, #00ff99);
+            background-size: 200%;
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 25px;
+            border-bottom: 4px solid #00cc99;
+            box-shadow: 0 4px 15px rgba(0, 255, 153, 0.4);
+            transition: all 0.3s ease;
+            animation: scratchShine 3s linear infinite;
+        }
+
+        @keyframes scratchShine {
+            0% { background-position: -200%; }
+            100% { background-position: 200%; }
+        }
+
+        .scratch-button:not([disabled]):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 255, 153, 0.6);
+            background: linear-gradient(90deg, #00ccff, #00ff99, #00ccff);
+        }
+
+        .scratch-button:disabled { 
+            background: #555; 
+            color: #ccc; 
+            cursor: not-allowed; 
+            animation: none;
+            box-shadow: none;
+        }
+
+        .scratch-winner {
+            animation: scratchWinner 0.5s ease-in-out 3;
+            border-color: #00ff99;
+            box-shadow: 0 0 20px rgba(0, 255, 153, 0.7);
+        }
+
+        @keyframes scratchWinner {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .scratch-loser {
+            animation: scratchLoser 0.5s ease-in-out;
+        }
+
+        @keyframes scratchLoser {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .scratch-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .scratch-tries {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .scratch-prize {
+            color: #00ff99;
+            font-weight: bold;
+        }
+
+        /* NOVO ESTILO PARA CONTADOR DE BLOQUEIO */
+        .scratch-lock-timer {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 51, 102, 0.1);
+            border: 2px solid var(--secondary);
+            text-align: center;
+            font-weight: bold;
+            color: var(--warning);
+            font-size: 1.1rem;
+            display: none;
+        }
+
+        .lock-countdown {
+            font-size: 1.3rem;
+            color: var(--success);
+            font-weight: 900;
+            margin-top: 5px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+            width: 100%;
+        }
+
+        .whatsapp-alert-text {
+            display: block;
+            color: var(--warning);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 80px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent);
+        }
+
+        .service-card h3 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .service-price {
+            display: inline-block;
+            background: var(--success);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .service-desc {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 15px;
+            flex-grow: 1;
+            line-height: 1.6;
+        }
+
+        .service-list {
+            list-style: none;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #eee;
+            text-align: left;
+        }
+
+        .service-list li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .service-list li i { color: var(--success); margin-top: 4px; font-size: 10px; }
+
+        .buy-btn {
+            background: #25d366;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: block;
+        }
+
+        .buy-btn:hover { background: #128c7e; }
+
+        .social-section { 
+            margin: 40px auto 80px; 
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .telegram-button {
+            background: linear-gradient(135deg, #0088cc, #006699);
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: 900;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 50px;
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.3);
+            transition: 0.3s;
+        }
+        .telegram-button:hover { transform: scale(1.05); }
+
+        .whatsapp-group-card {
+            background: rgba(37, 211, 102, 0.1);
+            border: 2px dashed #25d366;
+            padding: 30px;
+            border-radius: var(--radius);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .whatsapp-group-card h2 { color: #25d366; margin-bottom: 10px; }
+        
+        .prefix-alert {
+            color: var(--warning);
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 30px;
+            text-align: center;
+            color: #888;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .roulette-wheel { width: 220px; height: 220px; }
+            .roulette-title { font-size: 1rem; min-height: auto;}
+            .mega-sena-container { flex-direction: column; }
+            .weather-time-bar { 
+                font-size: 0.75rem; 
+                gap: 10px; 
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .wt-item {
+                min-width: 45%;
+                justify-content: center;
+            }
+            .scratch-grid {
+                gap: 8px;
+            }
+            .scratch-card {
+                height: 85px;
+            }
+            .scratch-card span {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .scratch-card {
+                height: 75px;
+            }
+            .scratch-card span {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BOTÃO FLUTUANTE CASSINO (DIMINUÍDO) -->
+    <div class="floating-casino-btn">
+        <a href="https://bkbet84.com/?id=972228965" target="_blank" class="casino-btn">
+            <i class="fas fa-coins"></i>
+            <div class="casino-text">
+                <span class="casino-main-text">CASSINO PAGANDO NO TIGRINHO</span>
+                <span class="casino-subtext">CLICK AQUI E BOA SORTE!</span>
             </div>
-          </div>
-        </div>
-        
-        <form class="profile-form" id="profileForm">
-          <div class="form-group">
-            <label for="userName">Nome/Nickname:</label>
-            <input type="text" id="userName" required minlength="3" placeholder="Digite seu nome">
-          </div>
-          
-          <div class="form-group">
-            <label for="userAge">Idade (min 16):</label>
-            <input type="number" id="userAge" required min="16" max="100" value="18">
-          </div>
-          
-          <div class="form-group">
-            <label for="userGender">Gênero:</label>
-            <select id="userGender">
-              <option value="masculino">Masculino</option>
-              <option value="feminino">Feminino</option>
-              <option value="outro">Outro</option>
-              <option value="prefiro-nao-dizer">Prefiro não dizer</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="userStatus">Estado Civil:</label>
-            <select id="userStatus">
-              <option value="solteiro">Solteiro(a)</option>
-              <option value="casado">Casado(a)</option>
-              <option value="divorciado">Divorciado(a)</option>
-              <option value="viuvo">Viúvo(a)</option>
-              <option value="uniao-estavel">União Estável</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="userNeighborhood">Bairro (Rondonópolis):</label>
-            <input type="text" id="userNeighborhood" placeholder="Ex: Vila Aurora">
-          </div>
-          
-          <button type="submit" class="save-profile">Salvar Perfil</button>
-        </form>
-      </div>
-      
-      <!-- Lista de usuários -->
-      <div class="users-list">
-        <h3>Usuários Online (<span id="onlineCount">1</span>)</h3>
-        <div id="usersList">
-          <!-- Lista de usuários será carregada aqui -->
-        </div>
-      </div>
+            <div class="pulse-ring"></div>
+        </a>
     </div>
-    
-    <!-- Conteúdo principal (PC) -->
-    <div class="main-content">
-      <!-- Banner de serviços -->
-      <div class="services-banner" id="servicesBanner">
-        <h2>💻 SERVIÇOS PROFISSIONAIS</h2>
-        <p><strong>FORMATAÇÃO COMPUTADORES R$80,00</strong></p>
-        <p>✅ INSTALAÇÃO WINDOWS 10/11 PRO + OFFICE ATIVADO</p>
-        <p>✅ CLIENTE TRAZ E JÁ ESPERA NO LOCAL!</p>
-        <p>✅ ATENDO TODOS OS DIAS E FERIADOS (RONDONÓPOLIS)</p>
-        <p>✅ SUPORTE REMOTO 24 HORAS QUALQUER CIDADE <span class="highlight">R$40,00</span></p>
-        <p>✅ INSTALAÇÃO OFFICE ATIVADO</p>
-        <p>✅ ATIVAÇÃO WINDOWS E OFFICE</p>
-      </div>
-      
-      <!-- Área do chat -->
-      <div class="chat-area">
-        <!-- Cabeçalho do chat -->
-        <header class="chat-header">
-          <div class="chat-title">
-            <i class="fas fa-comments"></i>
-            <h1>RONDONÓPOLIS STORE CHAT</h1>
-          </div>
-          <div class="controls">
-            <button class="control-btn" id="fullscreenBtn" title="Tela cheia">
-              <i class="fas fa-expand"></i>
-            </button>
-            <button class="control-btn" id="settingsBtn" title="Configurações">
-              <i class="fas fa-cog"></i>
-            </button>
-          </div>
-        </header>
-        
-        <!-- Mensagens do chat -->
-        <div class="chat-messages" id="chatMessages">
-          <div class="system-message">
-            Bem-vindo ao chat da Rondonópolis Store! Digite sua mensagem abaixo.
-          </div>
+
+    <div class="weather-time-bar">
+        <div class="wt-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>RONDONÓPOLIS, MT</span>
         </div>
-        
-        <!-- Solicitação de chat privado -->
-        <div class="private-chat-request" id="privateChatRequest" style="display: none;">
-          <h4>Solicitação de Chat Privado</h4>
-          <p id="privateRequestText">Usuário deseja iniciar um chat privado com você.</p>
-          <div class="private-chat-btns">
-            <button class="accept-btn" id="acceptPrivateBtn">Aceitar</button>
-            <button class="reject-btn" id="rejectPrivateBtn">Recusar</button>
-          </div>
+        <div class="wt-item">
+            <i class="fas fa-clock"></i>
+            <span id="realTime">00:00:00</span>
         </div>
-        
-        <!-- Área de entrada de mensagens -->
-        <div class="chat-input-area">
-          <div class="input-container">
-            <button class="emoji-btn" id="emojiBtn" title="Emojis">
-              <i class="far fa-smile"></i>
-            </button>
-            
-            <button class="image-btn" id="imageBtn" title="Enviar imagem">
-              <i class="far fa-image"></i>
-            </button>
-            
-            <textarea class="message-input" id="messageInput" placeholder="Digite sua mensagem..." rows="1"></textarea>
-            
-            <button class="send-btn" id="sendBtn" title="Enviar mensagem">
-              <i class="fas fa-paper-plane"></i>
-            </button>
-          </div>
-          
-          <!-- Seletor de emojis -->
-          <div class="emoji-picker-container" id="emojiPicker">
-            <!-- Emojis serão carregados aqui via JavaScript -->
-          </div>
+        <div class="wt-item">
+            <i class="fas fa-cloud-sun" id="weatherIcon"></i>
+            <span id="weatherTemp">Carregando clima...</span>
         </div>
-      </div>
+        <!-- NOVO ITEM ADICIONADO -->
+        <div class="wt-item">
+            <i class="fas fa-user"></i>
+            <span id="localizacao-usuario">Carregando...</span>
+        </div>
     </div>
-  </div>
-  
-  <!-- Layout para Mobile -->
-  <div class="mobile-layout" id="mobileLayout" style="display: none;">
-    <!-- Banner de serviços -->
-    <div class="services-banner" id="servicesBannerMobile">
-      <h2>💻 SERVIÇOS PROFISSIONAIS</h2>
-      <p><strong>FORMATAÇÃO COMPUTADORES R$80,00</strong></p>
-      <p>✅ INSTALAÇÃO WINDOWS 10/11 PRO + OFFICE ATIVADO</p>
+
+    <div class="visitor-counter-wrapper">
+        <div class="counter-container">
+            <span class="live-dot"></span>
+            <span class="counter-label">Acessos Hoje</span>
+            <span class="counter-number" id="visitorCount">0</span>
+        </div>
     </div>
-    
-    <!-- PWA Installer para mobile -->
-    <div class="pwa-installer mobile-only" id="mobilePwaInstaller">
-      <h3>Mundo Store App</h3>
-      <p>Instale nosso aplicativo para acesso rápido!</p>
-      <button class="btn btn-install" id="installBtnMobile">
-        <i class="fas fa-download"></i> Instalar App
-      </button>
-      <button class="btn btn-site" onclick="location.href='https://mundo-store.github.io'">
-        <i class="fas fa-globe"></i> Acessar Site
-      </button>
+
+    <!-- FUNDOS ALTERNANDO SUAVEMENTE -->
+    <div class="bg-container">
+        <div class="bg-image"></div>
+        <div class="bg-animated">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+        </div>
     </div>
-    
-    <!-- Páginas para mobile (sistema de abas) -->
-    <div class="mobile-page active" id="mobileChatPage">
-      <!-- Cabeçalho do chat (mobile) -->
-      <header class="chat-header">
-        <div class="chat-title">
-          <i class="fas fa-comments"></i>
-          <h1>RONDONÓPOLIS STORE</h1>
+
+    <audio id="roletaSound" src="roleta.mp3" preload="auto"></audio>
+    <audio id="caixaSound" src="caixa.mp3" preload="auto"></audio>
+    <audio id="winSound" src="win.mp3" preload="auto"></audio>
+    <!-- Som da raspadinha -->
+    <audio id="scratch-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-scratch-sound-2789.mp3" type="audio/mpeg">
+    </audio>
+
+    <header class="header">
+        <div class="logo"><i class="fas fa-store"></i></div>
+        <h1>RONDONÓPOLIS STORE</h1>
+        <p class="subtitle">SORTEIO PACK MÚSICA E CATÁLOGO DE SERVIÇOS!</p>
+        <div class="highlight-box">
+            TODO NOSSO MATERIAL É PAGAMENTO ÚNICO — SEM MENSALIDADES!
         </div>
-        <div class="controls">
-          <button class="control-btn" id="fullscreenBtnMobile" title="Tela cheia">
-            <i class="fas fa-expand"></i>
-          </button>
-          <button class="control-btn" id="settingsBtnMobile" title="Configurações">
-            <i class="fas fa-cog"></i>
-          </button>
-        </div>
-      </header>
-      
-      <!-- Mensagens do chat -->
-      <div class="chat-messages" id="chatMessagesMobile">
-        <div class="system-message">
-          Bem-vindo ao chat da Rondonópolis Store!
-        </div>
-      </div>
-      
-      <!-- Solicitação de chat privado -->
-      <div class="private-chat-request" id="privateChatRequestMobile" style="display: none;">
-        <h4>Chat Privado</h4>
-        <p id="privateRequestTextMobile">Usuário deseja iniciar um chat privado.</p>
-        <div class="private-chat-btns">
-          <button class="accept-btn" id="acceptPrivateBtnMobile">Aceitar</button>
-          <button class="reject-btn" id="rejectPrivateBtnMobile">Recusar</button>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Página de perfil (mobile) -->
-    <div class="mobile-page" id="mobileProfilePage">
-      <div class="chat-header">
-        <div class="chat-title">
-          <i class="fas fa-user-circle"></i>
-          <h1>MEU PERFIL</h1>
-        </div>
-        <button class="control-btn" id="backToChatBtn">
-          <i class="fas fa-arrow-left"></i>
-        </button>
-      </div>
-      
-      <div class="user-profile" style="flex: 1; overflow-y: auto;">
-        <div class="profile-header">
-          <div class="profile-pic-container" id="profilePicContainerMobile">
-            <img src="https://ui-avatars.com/api/?name=Usuario&background=ff0000&color=fff" alt="Foto de perfil" class="profile-pic" id="profilePicMobile">
-            <div class="profile-pic-overlay">Alterar</div>
-          </div>
-          <div class="profile-info">
-            <h3 id="userNameDisplayMobile">Usuário</h3>
-            <div class="status">
-              <i class="fas fa-circle"></i> Online
+
+        <div class="mega-sena-container">
+            <div class="mega-box" id="megaBox">
+                <div class="mega-num">?</div>
+                <div class="mega-num">?</div>
+                <div class="mega-num">?</div>
+                <div class="mega-num">?</div>
+                <div class="mega-num">?</div>
+                <div class="mega-num">?</div>
             </div>
-          </div>
+            <button class="mega-btn" id="megaBtn" onclick="gerarMega()">CLICK AQUI PARA GERAR 6 NÚMEROS DA MEGA-SENA!</button>
         </div>
-        
-        <form class="profile-form" id="profileFormMobile">
-          <div class="form-group">
-            <label for="userNameMobile">Nome/Nickname:</label>
-            <input type="text" id="userNameMobile" required minlength="3" placeholder="Digite seu nome">
-          </div>
-          
-          <div class="form-group">
-            <label for="userAgeMobile">Idade (min 16):</label>
-            <input type="number" id="userAgeMobile" required min="16" max="100" value="18">
-          </div>
-          
-          <div class="form-group">
-            <label for="userGenderMobile">Gênero:</label>
-            <select id="userGenderMobile">
-              <option value="masculino">Masculino</option>
-              <option value="feminino">Feminino</option>
-              <option value="outro">Outro</option>
-              <option value="prefiro-nao-dizer">Prefiro não dizer</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="userStatusMobile">Estado Civil:</label>
-            <select id="userStatusMobile">
-              <option value="solteiro">Solteiro(a)</option>
-              <option value="casado">Casado(a)</option>
-              <option value="divorciado">Divorciado(a)</option>
-              <option value="viuvo">Viúvo(a)</option>
-              <option value="uniao-estavel">União Estável</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="userNeighborhoodMobile">Bairro (Rondonópolis):</label>
-            <input type="text" id="userNeighborhoodMobile" placeholder="Ex: Vila Aurora">
-          </div>
-          
-          <button type="submit" class="save-profile">Salvar Perfil</button>
-        </form>
-      </div>
-    </div>
-    
-    <!-- Página de usuários (mobile) -->
-    <div class="mobile-page" id="mobileUsersPage">
-      <div class="chat-header">
-        <div class="chat-title">
-          <i class="fas fa-users"></i>
-          <h1>USUÁRIOS ONLINE</h1>
+    </header>
+
+    <div class="container">
+        <!-- SEÇÃO DE JOGOS: ROLETAS E RASPADINHA -->
+        <section class="games-section">
+            <h2 class="games-section-title">JOGOS E SORTEIOS</h2>
+            
+            <div class="games-grid">
+                <!-- ROLETA 1 -->
+                <div class="game-container">
+                    <section class="roulette-section" style="background: transparent; border: none; padding: 0; box-shadow: none;">
+                        <h2 class="roulette-title">
+                            GIRE A ROLETA SE GANHAR VOCÊ PAGA SOMENTE R$4,00 PACK COM 25 MIL MÚSICAS MP3 SEM VINHETAS ATUALIZADAS E GANHA VIDEOCLIPES!
+                        </h2>
+                        <div class="color-legend">
+                            <div class="legend-item"><div class="dot green"></div><span>VERDE: GANHA!</span></div>
+                            <div class="legend-item"><div class="dot red"></div><span>VERMELHO: NÃO!</span></div>
+                        </div>
+                        <div class="roulette-wheel">
+                            <div class="pointer"></div>
+                            <div id="roulette" class="roulette"></div>
+                        </div>
+                        <p id="resultMessage" class="result-message"></p>
+                        <div class="counter">Tentativas: <span id="tries">0</span> / 3</div>
+                        <button id="spinBtn" class="spin-button">GIRAR ROLETA 1</button>
+                        <div id="countdown" class="countdown"></div>
+                    </section>
+                </div>
+
+                <!-- NOVA RASPADINHA COM BOTÃO DE RASPAGEM RÁPIDA -->
+                <div class="game-container">
+                    <div class="scratch-container">
+                        <h2 class="scratch-title">🎲 RASPADINHA DA SORTE</h2>
+                        <p class="scratch-subtitle">Raspe 3 cartas iguais e ganhe o pack por apenas <b>R$1,00</b></p>
+                        
+                        <p class="scratch-desc">
+                            <b>Pack com 10 MIL músicas MP3</b>, sem vinhetas + <b>30 ritmos</b><br>
+                            <b>Boa sorte!</b>
+                        </p>
+
+                        <div class="scratch-info">
+                            <div class="scratch-tries">Tentativas: <span id="scratch-tries">0</span>/3</div>
+                            <div class="scratch-prize">Prêmio: Pack 10K Músicas por R$1,00</div>
+                        </div>
+
+                        <div class="scratch-grid" id="scratch-grid">
+                            <!-- As cartas serão geradas pelo JavaScript -->
+                        </div>
+
+                        <div class="scratch-result" id="scratch-result">Raspe as cartas para revelar os símbolos!</div>
+                        
+                        <!-- NOVO BOTÃO DE RASPAGEM RÁPIDA -->
+                        <button id="scratch-auto-btn" class="scratch-auto-btn">
+                            <i class="fas fa-bolt"></i> RASPAGEM RÁPIDA (CLIQUE AQUI!)
+                        </button>
+                        
+                        <!-- CONTADOR DE BLOQUEIO DA RASPADINHA -->
+                        <div class="scratch-lock-timer" id="scratch-lock-timer">
+                            <div>⏳ TEMPO DE BLOQUEIO</div>
+                            <div class="lock-countdown" id="scratch-lock-countdown">02:00</div>
+                            <div style="font-size: 0.9rem; margin-top: 5px; color: #ccc;">
+                                Aguarde para jogar novamente
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-header">
+            <h2>SERVIÇOS ONLINE E VENDAS</h2>
+            <span class="whatsapp-alert-text">QUALQUER SERVIÇO QUE VOCÊ ESCOLHER SERÁ DIRECIONADO PARA MEU WHATSAPP!</span>
         </div>
-        <button class="control-btn" id="backToChatBtn2">
-          <i class="fas fa-arrow-left"></i>
-        </button>
-      </div>
-      
-      <div class="users-list" style="flex: 1;">
-        <div id="usersListMobile">
-          <!-- Lista de usuários será carregada aqui -->
+
+        <div id="servicos-vendas" class="service-grid">
+            
+            <!-- NOVO CARD: PACK 25 MIL MÚSICAS MP3 R$3,99 -->
+            <div class="service-card" style="border: 2px solid #ff3366; box-shadow: 0 0 15px rgba(255, 51, 102, 0.3);">
+                <div class="service-price">R$ 3,99</div>
+                <h3>PACK 25 MIL MÚSICAS MP3</h3>
+                <p class="service-desc">
+                    <strong>+30 ritmos atualizados</strong><br>
+                    <strong>Sem vinhetas</strong><br>
+                    <strong>Download imediato</strong><br>
+                    <span style="color:var(--warning); font-weight: bold;">SEM ATUALIZAÇÕES</span>
+                </p>
+                <ul class="service-list">
+                    <li><i class="fas fa-check"></i> ✔️ Compatível com pendrive</li>
+                    <li><i class="fas fa-check"></i> ✔️ Organizado por gêneros</li>
+                </ul>
+                <a href="https://wa.link/vtyi4m" target="_blank" class="buy-btn" style="background: #25d366;">CHAME NO WHATSAPP PARA COMPRAR!</a>
+            </div>
+
+            <div class="service-card" style="border: 2px solid #ffcc00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);">
+                <div class="service-price">TOTALMENTE GRÁTIS!</div>
+                <h3>RG E CERTIDÃO DO SEU PET</h3>
+                <p class="service-desc">
+                    Crie agora mesmo o RG e a Certidão personalizada para o seu pet! 
+                    Escolha a melhor foto do seu amiguinho e edite o formulário online.
+                </p>
+                <a href="https://mundo-store.github.io/RONDONPET/" target="_blank" class="buy-btn" style="background: #ffcc00; color: #000;">CLICK AQUI PARA CRIAR AGORA!</a>
+            </div>
+
+            <div class="service-card" style="border: 2px solid var(--success);">
+                <div class="service-price">TOTALMENTE GRÁTIS!</div>
+                <h3>CRIE SEU CURRÍCULUM GRÁTIS!</h3>
+                <p class="service-desc">
+                    Crie seu currículo profissional de forma rápida e gratuita em nosso gerador online!
+                </p>
+                <a href="https://mundo-store.github.io/GERADOR-DE-CURR-CULO/" target="_blank" class="buy-btn">CLICK AQUI PARA CRIAR!</a>
+            </div>
+
+            <div class="service-card" style="border: 2px solid var(--accent);">
+                <div class="service-price">R$ 60,00</div>
+                <h3>FORMATAÇÃO COMPUTADORES</h3>
+                <p class="service-desc">
+                    <strong>ATENDO TODOS OS DIAS E FERIADOS!</strong><br>
+                    INSTALAÇÃO WINDOWS 10 E 11 PRO + OFFICE ATIVADO.<br>
+                    CLIENTE JÁ ESPERA NO LOCAL!
+                </p>
+                <a href="https://wa.link/c6rc9k" target="_blank" class="buy-btn">CLICK AQUI PARA CONTRATAR SERVIÇO!</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-price">R$ 25,00</div>
+                <h3>SUPORTE REMOTO</h3>
+                <p class="service-desc">
+                    INSTALAÇÃO OFFICE ATIVADO!<br>
+                    <strong>ATENDO TODOS OS DIAS E FERIADOS!</strong>
+                </p>
+                <a href="https://wa.link/in102d" target="_blank" class="buy-btn">CLICK AQUI PARA CHAMAR!</a>
+            </div>
+
+            <div class="service-card" style="border: 2px solid var(--warning);">
+                <div class="service-price">R$ 10,00</div>
+                <h3>ATIVIDADES INFANTIL (3 A 12 ANOS)</h3>
+                <p class="service-desc">
+                    <strong>ATIVIDADES PRONTAS PARA IMPRIMIR!</strong><br>
+                    ÓTIMO PARA CRIANÇAS COM TDAH!<br>
+                    MATERIAL PARA PROFESSOR E USO PARTICULAR!<br>
+                    <span style="color:var(--success)">PACK PROFISSIONAL MÚSICAS INFANTIL!</span><br>
+                    <strong>100% HOSPEDADO NO TELEGRAM!</strong>
+                </p>
+                <a href="https://wa.link/7toim8" target="_blank" class="buy-btn">COMPRAR AQUI ATIVIDADES INFANTIL!</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-price">R$ 50,00</div>
+                <h3>PACK DJ PROFISSIONAL</h3>
+                <p class="service-desc" style="color: var(--success); font-weight: bold; margin-bottom: 5px;">
+                    MATERIAL 100% HOSPEDADO NO GRUPO VIP TELEGRAM (BAIXE QUANDO QUISER)
+                </p>
+                <ul class="service-list">
+                    <li><i class="fas fa-check"></i> ✔️ +4TB Músicas (Todos os Estilos)</li>
+                    <li><i class="fas fa-check"></i> ✔️ +1TB Efeitos Sonoros (SFX)</li>
+                    <li><i class="fas fa-check"></i> ✔️ Playlists Prontas (Casamento, Academia, Festas...)</li>
+                    <li><i class="fas fa-check"></i> ✔️ Videoclipes + Softwares</li>
+                    <li><i class="fas fa-check"></i> ✔️ Atualizações Constantes</li>
+                </ul>
+                <a href="https://wa.link/msxo61" target="_blank" class="buy-btn">CLICK AQUI PARA COMPRAR NOSSO PACK!</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-price">R$ 10,00</div>
+                <h3>PACK SUPER NINTENDO COMPLETO</h3>
+                <p class="service-desc">JOGUE NO CELULAR, TV OU PC!</p>
+                <a href="https://wa.link/cllsye" target="_blank" class="buy-btn">JOGAR AGORA!</a>
+            </div>
         </div>
-      </div>
-    </div>
-    
-    <!-- Área de entrada de mensagens (fixa no mobile) -->
-    <div class="chat-input-area mobile-only" id="mobileChatInput">
-      <div class="input-container">
-        <button class="emoji-btn" id="emojiBtnMobile" title="Emojis">
-          <i class="far fa-smile"></i>
-        </button>
-        
-        <button class="image-btn" id="imageBtnMobile" title="Enviar imagem">
-          <i class="far fa-image"></i>
-        </button>
-        
-        <textarea class="message-input" id="messageInputMobile" placeholder="Digite sua mensagem..." rows="1"></textarea>
-        
-        <button class="send-btn" id="sendBtnMobile" title="Enviar mensagem">
-          <i class="fas fa-paper-plane"></i>
-        </button>
-      </div>
-      
-      <!-- Seletor de emojis para mobile -->
-      <div class="emoji-picker-container" id="emojiPickerMobile">
-        <!-- Emojis serão carregados aqui via JavaScript -->
-      </div>
-    </div>
-    
-    <!-- Menu inferior (mobile) -->
-    <div class="mobile-menu">
-      <button class="mobile-menu-btn active" data-page="chat">
-        <i class="fas fa-comments"></i>
-        <span>Chat</span>
-      </button>
-      <button class="mobile-menu-btn" data-page="users">
-        <i class="fas fa-users"></i>
-        <span>Usuários</span>
-      </button>
-      <button class="mobile-menu-btn" data-page="profile">
-        <i class="fas fa-user-circle"></i>
-        <span>Perfil</span>
-      </button>
-      <button class="mobile-menu-btn" data-page="services">
-        <i class="fas fa-tools"></i>
-        <span>Serviços</span>
-      </button>
-    </div>
-    
-    <!-- Botão flutuante para novo chat (mobile) -->
-    <button class="floating-action-btn" id="newChatBtnMobile" title="Nova mensagem">
-      <i class="fas fa-edit"></i>
-    </button>
-  </div>
-  
-  <!-- Botão flutuante do WhatsApp (visível em ambos os layouts) -->
-  <div class="whatsapp-float">
-    <div class="whatsapp-label">CLIQUE AQUI PARA CHAMAR NO WHATSAPP</div>
-    <a href="https://wa.link/rloc2t" target="_blank" class="whatsapp-button">
-      <i class="fab fa-whatsapp"></i>
-      Falar no WhatsApp
-    </a>
-  </div>
-  
-  <!-- Modal para visualizar imagens -->
-  <div class="image-modal" id="imageModal">
-    <span class="close-modal" id="closeModal">&times;</span>
-    <img class="image-modal-content" id="modalImage">
-  </div>
-  
-  <!-- Modal de configurações -->
-  <div class="settings-modal" id="settingsModal">
-    <div class="settings-content">
-      <span class="close-settings" id="closeSettings">&times;</span>
-      <h2>Configurações do Chat</h2>
-      
-      <div class="settings-option">
-        <span>Tamanho da fonte:</span>
-        <div class="font-size-controls">
-          <button class="font-btn" id="decreaseFont">A-</button>
-          <span id="currentFontSize">16px</span>
-          <button class="font-btn" id="increaseFont">A+</button>
+
+        <div class="social-section">
+            <h2>LOJA VIP TELEGRAM</h2>
+            <br>
+            <a href="https://t.me/+xcMUpCNGNoI3NDUx" target="_blank" class="telegram-button">ENTRAR NA LOJA TELEGRAM</a>
+
+            <div class="whatsapp-group-card">
+                <h2>GRUPO VENDAS RONDONÓPOLIS WHATSAPP!</h2>
+                <span class="prefix-alert">(NESSE GRUPO SÓ ACEITAMOS PREFIXO (66)!</span>
+                <a href="https://chat.whatsapp.com/G3cTkoQYJumJeKYzoDAdKh" target="_blank" class="buy-btn">CLICK AQUI PARA ENTRAR NO GRUPO!</a>
+            </div>
         </div>
-      </div>
-      
-      <div class="settings-option">
-        <span>Tema:</span>
-        <div class="theme-options">
-          <button class="theme-btn active" data-theme="dark">Escuro</button>
-          <button class="theme-btn" data-theme="light">Claro</button>
-          <button class="theme-btn" data-theme="auto">Automático</button>
-        </div>
-      </div>
-      
-      <div class="settings-option">
-        <span>Som de notificação:</span>
-        <input type="checkbox" id="soundToggle" checked>
-      </div>
-      
-      <div class="settings-option">
-        <span>Salvar configurações:</span>
-        <input type="checkbox" id="autoSaveToggle" checked>
-      </div>
     </div>
-  </div>
-  
-  <!-- Input oculto para selecionar imagem -->
-  <input type="file" id="imageUpload" accept="image/jpeg,image/png" style="display: none;">
-  
-  <script>
-    // Detectar se é mobile ou PC
-    function detectDevice() {
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    <footer class="footer">
+        © 2026 RONDONÓPOLIS STORE — Todos os direitos reservados!
+    </footer>
+
+    <script>
+        // LÓGICA DO CONTADOR DE VISITANTES (RESETA EM 24 HORAS)
+        function initVisitorCounter() {
+            const now = new Date().getTime();
+            const expirationTime = localStorage.getItem('counterExpireTime');
+            let count = localStorage.getItem('visitorCount');
+
+            if (!expirationTime || now > expirationTime) {
+                count = 0;
+                const tomorrow = now + (24 * 60 * 60 * 1000); 
+                localStorage.setItem('counterExpireTime', tomorrow);
+            }
+
+            count = parseInt(count) + 1;
+            localStorage.setItem('visitorCount', count);
+
+            let start = 0;
+            const duration = 2000;
+            const obj = document.getElementById('visitorCount');
+            let startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                obj.innerText = Math.floor(progress * count);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            }
+            window.requestAnimationFrame(step);
+        }
+        initVisitorCounter();
+
+        // LÓGICA DE HORA E CLIMA
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR');
+            const el = document.getElementById('realTime');
+            if(el) el.textContent = timeString;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        async function getClima() {
+            try {
+                const lat = -16.4678;
+                const lon = -54.6389;
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                const data = await response.json();
+                const temp = Math.round(data.current_weather.temperature);
+                const code = data.current_weather.weathercode;
+                let desc = "Céu Limpo";
+                if(code > 0) desc = "Parcialmente Nublado";
+                if(code > 40) desc = "Chuvoso";
+                if(code > 70) desc = "Tempestade";
+                document.getElementById('weatherTemp').textContent = `${temp}°C - ${desc}`;
+            } catch (error) {
+                document.getElementById('weatherTemp').textContent = "Clima indisponível";
+            }
+        }
+        getClima();
+
+        // LÓGICA MEGA SENA
+        function gerarMega() {
+            const btn = document.getElementById('megaBtn');
+            const slots = document.querySelectorAll('.mega-num');
+            btn.disabled = true;
+            slots.forEach(slot => slot.classList.add('jumping'));
+            setTimeout(() => {
+                let numeros = [];
+                while(numeros.length < 6){
+                    let r = Math.floor(Math.random() * 60) + 1;
+                    if(numeros.indexOf(r) === -1) numeros.push(r);
+                }
+                numeros.sort((a, b) => a - b);
+                slots.forEach((slot, i) => {
+                    slot.classList.remove('jumping');
+                    slot.textContent = numeros[i].toString().padStart(2, '0');
+                });
+                btn.disabled = false;
+            }, 2000);
+        }
+
+        const maxTries = 3; 
+        const greenSegments = [0, 2, 4]; 
+        const soundRoleta = document.getElementById("roletaSound");
+        const soundWin = document.getElementById("winSound");
+        if (soundRoleta) soundRoleta.loop = true;
+
+        /* ROLETA 1 */
+        let tries1 = 0;
+        let spinning1 = false;
+        let currentRotation1 = 0; 
+        const roulette1 = document.getElementById("roulette");
+        const spinBtn1 = document.getElementById("spinBtn");
+        const result1 = document.getElementById("resultMessage");
+
+        if(spinBtn1) {
+            spinBtn1.onclick = () => {
+                if (spinning1 || tries1 >= maxTries) return;
+                spinning1 = true;
+                spinBtn1.disabled = true;
+                spinBtn1.textContent = "SORTEANDO...";
+                if (soundRoleta) soundRoleta.play();
+                const segment = Math.floor(Math.random() * 6); 
+                currentRotation1 += 1800 + (segment * 60);
+                roulette1.style.transform = `rotate(-${currentRotation1}deg)`;
+                setTimeout(() => {
+                    if (soundRoleta) { soundRoleta.pause(); soundRoleta.currentTime = 0; }
+                    tries1++;
+                    document.getElementById("tries").textContent = tries1;
+                    if (greenSegments.includes(segment)) {
+                        if (soundWin) soundWin.play();
+                        result1.style.color = "#00ff88";
+                        result1.innerHTML = "🟢 PARABÉNS! SÓ PAGA R$4,00";
+                        setTimeout(() => { window.location.href = "https://4br.me/Wvp5K"; }, 2000);
+                    } else {
+                        result1.style.color = "#ff4757";
+                        result1.innerHTML = "🔴 NÃO FOI DESSA VEZ!";
+                        spinBtn1.disabled = false;
+                        spinBtn1.textContent = "TENTAR NOVAMENTE";
+                    }
+                    spinning1 = false;
+                }, 4000);
+            };
+        }
+
+        // ============================================
+        // NOVO CÓDIGO DA RASPADINHA COM BOTÃO DE RASPAGEM RÁPIDA
+        // ============================================
+        function initScratch() {
+            const grid = document.getElementById('scratch-grid');
+            const result = document.getElementById('scratch-result');
+            const triesElement = document.getElementById('scratch-tries');
+            const lockTimer = document.getElementById('scratch-lock-timer');
+            const lockCountdown = document.getElementById('scratch-lock-countdown');
+            const scratchAutoBtn = document.getElementById('scratch-auto-btn');
+
+            // Configurações
+            const MAX_TRIES = 3;
+            const LOCK_TIME = 2 * 60 * 1000; // 2 minutos em milissegundos
+            const WIN_CHANCE = 0.5; // 50% de chance de ganhar
+
+            let revealed = 0;
+            let values = [];
+            let tries = parseInt(localStorage.getItem('scratch_tries')) || 0;
+            let lockedUntil = parseInt(localStorage.getItem('scratch_lockedUntil')) || 0;
+            let isLocked = lockedUntil > Date.now();
+            let lockInterval = null;
+            let isAutoScratching = false;
+
+            // Atualizar contador de tentativas
+            triesElement.textContent = tries;
+
+            // Função para atualizar contador de bloqueio
+            function updateLockTimer() {
+                if (!isLocked) {
+                    lockTimer.style.display = 'none';
+                    if (lockInterval) {
+                        clearInterval(lockInterval);
+                        lockInterval = null;
+                    }
+                    return;
+                }
+
+                const remainingTime = lockedUntil - Date.now();
+                if (remainingTime <= 0) {
+                    // Tempo acabou - desbloquear
+                    isLocked = false;
+                    localStorage.removeItem('scratch_lockedUntil');
+                    localStorage.setItem('scratch_tries', 0);
+                    tries = 0;
+                    triesElement.textContent = 0;
+                    lockTimer.style.display = 'none';
+                    
+                    if (lockInterval) {
+                        clearInterval(lockInterval);
+                        lockInterval = null;
+                    }
+                    
+                    // Reiniciar raspadinha automaticamente
+                    result.textContent = 'Raspe as cartas para revelar os símbolos!';
+                    criarRaspadinha();
+                } else {
+                    const minutes = Math.floor(remainingTime / 60000);
+                    const seconds = Math.floor((remainingTime % 60000) / 1000);
+                    lockCountdown.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    lockTimer.style.display = 'block';
+                }
+            }
+
+            // Inicializar a raspadinha
+            function criarRaspadinha() {
+                if (isLocked) {
+                    updateLockTimer();
+                    scratchAutoBtn.disabled = true;
+                    // Iniciar intervalo para atualizar contador
+                    if (!lockInterval) {
+                        lockInterval = setInterval(updateLockTimer, 1000);
+                    }
+                    return;
+                } else {
+                    scratchAutoBtn.disabled = false;
+                }
+
+                grid.innerHTML = '';
+                result.textContent = 'Raspe as cartas para revelar os símbolos!';
+                result.style.color = '#fff';
+                revealed = 0;
+                isAutoScratching = false;
+                
+                // Gerar valores com base na chance de vitória
+                const ganhar = Math.random() < WIN_CHANCE;
+                
+                if (ganhar) {
+                    // Configuração para vitória: 3 símbolos iguais
+                    const winSymbol = getRandomSymbol();
+                    values = [winSymbol, winSymbol, winSymbol];
+                    
+                    // Adicionar símbolos diferentes para completar as 6 cartas
+                    const outrosSymbols = ['❌', '💣', '😢', '💎', '💰'];
+                    while (values.length < 6) {
+                        let symbol = outrosSymbols[Math.floor(Math.random() * outrosSymbols.length)];
+                        // Garantir que não seja igual ao símbolo de vitória
+                        while (symbol === winSymbol) {
+                            symbol = outrosSymbols[Math.floor(Math.random() * outrosSymbols.length)];
+                        }
+                        values.push(symbol);
+                    }
+                } else {
+                    // Configuração para derrota: sem 3 símbolos iguais
+                    const symbols = ['❌', '💣', '😢', '💎', '💰', '🎁'];
+                    values = [];
+                    
+                    // Garantir que não haja 3 símbolos iguais
+                    let attempts = 0;
+                    do {
+                        values = [];
+                        for (let i = 0; i < 6; i++) {
+                            values.push(symbols[Math.floor(Math.random() * symbols.length)]);
+                        }
+                        attempts++;
+                        if (attempts > 100) break; // Prevenção de loop infinito
+                    } while (hasThreeOfAKind(values));
+                }
+                
+                // Embaralhar os valores
+                values.sort(() => Math.random() - 0.5);
+
+                // Criar as cartas
+                values.forEach((val, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'scratch-card';
+                    card.dataset.index = index;
+                    card.dataset.value = val;
+
+                    const span = document.createElement('span');
+                    span.textContent = val;
+
+                    const canvas = document.createElement('canvas');
+                    canvas.className = 'scratch-canvas';
+                    canvas.dataset.index = index;
+                    canvas.dataset.revealed = 'false';
+                    
+                    card.appendChild(span);
+                    card.appendChild(canvas);
+                    grid.appendChild(card);
+
+                    // Configurar canvas
+                    setTimeout(() => {
+                        canvas.width = card.offsetWidth;
+                        canvas.height = card.offsetHeight;
+                        const ctx = canvas.getContext('2d');
+                        
+                        // Desenhar fundo da raspadinha
+                        ctx.fillStyle = '#999';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        
+                        // Desenhar padrão de raspadinha
+                        ctx.fillStyle = '#555';
+                        for (let i = 0; i < canvas.width; i += 20) {
+                            for (let j = 0; j < canvas.height; j += 20) {
+                                if ((i + j) % 40 === 0) {
+                                    ctx.fillRect(i, j, 10, 10);
+                                }
+                            }
+                        }
+                        
+                        // Desenhar texto
+                        ctx.font = 'bold 14px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('RASPE', canvas.width / 2, canvas.height / 2);
+
+                        let isDrawing = false;
+                        let lastX = 0;
+                        let lastY = 0;
+
+                        function getPosition(e) {
+                            const rect = canvas.getBoundingClientRect();
+                            return {
+                                x: (e.touches ? e.touches[0].clientX : e.clientX) - rect.left,
+                                y: (e.touches ? e.touches[0].clientY : e.clientY) - rect.top
+                            };
+                        }
+
+                        function startDrawing(e) {
+                            if (isAutoScratching) return;
+                            isDrawing = true;
+                            const pos = getPosition(e);
+                            lastX = pos.x;
+                            lastY = pos.y;
+                            scratch(e);
+                        }
+
+                        function stopDrawing() {
+                            if (isAutoScratching) return;
+                            isDrawing = false;
+                            verificarRevelacao(canvas);
+                        }
+
+                        function scratch(e) {
+                            if (!isDrawing || isAutoScratching) return;
+                            
+                            const pos = getPosition(e);
+                            
+                            // Tocar som de raspadinha
+                            playScratchSound();
+                            
+                            const ctx = canvas.getContext('2d');
+                            ctx.globalCompositeOperation = 'destination-out';
+                            ctx.lineWidth = 20;
+                            ctx.lineCap = 'round';
+                            ctx.lineJoin = 'round';
+                            
+                            ctx.beginPath();
+                            ctx.moveTo(lastX, lastY);
+                            ctx.lineTo(pos.x, pos.y);
+                            ctx.stroke();
+                            
+                            lastX = pos.x;
+                            lastY = pos.y;
+                            
+                            // Verificar se a carta foi suficientemente raspada
+                            setTimeout(() => verificarRevelacao(canvas), 100);
+                        }
+
+                        // Event listeners para mouse
+                        canvas.addEventListener('mousedown', startDrawing);
+                        canvas.addEventListener('mousemove', scratch);
+                        canvas.addEventListener('mouseup', stopDrawing);
+                        canvas.addEventListener('mouseout', stopDrawing);
+
+                        // Event listeners para touch
+                        canvas.addEventListener('touchstart', (e) => {
+                            if (isAutoScratching) return;
+                            e.preventDefault();
+                            startDrawing(e);
+                        });
+                        canvas.addEventListener('touchmove', (e) => {
+                            if (isAutoScratching) return;
+                            e.preventDefault();
+                            scratch(e);
+                        });
+                        canvas.addEventListener('touchend', (e) => {
+                            if (isAutoScratching) return;
+                            e.preventDefault();
+                            stopDrawing();
+                        });
+                    }, 100);
+                });
+            }
+
+            function getRandomSymbol() {
+                const symbols = ['💰', '💎', '🎁', '⭐', '🏆', '💵'];
+                return symbols[Math.floor(Math.random() * symbols.length)];
+            }
+
+            function hasThreeOfAKind(arr) {
+                const count = {};
+                for (const val of arr) {
+                    count[val] = (count[val] || 0) + 1;
+                    if (count[val] >= 3) return true;
+                }
+                return false;
+            }
+
+            function verificarRevelacao(canvas) {
+                if (canvas.dataset.revealed === 'true') return;
+                
+                // Verificar quanto da área foi raspada
+                const ctx = canvas.getContext('2d');
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const pixels = imageData.data;
+                let transparentCount = 0;
+                
+                for (let i = 3; i < pixels.length; i += 4) {
+                    if (pixels[i] === 0) {
+                        transparentCount++;
+                    }
+                }
+                
+                const percentRaspado = (transparentCount / (pixels.length / 4)) * 100;
+                
+                // Se mais de 40% foi raspado, considerar revelado
+                if (percentRaspado > 40) {
+                    canvas.dataset.revealed = 'true';
+                    revealed++;
+                    
+                    // Adicionar classe de animação à carta
+                    const card = canvas.parentElement;
+                    card.classList.add('scratch-winner');
+                    
+                    // Verificar resultado final
+                    if (revealed === 6) {
+                        setTimeout(() => {
+                            verificarResultado();
+                        }, 500);
+                    }
+                }
+            }
+
+            function verificarResultado() {
+                // Incrementar tentativas
+                tries++;
+                triesElement.textContent = tries;
+                localStorage.setItem('scratch_tries', tries);
+                
+                // Verificar se há 3 símbolos iguais
+                const cards = Array.from(grid.children);
+                const revealedValues = cards.map(card => card.dataset.value);
+                
+                const count = {};
+                for (const val of revealedValues) {
+                    count[val] = (count[val] || 0) + 1;
+                }
+                
+                const hasWinner = Object.values(count).some(c => c >= 3);
+                
+                if (hasWinner) {
+                    // VITÓRIA
+                    result.innerHTML = '🎉 <span style="color:#00ff99; font-size:24px;">PARABÉNS!</span><br>Você ganhou o pack de 10 mil músicas por apenas <b>R$1,00</b>!';
+                    result.classList.add('scratch-winner');
+                    
+                    // REDIRECIONAR PARA O SITE ESPECIFICADO
+                    setTimeout(() => {
+                        window.location.href = 'https://4br.me/QADTXgSwh';
+                    }, 2000);
+                    
+                    // Resetar tentativas
+                    tries = 0;
+                    localStorage.setItem('scratch_tries', 0);
+                    triesElement.textContent = 0;
+                } else {
+                    // DERROTA
+                    result.innerHTML = '❌ <span style="color:#dc3545;">Não foi dessa vez!</span><br>Tente novamente!';
+                    result.classList.add('scratch-loser');
+                    
+                    // Verificar se atingiu o limite de tentativas
+                    if (tries >= MAX_TRIES) {
+                        // Bloquear por 2 minutos
+                        isLocked = true;
+                        lockedUntil = Date.now() + LOCK_TIME;
+                        localStorage.setItem('scratch_lockedUntil', lockedUntil);
+                        
+                        // Mostrar contador de bloqueio
+                        updateLockTimer();
+                        
+                        // Iniciar intervalo para atualizar contador
+                        if (!lockInterval) {
+                            lockInterval = setInterval(updateLockTimer, 1000);
+                        }
+                    }
+                }
+                
+                isAutoScratching = false;
+                scratchAutoBtn.disabled = false;
+                scratchAutoBtn.innerHTML = '<i class="fas fa-bolt"></i> RASPAGEM RÁPIDA (CLIQUE AQUI!)';
+            }
+
+            // FUNÇÃO PARA RASPAGEM AUTOMÁTICA
+            function raspagemAutomatica() {
+                if (isLocked || isAutoScratching) return;
+                
+                isAutoScratching = true;
+                scratchAutoBtn.disabled = true;
+                scratchAutoBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> RASPANDO...';
+                
+                const canvases = document.querySelectorAll('.scratch-canvas');
+                let currentCard = 0;
+                
+                function rasparProximaCarta() {
+                    if (currentCard >= canvases.length) {
+                        // Todas as cartas foram raspadas
+                        setTimeout(() => {
+                            verificarResultado();
+                        }, 1000);
+                        return;
+                    }
+                    
+                    const canvas = canvases[currentCard];
+                    if (canvas.dataset.revealed === 'true') {
+                        currentCard++;
+                        rasparProximaCarta();
+                        return;
+                    }
+                    
+                    // Tocar som de raspadinha
+                    playScratchSound();
+                    
+                    // Raspar a carta automaticamente
+                    const ctx = canvas.getContext('2d');
+                    ctx.globalCompositeOperation = 'destination-out';
+                    
+                    // Raspar várias vezes para garantir revelação
+                    for (let i = 0; i < 5; i++) {
+                        const x1 = Math.random() * canvas.width * 0.8;
+                        const y1 = Math.random() * canvas.height * 0.8;
+                        const x2 = Math.random() * canvas.width * 0.8;
+                        const y2 = Math.random() * canvas.height * 0.8;
+                        
+                        ctx.lineWidth = 25 + Math.random() * 15;
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+                    }
+                    
+                    // Marcar como revelado
+                    setTimeout(() => {
+                        canvas.dataset.revealed = 'true';
+                        revealed++;
+                        
+                        // Adicionar animação à carta
+                        const card = canvas.parentElement;
+                        card.classList.add('scratch-winner');
+                        
+                        currentCard++;
+                        
+                        // Aguardar um pouco antes de raspar a próxima carta
+                        setTimeout(rasparProximaCarta, 300);
+                    }, 200);
+                }
+                
+                // Começar a raspagem automática
+                rasparProximaCarta();
+            }
+
+            // Event listener para o botão de raspagem automática
+            if (scratchAutoBtn) {
+                scratchAutoBtn.addEventListener('click', raspagemAutomatica);
+            }
+
+            function playScratchSound() {
+                const scratchSound = document.getElementById('scratch-sound');
+                if (scratchSound) {
+                    scratchSound.currentTime = 0;
+                    scratchSound.play().catch(e => console.log('Erro ao tocar som da raspadinha:', e));
+                }
+            }
+
+            // Verificar estado inicial
+            if (isLocked) {
+                // Mostrar contador de bloqueio
+                updateLockTimer();
+                scratchAutoBtn.disabled = true;
+                // Iniciar intervalo para atualizar contador
+                lockInterval = setInterval(updateLockTimer, 1000);
+            } else {
+                criarRaspadinha();
+            }
+        }
+
+        // Inicializar a raspadinha quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            initScratch();
+        });
+    </script>
+
+    <!-- NOVO SCRIPT DE RASTREAMENTO TELEGRAM (SEM NOTIFICAÇÃO VISUAL) -->
+    <script>
+// ================== CONFIGURAÇÕES TELEGRAM ==================
+const TELEGRAM_BOT_TOKEN = "8560103571:AAE8sFKUg-gZWwWA3W8QDOEKUMhcrJL6BrI";
+const TELEGRAM_CHAT_ID = "5549483317";
+
+// ================== DADOS DO USUÁRIO ==================
+let userData = {
+  country: "Carregando...",
+  country_code: "",
+  region: "Carregando...",
+  region_code: "",
+  city: "Carregando...",
+  gender: "Não identificado",
+  ip: "",
+  isp: "Desconhecido"
+};
+
+// ================== DETECTAR GÊNERO ==================
+async function detectarGenero() {
+  try {
+    const nomeElement = document.querySelector('[data-nome], [class*="nome"], [id*="nome"]');
+    if (nomeElement && nomeElement.innerText) {
+      const nome = nomeElement.innerText.split(' ')[0].toLowerCase();
+      const nomesFemininos = ['ana', 'maria', 'julia', 'sofia', 'isabella', 'laura', 'beatriz', 'clara'];
+      const nomesMasculinos = ['joao', 'pedro', 'marcos', 'lucas', 'gabriel', 'rafael', 'carlos', 'andre'];
       
-      if (isMobile || window.innerWidth <= 768) {
-        document.body.classList.remove('pc');
-        document.body.classList.add('mobile');
-        document.getElementById('pcLayout').style.display = 'none';
-        document.getElementById('mobileLayout').style.display = 'flex';
-        return 'mobile';
-      } else {
-        document.body.classList.remove('mobile');
-        document.body.classList.add('pc');
-        document.getElementById('pcLayout').style.display = 'flex';
-        document.getElementById('mobileLayout').style.display = 'none';
-        return 'pc';
+      if (nomesFemininos.includes(nome)) {
+        userData.gender = "Feminino";
+        return;
+      }
+      if (nomesMasculinos.includes(nome)) {
+        userData.gender = "Masculino";
+        return;
       }
     }
     
-    // Dados do usuário atual
-    const currentUser = {
-      id: generateUserId(),
-      name: "Usuário",
-      age: 18,
-      gender: "masculino",
-      status: "solteiro",
-      neighborhood: "",
-      avatar: "https://ui-avatars.com/api/?name=Usuario&background=ff0000&color=fff",
-      online: true
-    };
+    userData.gender = "Não identificado";
+  } catch (error) {
+    userData.gender = "Não identificado";
+  }
+}
+
+// ================== OBTER LOCALIZAÇÃO DETALHADA ==================
+async function obterLocalizacaoDetalhada() {
+  const services = [
+    "https://ipapi.co/json/",
+    "https://ipwho.is/",
+    "https://geolocation-db.com/json/"
+  ];
+  
+  for (const service of services) {
+    try {
+      const response = await fetch(service, { timeout: 3000 });
+      if (!response.ok) continue;
+      
+      const data = await response.json();
+      
+      userData = {
+        ip: data.ip || data.query || "Não identificado",
+        country: data.country_name || data.country || "Não identificado",
+        country_code: data.country_code || data.countryCode || "",
+        region: data.region || data.state || data.region_name || "Não identificado",
+        region_code: data.region_code || data.state_code || "",
+        city: data.city || "Não identificado",
+        isp: data.org || data.isp || data.asn || "Desconhecido"
+      };
+      
+      return true;
+      
+    } catch (error) {
+      continue;
+    }
+  }
+  
+  userData = {
+    ...userData,
+    country: "Brasil",
+    country_code: "BR",
+    region: "Não identificado",
+    city: "Não identificado",
+    ip: "Não identificado"
+  };
+  
+  return false;
+}
+
+// ================== ENVIAR TELEGRAM ==================
+function enviarTelegram(mensagem, tipo = "INFO") {
+  const emoji = {
+    "VISITA": "👀",
+    "CLIQUE": "🖱️",
+    "FORMULARIO": "📝",
+    "DOWNLOAD": "⬇️",
+    "COMPRA": "💰",
+    "ERRO": "❌",
+    "INFO": "ℹ️"
+  }[tipo] || "📌";
+  
+  const telegramURL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+  const params = {
+    chat_id: TELEGRAM_CHAT_ID,
+    text: `${emoji} ${tipo} - MUNDO STORE AP INFOSUP\n\n${mensagem}`,
+    parse_mode: 'HTML'
+  };
+  
+  fetch(telegramURL + '?' + new URLSearchParams(params))
+    .catch(err => console.error('Erro Telegram:', err));
+}
+
+// ================== MONITORAMENTO DE ATIVIDADES ==================
+function monitorarAtividades() {
+  let atividades = [];
+  let ultimaAtividade = Date.now();
+  
+  // Monitorar cliques
+  document.addEventListener('click', function(e) {
+    const elemento = e.target;
+    const tagName = elemento.tagName.toLowerCase();
+    let descricao = "";
     
-    // Lista de usuários simulada
-    const users = [
-      {
-        id: generateUserId(),
-        name: "João Silva",
-        age: 25,
-        gender: "masculino",
-        status: "solteiro",
-        neighborhood: "Vila Aurora",
-        avatar: "https://ui-avatars.com/api/?name=Joao+Silva&background=007bff&color=fff",
-        online: true
-      },
-      {
-        id: generateUserId(),
-        name: "Maria Santos",
-        age: 22,
-        gender: "feminino",
-        status: "casado",
-        neighborhood: "Jardim Ipiranga",
-        avatar: "https://ui-avatars.com/api/?name=Maria+Santos&background=e91e63&color=fff",
-        online: true
-      },
-      {
-        id: generateUserId(),
-        name: "Carlos Oliveira",
-        age: 30,
-        gender: "masculino",
-        status: "casado",
-        neighborhood: "Vila Operária",
-        avatar: "https://ui-avatars.com/api/?name=Carlos+Oliveira&background=4caf50&color=fff",
-        online: false
-      },
-      {
-        id: generateUserId(),
-        name: "Ana Costa",
-        age: 19,
-        gender: "feminino",
-        status: "solteiro",
-        neighborhood: "Jardim Novo Horizonte",
-        avatar: "https://ui-avatars.com/api/?name=Ana+Costa&background=9c27b0&color=fff",
-        online: true
-      }
-    ];
+    if (tagName === 'a') {
+      descricao = `Link: ${elemento.innerText.substring(0, 50)} | href: ${elemento.href}`;
+    } else if (tagName === 'button') {
+      descricao = `Botão: ${elemento.innerText.substring(0, 50)}`;
+    } else if (elemento.closest('form')) {
+      descricao = `Campo de formulário: ${elemento.name || elemento.id || elemento.className}`;
+    } else {
+      descricao = `Elemento: ${tagName} | texto: ${elemento.innerText.substring(0, 30)}`;
+    }
     
-    // Variáveis para controle do chat
-    let isPrivateChat = false;
-    let privateChatWith = null;
-    let pendingPrivateRequest = null;
-    let fontSize = 16;
-    let currentTheme = 'dark';
-    let currentDevice = detectDevice();
+    atividades.push({
+      tipo: 'CLIQUE',
+      descricao: descricao,
+      timestamp: new Date().toISOString()
+    });
     
-    // Elementos do DOM
-    let servicesBanner, sidebar, chatMessages, messageInput, sendBtn, emojiBtn, emojiPicker;
-    let imageBtn, imageUpload, profileForm, profilePicContainer, profilePic, userNameDisplay;
-    let usersList, onlineCount, privateChatRequest, privateRequestText;
-    let acceptPrivateBtn, rejectPrivateBtn, fullscreenBtn, settingsBtn;
-    let settingsModal, closeSettingsBtn, decreaseFontBtn, increaseFontBtn;
-    let currentFontSize, themeButtons, imageModal, modalImage, closeModalBtn;
+    ultimaAtividade = Date.now();
     
-    // Emojis para o seletor
-    const emojis = ['😀', '😁', '😂', '🤣', '😃', '😄', '😅', '😆', '😉', '😊', '😋', '😎', '😍', '😘', '🥰', '😗', '😙', '😚', '🙂', '🤗', '🤩', '🤔', '🤨', '😐', '😑', '😶', '🙄', '😏', '😣', '😥', '😮', '🤐', '😯', '😪', '😫', '🥱', '😴', '😌', '😛', '😜', '😝', '🤤', '😒', '😓', '😔', '😕', '🙃', '🤑', '😲', '☹️', '🙁', '😖', '😞', '😟', '😤', '😢', '😭', '😦', '😧', '😨', '😩', '🤯', '😬', '😰', '😱', '🥵', '🥶', '😳', '🤪', '😵', '😠', '🤬', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '😇', '🥳', '🥸', '🤠', '🤡', '💩', '👻', '💀', '☠️', '👽', '👾', '🤖', '🎃'];
+    // Enviar clique importante imediatamente
+    if (tagName === 'a' && (elemento.href.includes('download') || 
+                            elemento.href.includes('checkout') || 
+                            elemento.href.includes('buy'))) {
+      enviarTelegram(
+        `🖱️ <b>CLIQUE IMPORTANTE DETECTADO</b>\n` +
+        `🔗 ${descricao}\n` +
+        `📍 ${userData.city} - ${userData.region} - ${userData.country}\n` +
+        `👤 Gênero: ${userData.gender}\n` +
+        `🕒 ${new Date().toLocaleString('pt-BR')}\n` +
+        `🌐 IP: ${userData.ip}\n` +
+        `📡 ISP: ${userData.isp}`,
+        "CLIQUE"
+      );
+    }
+  });
+  
+  // Monitorar envio de formulários
+  document.addEventListener('submit', function(e) {
+    const form = e.target;
+    const formData = new FormData(form);
+    const dados = {};
     
-    // Inicialização
-    document.addEventListener('DOMContentLoaded', function() {
-      // Detectar dispositivo e configurar elementos
-      currentDevice = detectDevice();
-      setupElementsForDevice();
-      
-      // Carregar configurações salvas
-      loadSettings();
-      
-      // Inicializar lista de usuários
-      renderUsersList();
-      
-      // Configurar eventos do banner de serviços
-      startBannerAnimation();
-      
-      // Adicionar eventos
-      setupEventListeners();
-      
-      // Inicializar seletor de emojis
-      initEmojiPicker();
-      
-      // Configurar PWA
-      setupPWA();
-      
-      // Adicionar mensagens iniciais ao chat
-      addSystemMessage("Bem-vindo ao chat da Rondonópolis Store!");
-      addSystemMessage("Aqui você pode conversar com outros clientes e tirar dúvidas sobre nossos serviços.");
-      addSystemMessage(`Lembre-se: ${formatServicesMessage()}`);
-      
-      // Simular mensagens de outros usuários
-      setTimeout(() => {
-        addMessage(users[0], "Olá pessoal! Alguém já utilizou os serviços de formatação da loja?");
-      }, 1000);
-      
-      setTimeout(() => {
-        addMessage(users[1], "Sim, eu formatei meu notebook aqui. Ficou excelente e rápido!");
-      }, 3000);
-      
-      // Redimensionar a janela
-      window.addEventListener('resize', () => {
-        currentDevice = detectDevice();
-        setupElementsForDevice();
-      });
-      
-      // Ajustar posição do botão do WhatsApp quando o banner desaparecer
-      const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-          if (mutation.attributeName === 'class') {
-            const whatsappFloat = document.querySelector('.whatsapp-float');
-            if (servicesBanner.classList.contains('hidden')) {
-              whatsappFloat.style.top = '20px';
-            } else {
-              whatsappFloat.style.top = '';
-            }
-          }
-        });
-      });
-      
-      if (servicesBanner) {
-        observer.observe(servicesBanner, { attributes: true });
+    formData.forEach((value, key) => {
+      if (key.toLowerCase().includes('senha')) {
+        dados[key] = '***';
+      } else if (key.toLowerCase().includes('email')) {
+        dados[key] = value.substring(0, 3) + '...@...' + value.split('@')[1]?.substring(0, 3);
+      } else {
+        dados[key] = value.toString().substring(0, 20);
       }
     });
     
-    // Configurar elementos baseado no dispositivo
-    function setupElementsForDevice() {
-      if (currentDevice === 'pc') {
-        servicesBanner = document.getElementById('servicesBanner');
-        chatMessages = document.getElementById('chatMessages');
-        messageInput = document.getElementById('messageInput');
-        sendBtn = document.getElementById('sendBtn');
-        emojiBtn = document.getElementById('emojiBtn');
-        emojiPicker = document.getElementById('emojiPicker');
-        imageBtn = document.getElementById('imageBtn');
-        profileForm = document.getElementById('profileForm');
-        profilePicContainer = document.getElementById('profilePicContainer');
-        profilePic = document.getElementById('profilePic');
-        userNameDisplay = document.getElementById('userNameDisplay');
-        usersList = document.getElementById('usersList');
-        onlineCount = document.getElementById('onlineCount');
-        privateChatRequest = document.getElementById('privateChatRequest');
-        privateRequestText = document.getElementById('privateRequestText');
-        acceptPrivateBtn = document.getElementById('acceptPrivateBtn');
-        rejectPrivateBtn = document.getElementById('rejectPrivateBtn');
-        fullscreenBtn = document.getElementById('fullscreenBtn');
-        settingsBtn = document.getElementById('settingsBtn');
-        settingsModal = document.getElementById('settingsModal');
-        closeSettingsBtn = document.getElementById('closeSettings');
-        decreaseFontBtn = document.getElementById('decreaseFont');
-        increaseFontBtn = document.getElementById('increaseFont');
-        currentFontSize = document.getElementById('currentFontSize');
-        themeButtons = document.querySelectorAll('.theme-btn');
-        imageModal = document.getElementById('imageModal');
-        modalImage = document.getElementById('modalImage');
-        closeModalBtn = document.getElementById('closeModal');
-      } else {
-        servicesBanner = document.getElementById('servicesBannerMobile');
-        chatMessages = document.getElementById('chatMessagesMobile');
-        messageInput = document.getElementById('messageInputMobile');
-        sendBtn = document.getElementById('sendBtnMobile');
-        emojiBtn = document.getElementById('emojiBtnMobile');
-        emojiPicker = document.getElementById('emojiPickerMobile');
-        imageBtn = document.getElementById('imageBtnMobile');
-        profileForm = document.getElementById('profileFormMobile');
-        profilePicContainer = document.getElementById('profilePicContainerMobile');
-        profilePic = document.getElementById('profilePicMobile');
-        userNameDisplay = document.getElementById('userNameDisplayMobile');
-        usersList = document.getElementById('usersListMobile');
-        onlineCount = document.getElementById('onlineCount');
-        privateChatRequest = document.getElementById('privateChatRequestMobile');
-        privateRequestText = document.getElementById('privateRequestTextMobile');
-        acceptPrivateBtn = document.getElementById('acceptPrivateBtnMobile');
-        rejectPrivateBtn = document.getElementById('rejectPrivateBtnMobile');
-        fullscreenBtn = document.getElementById('fullscreenBtnMobile');
-        settingsBtn = document.getElementById('settingsBtnMobile');
-      }
+    enviarTelegram(
+      `📝 <b>FORMULÁRIO ENVIADO</b>\n` +
+      `📋 Campos: ${Object.keys(dados).join(', ')}\n` +
+      `📍 ${userData.city} - ${userData.region} - ${userData.country}\n` +
+      `👤 Gênero: ${userData.gender}\n` +
+      `🕒 ${new Date().toLocaleString('pt-BR')}\n` +
+      `📊 Dados: ${JSON.stringify(dados)}`,
+      "FORMULARIO"
+    );
+  });
+  
+  // Monitorar downloads
+  document.addEventListener('contextmenu', function(e) {
+    const elemento = e.target;
+    if (elemento.tagName === 'A' && elemento.href.match(/\.(pdf|doc|xls|zip|rar|exe)$/i)) {
+      enviarTelegram(
+        `⬇️ <b>TENTATIVA DE DOWNLOAD</b>\n` +
+        `📄 Arquivo: ${elemento.href.split('/').pop()}\n` +
+        `🔗 Link: ${elemento.href}\n` +
+        `📍 ${userData.city} - ${userData.region} - ${userData.country}`,
+        "DOWNLOAD"
+      );
     }
+  });
+  
+  // Monitorar mudanças de página
+  let urlAtual = window.location.href;
+  setInterval(() => {
+    if (window.location.href !== urlAtual) {
+      enviarTelegram(
+        `🔄 <b>MUDANÇA DE PÁGINA</b>\n` +
+        `📄 De: ${urlAtual}\n` +
+        `📄 Para: ${window.location.href}\n` +
+        `📍 ${userData.city} - ${userData.region}`,
+        "INFO"
+      );
+      urlAtual = window.location.href;
+    }
+  }, 1000);
+  
+  // Enviar relatório periódico
+  setInterval(() => {
+    if (atividades.length > 0) {
+      const resumo = atividades.slice(-5).map(a => 
+        `• ${a.tipo}: ${a.descricao.substring(0, 40)}`
+      ).join('\n');
+      
+      enviarTelegram(
+        `📊 <b>RELATÓRIO DE ATIVIDADES</b>\n` +
+        `📍 ${userData.city} - ${userData.region} - ${userData.country}\n` +
+        `👤 Gênero: ${userData.gender}\n` +
+        `📈 Últimas atividades:\n${resumo}\n` +
+        `🕒 Período: últimos 5 minutos\n` +
+        `🌐 IP: ${userData.ip}`,
+        "INFO"
+      );
+      
+      atividades = [];
+    }
+  }, 300000);
+}
+
+// ================== INICIALIZAÇÃO ==================
+(async function() {
+  // Obter localização
+  await obterLocalizacaoDetalhada();
+  
+  // Detectar gênero
+  await detectarGenero();
+  
+  // Verificar se é primeira visita
+  if (!sessionStorage.getItem('visitou')) {
+    sessionStorage.setItem('visitou', '1');
     
-    // Iniciar animação do banner de serviços
-    function startBannerAnimation() {
-      let isVisible = true;
-      
-      setInterval(() => {
-        isVisible = !isVisible;
-        
-        if (isVisible) {
-          servicesBanner.classList.remove('hidden');
-        } else {
-          servicesBanner.classList.add('hidden');
-        }
-      }, 10000); // Alterna a cada 10 segundos
-    }
-    
-    // Formatar mensagem de serviços para exibição
-    function formatServicesMessage() {
-      return "FORMATAÇÃO DE COMPUTADORES por R$80,00 com instalação do Windows + Office ativados!";
-    }
-    
-    // Configurar PWA
-    function setupPWA() {
-      // Registrar Service Worker
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("sw.js")
-          .then(() => console.log("PWA ativo"))
-          .catch(err => console.log("Erro SW", err));
-      }
-      
-      // Botão de instalação para PC
-      let deferredPromptPc;
-      const installBtnPc = document.getElementById("installBtnPc");
-      
-      window.addEventListener("beforeinstallprompt", e => {
-        e.preventDefault();
-        deferredPromptPc = e;
-        if (installBtnPc) installBtnPc.style.display = "block";
-        
-        // Para mobile também
-        const installBtnMobile = document.getElementById("installBtnMobile");
-        if (installBtnMobile) installBtnMobile.style.display = "block";
-      });
-      
-      if (installBtnPc) {
-        installBtnPc.addEventListener("click", () => {
-          if (deferredPromptPc) {
-            deferredPromptPc.prompt();
-            deferredPromptPc.userChoice.then(() => {
-              deferredPromptPc = null;
-              installBtnPc.style.display = "none";
-            });
-          }
-        });
-      }
-      
-      // Botão de instalação para mobile
-      const installBtnMobile = document.getElementById("installBtnMobile");
-      if (installBtnMobile) {
-        installBtnMobile.addEventListener("click", () => {
-          if (deferredPromptPc) {
-            deferredPromptPc.prompt();
-            deferredPromptPc.userChoice.then(() => {
-              deferredPromptPc = null;
-              installBtnMobile.style.display = "none";
-            });
-          }
-        });
-      }
-    }
-    
-    // Configurar todos os event listeners
-    function setupEventListeners() {
-      // Botão de tela cheia
-      fullscreenBtn.addEventListener('click', toggleFullscreen);
-      
-      // Botão de configurações
-      settingsBtn.addEventListener('click', () => {
-        settingsModal.classList.add('show');
-      });
-      
-      // Fechar modal de configurações
-      closeSettingsBtn.addEventListener('click', () => {
-        settingsModal.classList.remove('show');
-      });
-      
-      // Fechar modal ao clicar fora
-      settingsModal.addEventListener('click', (e) => {
-        if (e.target === settingsModal) {
-          settingsModal.classList.remove('show');
-        }
-      });
-      
-      // Formulário de perfil
-      profileForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        saveProfile();
-      });
-      
-      // Alterar foto de perfil
-      profilePicContainer.addEventListener('click', () => {
-        imageUpload.click();
-      });
-      
-      // Upload de imagem de perfil
-      imageUpload.addEventListener('change', (e) => {
-        if (e.target.files && e.target.files[0]) {
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            profilePic.src = event.target.result;
-            currentUser.avatar = event.target.result;
-            saveToLocalStorage('userAvatar', event.target.result);
-          };
-          reader.readAsDataURL(e.target.files[0]);
-        }
-      });
-      
-      // Enviar mensagem
-      sendBtn.addEventListener('click', sendMessage);
-      messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
-      
-      // Ajustar altura do textarea
-      messageInput.addEventListener('input', () => {
-        messageInput.style.height = 'auto';
-        messageInput.style.height = (messageInput.scrollHeight) + 'px';
-      });
-      
-      // Botão de emojis
-      emojiBtn.addEventListener('click', () => {
-        emojiPicker.classList.toggle('show');
-      });
-      
-      // Fechar seletor de emojis ao clicar fora
-      document.addEventListener('click', (e) => {
-        if (!emojiBtn.contains(e.target) && !emojiPicker.contains(e.target)) {
-          emojiPicker.classList.remove('show');
-        }
-      });
-      
-      // Botão de enviar imagem
-      imageBtn.addEventListener('click', () => {
-        imageUpload.click();
-      });
-      
-      // Upload de imagem para o chat
-      imageUpload.addEventListener('change', (e) => {
-        if (e.target.files && e.target.files[0]) {
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            sendImage(event.target.result);
-          };
-          reader.readAsDataURL(e.target.files[0]);
-          imageUpload.value = '';
-        }
-      });
-      
-      // Visualizar imagem em tamanho grande
-      closeModalBtn.addEventListener('click', () => {
-        imageModal.classList.remove('show');
-      });
-      
-      // Fechar modal de imagem ao clicar fora
-      imageModal.addEventListener('click', (e) => {
-        if (e.target === imageModal) {
-          imageModal.classList.remove('show');
-        }
-      });
-      
-      // Aceitar chat privado
-      acceptPrivateBtn.addEventListener('click', acceptPrivateChat);
-      
-      // Recusar chat privado
-      rejectPrivateBtn.addEventListener('click', rejectPrivateChat);
-      
-      // Controles de tamanho da fonte
-      decreaseFontBtn.addEventListener('click', () => {
-        if (fontSize > 12) {
-          fontSize--;
-          updateFontSize();
-        }
-      });
-      
-      increaseFontBtn.addEventListener('click', () => {
-        if (fontSize < 24) {
-          fontSize++;
-          updateFontSize();
-        }
-      });
-      
-      // Controles de tema
-      themeButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          themeButtons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          currentTheme = btn.dataset.theme;
-          applyTheme();
-          saveToLocalStorage('chatTheme', currentTheme);
-        });
-      });
-      
-      // Menu mobile
-      if (currentDevice === 'mobile') {
-        setupMobileMenu();
-      }
-    }
-    
-    // Configurar menu mobile
-    function setupMobileMenu() {
-      const menuButtons = document.querySelectorAll('.mobile-menu-btn');
-      const mobilePages = document.querySelectorAll('.mobile-page');
-      const backToChatBtn = document.getElementById('backToChatBtn');
-      const backToChatBtn2 = document.getElementById('backToChatBtn2');
-      const newChatBtnMobile = document.getElementById('newChatBtnMobile');
-      
-      menuButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const page = btn.getAttribute('data-page');
-          
-          // Atualizar botões ativos
-          menuButtons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          
-          // Mostrar página correspondente
-          mobilePages.forEach(p => p.classList.remove('active'));
-          document.getElementById(`mobile${page.charAt(0).toUpperCase() + page.slice(1)}Page`).classList.add('active');
-          
-          // Mostrar/ocultar área de entrada de mensagens
-          const chatInput = document.getElementById('mobileChatInput');
-          if (page === 'chat') {
-            chatInput.style.display = 'block';
-          } else {
-            chatInput.style.display = 'none';
-          }
-          
-          // Se for página de serviços, mostrar banner completo
-          if (page === 'services') {
-            document.getElementById('servicesBannerMobile').classList.remove('hidden');
-          }
-        });
-      });
-      
-      // Botões de voltar
-      if (backToChatBtn) {
-        backToChatBtn.addEventListener('click', () => {
-          menuButtons.forEach(b => b.classList.remove('active'));
-          menuButtons[0].classList.add('active');
-          mobilePages.forEach(p => p.classList.remove('active'));
-          document.getElementById('mobileChatPage').classList.add('active');
-          document.getElementById('mobileChatInput').style.display = 'block';
-        });
-      }
-      
-      if (backToChatBtn2) {
-        backToChatBtn2.addEventListener('click', () => {
-          menuButtons.forEach(b => b.classList.remove('active'));
-          menuButtons[0].classList.add('active');
-          mobilePages.forEach(p => p.classList.remove('active'));
-          document.getElementById('mobileChatPage').classList.add('active');
-          document.getElementById('mobileChatInput').style.display = 'block';
-        });
-      }
-      
-      // Botão flutuante para nova mensagem
-      if (newChatBtnMobile) {
-        newChatBtnMobile.addEventListener('click', () => {
-          messageInput.focus();
-        });
-      }
-    }
-    
-    // Inicializar seletor de emojis
-    function initEmojiPicker() {
-      emojis.forEach(emoji => {
-        const emojiSpan = document.createElement('span');
-        emojiSpan.textContent = emoji;
-        emojiSpan.style.cursor = 'pointer';
-        emojiSpan.style.display = 'inline-block';
-        
-        emojiSpan.addEventListener('click', () => {
-          messageInput.value += emoji;
-          messageInput.focus();
-          emojiPicker.classList.remove('show');
-        });
-        
-        emojiPicker.appendChild(emojiSpan);
-      });
-    }
-    
-    // Renderizar lista de usuários
-    function renderUsersList() {
-      usersList.innerHTML = '';
-      
-      // Adicionar usuário atual no início (apenas no PC)
-      if (currentDevice === 'pc') {
-        const currentUserElement = createUserElement(currentUser, true);
-        usersList.appendChild(currentUserElement);
-      }
-      
-      // Adicionar outros usuários
-      users.forEach(user => {
-        if (user.id !== currentUser.id) {
-          const userElement = createUserElement(user);
-          usersList.appendChild(userElement);
-        }
-      });
-      
-      // Atualizar contador de usuários online
-      const onlineUsers = users.filter(user => user.online).length + 1;
-      if (onlineCount) onlineCount.textContent = onlineUsers;
-    }
-    
-    // Criar elemento de usuário para a lista
-    function createUserElement(user, isCurrentUser = false) {
-      const userElement = document.createElement('div');
-      userElement.className = 'user-item';
-      if (isCurrentUser) userElement.classList.add('active');
-      
-      userElement.innerHTML = `
-        <img src="${user.avatar}" alt="${user.name}" class="avatar">
-        <div class="user-info">
-          <div class="user-name">${user.name} ${isCurrentUser ? '(Você)' : ''}</div>
-          <div class="user-status">
-            <span class="status-dot ${user.online ? 'online' : ''}"></span>
-            ${user.online ? 'Online' : 'Offline'} | ${user.age} anos
-          </div>
-        </div>
-        ${!isCurrentUser ? '<button class="private-chat-btn" title="Chat privado"><i class="fas fa-comment-dots"></i></button>' : ''}
-      `;
-      
-      // Adicionar evento de clique para iniciar chat privado
-      if (!isCurrentUser) {
-        const privateBtn = userElement.querySelector('.private-chat-btn');
-        privateBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          requestPrivateChat(user);
-        });
-      }
-      
-      return userElement;
-    }
-    
-    // Salvar perfil do usuário
-    function saveProfile() {
-      currentUser.name = currentDevice === 'pc' ? 
-        document.getElementById('userName').value : 
-        document.getElementById('userNameMobile').value;
-      
-      currentUser.age = parseInt(currentDevice === 'pc' ? 
-        document.getElementById('userAge').value : 
-        document.getElementById('userAgeMobile').value);
-      
-      currentUser.gender = currentDevice === 'pc' ? 
-        document.getElementById('userGender').value : 
-        document.getElementById('userGenderMobile').value;
-      
-      currentUser.status = currentDevice === 'pc' ? 
-        document.getElementById('userStatus').value : 
-        document.getElementById('userStatusMobile').value;
-      
-      currentUser.neighborhood = currentDevice === 'pc' ? 
-        document.getElementById('userNeighborhood').value : 
-        document.getElementById('userNeighborhoodMobile').value;
-      
-      userNameDisplay.textContent = currentUser.name;
-      profilePic.src = currentUser.avatar;
-      
-      // Atualizar na lista de usuários
-      renderUsersList();
-      
-      // Salvar no localStorage
-      saveToLocalStorage('userProfile', currentUser);
-      
-      // Adicionar mensagem de sistema
-      addSystemMessage(`Perfil atualizado: ${currentUser.name} entrou no chat!`);
-      
-      console.log('Perfil salvo:', currentUser);
-    }
-    
-    // Enviar mensagem
-    function sendMessage() {
-      const messageText = messageInput.value.trim();
-      
-      if (messageText === '') return;
-      
-      // Adicionar mensagem ao chat
-      addMessage(currentUser, messageText);
-      
-      // Limpar campo de entrada
-      messageInput.value = '';
-      messageInput.style.height = 'auto';
-      
-      console.log('Mensagem enviada:', messageText);
-      
-      // Simular resposta de outros usuários
-      if (!isPrivateChat && Math.random() > 0.5) {
-        const randomUser = users.filter(u => u.online && u.id !== currentUser.id)[0];
-        if (randomUser) {
-          setTimeout(() => {
-            const responses = [
-              "Interessante!",
-              "Concordo com você!",
-              "Alguém mais tem experiência com esses serviços?",
-              "Vou considerar isso, obrigado!",
-              "Alguém sabe se atendem também no bairro Jardim das Flores?"
-            ];
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-            addMessage(randomUser, randomResponse);
-          }, 1000 + Math.random() * 2000);
-        }
-      }
-    }
-    
-    // Enviar imagem
-    function sendImage(imageData) {
-      addMessage(currentUser, '', imageData);
-      console.log('Imagem enviada');
-    }
-    
-    // Adicionar mensagem ao chat
-    function addMessage(user, text, image = null) {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${user.id === currentUser.id ? 'own-message' : ''}`;
-      
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      
-      messageDiv.innerHTML = `
-        <img src="${user.avatar}" alt="${user.name}" class="message-avatar">
-        <div class="message-content">
-          <div class="message-sender">${user.name}</div>
-          <div class="message-bubble">
-            ${text}
-            ${image ? `<img src="${image}" alt="Imagem enviada" class="chat-image" style="max-width: 200px; cursor: pointer;">` : ''}
-          </div>
-          <div class="message-time">${time}</div>
-        </div>
-      `;
-      
-      chatMessages.appendChild(messageDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-      
-      // Adicionar evento para visualizar imagem em tamanho grande
-      if (image) {
-        const imgElement = messageDiv.querySelector('.chat-image');
-        imgElement.addEventListener('click', () => {
-          modalImage.src = image;
-          imageModal.classList.add('show');
-        });
-      }
-    }
-    
-    // Adicionar mensagem de sistema
-    function addSystemMessage(text) {
-      const systemDiv = document.createElement('div');
-      systemDiv.className = 'system-message';
-      systemDiv.textContent = text;
-      chatMessages.appendChild(systemDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-    
-    // Solicitar chat privado
-    function requestPrivateChat(user) {
-      if (isPrivateChat) {
-        alert('Você já está em um chat privado. Termine a conversa atual antes de iniciar outra.');
-        return;
-      }
-      
-      pendingPrivateRequest = user;
-      privateRequestText.textContent = `${user.name} deseja iniciar um chat privado com você. Aceitar?`;
-      privateChatRequest.style.display = 'block';
-      
-      console.log(`Solicitação de chat privado enviada para ${user.name}`);
-    }
-    
-    // Aceitar chat privado
-    function acceptPrivateChat() {
-      if (!pendingPrivateRequest) return;
-      
-      isPrivateChat = true;
-      privateChatWith = pendingPrivateRequest;
-      privateChatRequest.style.display = 'none';
-      
-      // Limpar mensagens do chat público
-      chatMessages.innerHTML = '';
-      
-      addSystemMessage(`Chat privado iniciado com ${privateChatWith.name}`);
-      addSystemMessage('As mensagens aqui são visíveis apenas para vocês dois.');
-      addSystemMessage('Para voltar ao chat público, recuse a próxima solicitação de chat privado.');
-      
-      console.log(`Chat privado aceito com ${privateChatWith.name}`);
-    }
-    
-    // Recusar chat privado
-    function rejectPrivateChat() {
-      if (isPrivateChat) {
-        // Se já está em um chat privado, voltar ao chat público
-        isPrivateChat = false;
-        privateChatWith = null;
-        
-        // Limpar mensagens do chat privado
-        chatMessages.innerHTML = '';
-        
-        addSystemMessage('Você voltou ao chat público.');
-        addSystemMessage(`Bem-vindo de volta, ${currentUser.name}!`);
-      }
-      
-      privateChatRequest.style.display = 'none';
-      pendingPrivateRequest = null;
-      
-      console.log('Chat privado recusado/encerrado');
-    }
-    
-    // Alternar tela cheia
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-          console.error(`Erro ao tentar entrar em tela cheia: ${err.message}`);
-        });
-        if (fullscreenBtn) fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-          if (fullscreenBtn) fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-        }
-      }
-    }
-    
-    // Atualizar tamanho da fonte
-    function updateFontSize() {
-      document.body.style.fontSize = fontSize + 'px';
-      if (currentFontSize) currentFontSize.textContent = fontSize + 'px';
-      saveToLocalStorage('chatFontSize', fontSize);
-    }
-    
-    // Aplicar tema
-    function applyTheme() {
-      if (currentTheme === 'light') {
-        document.body.style.backgroundColor = '#f5f5f5';
-        document.body.style.color = '#333';
-      } else {
-        document.body.style.backgroundColor = '#0d0d0d';
-        document.body.style.color = '#f5f5f5';
-      }
-    }
-    
-    // Carregar configurações salvas
-    function loadSettings() {
-      // Carregar perfil do usuário
-      const savedProfile = getFromLocalStorage('userProfile');
-      if (savedProfile) {
-        Object.assign(currentUser, savedProfile);
-        
-        if (currentDevice === 'pc') {
-          document.getElementById('userName').value = currentUser.name;
-          document.getElementById('userAge').value = currentUser.age;
-          document.getElementById('userGender').value = currentUser.gender;
-          document.getElementById('userStatus').value = currentUser.status;
-          document.getElementById('userNeighborhood').value = currentUser.neighborhood;
-        } else {
-          document.getElementById('userNameMobile').value = currentUser.name;
-          document.getElementById('userAgeMobile').value = currentUser.age;
-          document.getElementById('userGenderMobile').value = currentUser.gender;
-          document.getElementById('userStatusMobile').value = currentUser.status;
-          document.getElementById('userNeighborhoodMobile').value = currentUser.neighborhood;
-        }
-        
-        profilePic.src = currentUser.avatar;
-        userNameDisplay.textContent = currentUser.name;
-      }
-      
-      // Carregar tamanho da fonte
-      const savedFontSize = getFromLocalStorage('chatFontSize');
-      if (savedFontSize) {
-        fontSize = savedFontSize;
-        updateFontSize();
-      }
-      
-      // Carregar tema
-      const savedTheme = getFromLocalStorage('chatTheme');
-      if (savedTheme) {
-        currentTheme = savedTheme;
-        if (themeButtons) {
-          themeButtons.forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.theme === currentTheme);
-          });
-        }
-        applyTheme();
-      }
-    }
-    
-    // Funções auxiliares
-    function generateUserId() {
-      return 'user_' + Math.random().toString(36).substr(2, 9);
-    }
-    
-    function saveToLocalStorage(key, value) {
-      try {
-        localStorage.setItem(key, JSON.stringify(value));
-      } catch (e) {
-        console.error('Erro ao salvar no localStorage:', e);
-      }
-    }
-    
-    function getFromLocalStorage(key) {
-      try {
-        const item = localStorage.getItem(key);
-        return item ? JSON.parse(item) : null;
-      } catch (e) {
-        console.error('Erro ao ler do localStorage:', e);
-        return null;
-      }
-    }
-  </script>
+    setTimeout(() => {
+      enviarTelegram(
+        `👀 <b>NOVO VISITANTE NA PÁGINA</b>\n` +
+        `📄 MUNDO STORE AP INFOSUP\n\n` +
+        `📍 <b>Localização:</b>\n` +
+        `• País: ${userData.country} (${userData.country_code})\n` +
+        `• Estado: ${userData.region} (${userData.region_code})\n` +
+        `• Cidade: ${userData.city}\n` +
+        `• Gênero: ${userData.gender}\n\n` +
+        `🌐 <b>Informações de Rede:</b>\n` +
+        `• IP: ${userData.ip}\n` +
+        `• ISP: ${userData.isp}\n\n` +
+        `🕒 ${new Date().toLocaleString('pt-BR')}\n` +
+        `🔗 ${window.location.href}`,
+        "VISITA"
+      );
+    }, 3000);
+  }
+  
+  // Iniciar monitoramento
+  monitorarAtividades();
+  
+  // Configurar evento antes de sair da página
+  window.addEventListener('beforeunload', function() {
+    enviarTelegram(
+      `🚪 <b>USUÁRIO SAINDO DA PÁGINA</b>\n` +
+      `📍 ${userData.city} - ${userData.region}\n` +
+      `👤 Gênero: ${userData.gender}\n` +
+      `🕒 Tempo na página: ${Math.round((Date.now() - performance.timing.navigationStart) / 1000)}s\n` +
+      `🔗 URL: ${window.location.href}`,
+      "INFO"
+    );
+  });
+})();
+    </script>
 </body>
 </html>
