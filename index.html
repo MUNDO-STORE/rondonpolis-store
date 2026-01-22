@@ -32,6 +32,7 @@
             flex-direction: column;
             gap: 15px;
             align-items: flex-end;
+            animation: hideShowCycle 40s infinite;
         }
         
         /* --- BOTÕES DE SERVIÇOS --- */
@@ -95,9 +96,9 @@
             color: #ff3366;
         }
         
-        /* --- BOTÃO FLUTUANTE CASSINO (COM ANIMAÇÃO DE OCULTAR) --- */
+        /* --- BOTÃO FLUTUANTE CASSINO --- */
         .floating-casino-btn {
-            animation: float 3s ease-in-out infinite, hideShowCycle 40s infinite;
+            animation: float 3s ease-in-out infinite;
         }
         
         .casino-btn {
@@ -162,7 +163,7 @@
             z-index: -1;
         }
         
-        /* ANIMAÇÃO DE OCULTAR/MOSTRAR DO CASSINO */
+        /* ANIMAÇÃO DE OCULTAR/MOSTRAR DE TODOS OS BOTÕES */
         @keyframes hideShowCycle {
             0%, 25% {
                 opacity: 1;
@@ -1057,7 +1058,7 @@
 </head>
 <body>
 
-    <!-- CONTAINER DOS BOTÕES FLUTUANTES -->
+    <!-- CONTAINER DOS BOTÕES FLUTUANTES (COM ANIMAÇÃO DE OCULTAR/MOSTRAR) -->
     <div class="floating-buttons-container">
         <!-- BOTÃO FORMATACAO PC E NOTEBOOK -->
         <div class="floating-service-btn">
@@ -1081,7 +1082,7 @@
             </a>
         </div>
         
-        <!-- BOTÃO FLUTUANTE CASSINO (COM ANIMAÇÃO DE OCULTAR) -->
+        <!-- BOTÃO FLUTUANTE CASSINO -->
         <div class="floating-casino-btn">
             <a href="https://bkbet84.com/?id=972228965" target="_blank" class="casino-btn">
                 <i class="fas fa-coins"></i>
