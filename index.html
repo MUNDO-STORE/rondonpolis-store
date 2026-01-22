@@ -33,6 +33,7 @@
       --offline-color: #e74c3c;
       --private-chat-bg: #fff8e1;
       --card-bg: #1a1a1a;
+      --whatsapp-green: #25D366;
     }
     
     * {
@@ -116,6 +117,88 @@
     .services-banner .highlight {
       color: #ffcc00;
       font-weight: bold;
+    }
+    
+    /* Botão flutuante do WhatsApp */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    
+    .whatsapp-button {
+      background-color: var(--whatsapp-green);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 15px 25px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      z-index: 1001;
+    }
+    
+    .whatsapp-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    }
+    
+    .whatsapp-button:active {
+      transform: translateY(-2px);
+    }
+    
+    .whatsapp-button i {
+      font-size: 1.5rem;
+    }
+    
+    .whatsapp-label {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 3px 10px rgba(255, 0, 0, 0.3);
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    
+    /* Versão mobile do botão do WhatsApp */
+    .mobile .whatsapp-button {
+      padding: 12px 20px;
+      font-size: 14px;
+    }
+    
+    .mobile .whatsapp-float {
+      bottom: 80px; /* Acima do menu mobile */
+      right: 20px;
+    }
+    
+    .mobile .whatsapp-label {
+      font-size: 0.75rem;
+      padding: 6px 12px;
     }
     
     /* Cabeçalho do chat */
@@ -881,7 +964,7 @@
       flex-direction: column;
     }
     
-    /* Botão flutuante para mobile */
+    /* Botão flutuante para mobile (para nova mensagem) */
     .floating-action-btn {
       position: fixed;
       bottom: 80px;
@@ -924,6 +1007,26 @@
         padding: 10px 12px;
         font-size: 0.9rem;
       }
+      
+      .whatsapp-float {
+        bottom: 70px;
+        right: 15px;
+      }
+      
+      .whatsapp-button {
+        padding: 10px 15px;
+        font-size: 13px;
+      }
+      
+      .whatsapp-label {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+      }
+    }
+    
+    /* Ajuste para quando o banner estiver oculto */
+    .services-banner.hidden + .whatsapp-float {
+      top: 20px;
     }
   </style>
 </head>
@@ -1274,10 +1377,19 @@
       </button>
     </div>
     
-    <!-- Botão flutuante para novo chat -->
+    <!-- Botão flutuante para novo chat (mobile) -->
     <button class="floating-action-btn" id="newChatBtnMobile" title="Nova mensagem">
       <i class="fas fa-edit"></i>
     </button>
+  </div>
+  
+  <!-- Botão flutuante do WhatsApp (visível em ambos os layouts) -->
+  <div class="whatsapp-float">
+    <div class="whatsapp-label">CLIQUE AQUI PARA CHAMAR NO WHATSAPP</div>
+    <a href="https://wa.link/rloc2t" target="_blank" class="whatsapp-button">
+      <i class="fab fa-whatsapp"></i>
+      Falar no WhatsApp
+    </a>
   </div>
   
   <!-- Modal para visualizar imagens -->
@@ -1463,6 +1575,24 @@
         currentDevice = detectDevice();
         setupElementsForDevice();
       });
+      
+      // Ajustar posição do botão do WhatsApp quando o banner desaparecer
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.attributeName === 'class') {
+            const whatsappFloat = document.querySelector('.whatsapp-float');
+            if (servicesBanner.classList.contains('hidden')) {
+              whatsappFloat.style.top = '20px';
+            } else {
+              whatsappFloat.style.top = '';
+            }
+          }
+        });
+      });
+      
+      if (servicesBanner) {
+        observer.observe(servicesBanner, { attributes: true });
+      }
     });
     
     // Configurar elementos baseado no dispositivo
