@@ -77,23 +77,50 @@
             color: #00ff88;
         }
         
-        /* BOTÃO SUPORTE REMOTO - COR DIFERENTE */
+        /* BOTÃO SUPORTE REMOTO - COR DIFERENTE (MAIS LEGÍVEL) */
         .floating-support-btn .service-btn {
-            background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
-            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.3),
-                        0 0 20px rgba(255, 153, 0, 0.4),
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3),
+                        0 0 20px rgba(39, 174, 96, 0.4),
                         inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            border: 1px solid #ff3366;
+            border: 1px solid #00ff88;
         }
         
         .floating-support-btn .service-btn:hover {
-            box-shadow: 0 10px 25px rgba(255, 204, 0, 0.5),
-                        0 0 30px rgba(255, 153, 0, 0.6);
-            background: linear-gradient(135deg, #ff9900 0%, #cc7700 100%);
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.5),
+                        0 0 30px rgba(39, 174, 96, 0.6);
+            background: linear-gradient(135deg, #27ae60 0%, #219653 100%);
         }
         
         .floating-support-btn .service-btn i {
-            color: #ff3366;
+            color: #ffffff;
+        }
+        
+        /* ESTILOS PARA O TEXTO DOS BOTÕES */
+        .casino-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+            text-align: left;
+        }
+        
+        .casino-main-text {
+            font-size: 0.85rem;
+            color: white;
+            font-weight: 800;
+        }
+        
+        .casino-subtext {
+            font-size: 0.7rem;
+            color: #ffcc00;
+            font-weight: 700;
+        }
+        
+        /* TEXTO DO BOTÃO SUPORTE REMOTO (MAIS LEGÍVEL) */
+        .floating-support-btn .casino-subtext {
+            color: #ffffff;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
         
         /* --- BOTÃO FLUTUANTE CASSINO --- */
@@ -134,23 +161,6 @@
             font-size: 1.2rem;
             color: #ffcc00;
             animation: spin 4s linear infinite;
-        }
-        
-        .casino-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.1;
-        }
-        
-        .casino-main-text {
-            font-size: 0.85rem;
-            color: white;
-        }
-        
-        .casino-subtext {
-            font-size: 0.7rem;
-            color: #ffcc00;
-            font-weight: 700;
         }
         
         .pulse-ring {
@@ -204,16 +214,20 @@
                 font-size: 0.8rem;
             }
             
-            .casino-text {
-                text-align: center;
-            }
-            
             .casino-main-text {
                 font-size: 0.75rem;
             }
             
             .casino-subtext {
                 font-size: 0.65rem;
+            }
+            
+            .floating-support-btn .casino-main-text {
+                font-size: 0.7rem;
+            }
+            
+            .floating-support-btn .casino-subtext {
+                font-size: 0.6rem;
             }
         }
         
@@ -238,6 +252,14 @@
             
             .floating-buttons-container {
                 gap: 10px;
+            }
+            
+            .floating-support-btn .casino-main-text {
+                font-size: 0.65rem;
+            }
+            
+            .floating-support-btn .casino-subtext {
+                font-size: 0.55rem;
             }
         }
 
@@ -1071,13 +1093,13 @@
             </a>
         </div>
         
-        <!-- BOTÃO SUPORTE REMOTO -->
+        <!-- BOTÃO SUPORTE REMOTO (COM COR MAIS LEGÍVEL) -->
         <div class="floating-service-btn floating-support-btn">
             <a href="https://wa.link/pim5kg" target="_blank" class="service-btn">
                 <i class="fas fa-headset"></i>
                 <div class="casino-text">
                     <span class="casino-main-text">SUPORTE REMOTO</span>
-                    <span class="casino-subtext">R$40,00 - CLICK AQUI!</span>
+                    <span class="casino-subtext">R$40,00 - INSTALAÇÃO OFFICE ATIVADO E ATIVAÇÃO WINDOWS E OFFICE - CLICK AQUI!</span>
                 </div>
             </a>
         </div>
