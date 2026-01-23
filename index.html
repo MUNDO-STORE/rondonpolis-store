@@ -283,7 +283,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.7;
+            opacity: 0.9; /* Aumentado de 0.7 para 0.9 */
             animation: bgFade 20s ease-in-out infinite;
         }
 
@@ -294,7 +294,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at center, rgba(26, 31, 39, 0.7) 0%, rgba(10, 14, 20, 0.8) 100%);
+            background: radial-gradient(circle at center, rgba(26, 31, 39, 0.6) 0%, rgba(10, 14, 20, 0.8) 100%); /* Reduzida opacidade do primeiro valor para 0.6 */
             overflow: hidden;
         }
 
@@ -303,30 +303,89 @@
             display: block;
             width: 20px;
             height: 20px;
-            background: rgba(255, 51, 102, 0.15);
+            background: rgba(255, 51, 102, 0.3); /* Aumentado de 0.15 para 0.3 */
             animation: animate 25s linear infinite;
             bottom: -150px;
             border-radius: 50%;
         }
 
         @keyframes animate {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
-            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+            0% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 0.8; /* Aumentado de 1 para 0.8 para visibilidade */
+                border-radius: 0; 
+            }
+            100% { 
+                transform: translateY(-1000px) rotate(720deg); 
+                opacity: 0.3; /* Aumentado de 0 para 0.3 */
+                border-radius: 50%; 
+            }
         }
 
         @keyframes bgFade {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 0.4; }
+            0%, 100% { opacity: 0.9; } /* Ajustado para combinar com o novo valor */
+            50% { opacity: 0.7; } /* Aumentado de 0.4 para 0.7 */
         }
 
-        .bg-animated span:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
-        .bg-animated span:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
-        .bg-animated span:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
-        .bg-animated span:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
-        .bg-animated span:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
-        .bg-animated span:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
-        .bg-animated span:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
-        .bg-animated span:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+        .bg-animated span:nth-child(1) { 
+            left: 25%; 
+            width: 80px; 
+            height: 80px; 
+            background: rgba(255, 51, 102, 0.4); /* Aumentada opacidade */
+            animation-delay: 0s; 
+        }
+        .bg-animated span:nth-child(2) { 
+            left: 10%; 
+            width: 20px; 
+            height: 20px; 
+            background: rgba(0, 212, 255, 0.4); /* Cor alterada e opacidade aumentada */
+            animation-delay: 2s; 
+            animation-duration: 12s; 
+        }
+        .bg-animated span:nth-child(3) { 
+            left: 70%; 
+            width: 20px; 
+            height: 20px; 
+            background: rgba(255, 204, 0, 0.4); /* Cor alterada e opacidade aumentada */
+            animation-delay: 4s; 
+        }
+        .bg-animated span:nth-child(4) { 
+            left: 40%; 
+            width: 60px; 
+            height: 60px; 
+            background: rgba(255, 51, 102, 0.5); /* Aumentada opacidade */
+            animation-delay: 0s; 
+            animation-duration: 18s; 
+        }
+        .bg-animated span:nth-child(5) { 
+            left: 65%; 
+            width: 20px; 
+            height: 20px; 
+            background: rgba(0, 212, 255, 0.4); /* Cor alterada e opacidade aumentada */
+            animation-delay: 0s; 
+        }
+        .bg-animated span:nth-child(6) { 
+            left: 75%; 
+            width: 110px; 
+            height: 110px; 
+            background: rgba(255, 204, 0, 0.5); /* Cor alterada e opacidade aumentada */
+            animation-delay: 3s; 
+        }
+        .bg-animated span:nth-child(7) { 
+            left: 35%; 
+            width: 150px; 
+            height: 150px; 
+            background: rgba(0, 212, 255, 0.5); /* Cor alterada e opacidade aumentada */
+            animation-delay: 7s; 
+        }
+        .bg-animated span:nth-child(8) { 
+            left: 50%; 
+            width: 25px; 
+            height: 25px; 
+            background: rgba(255, 51, 102, 0.4); /* Aumentada opacidade */
+            animation-delay: 15s; 
+            animation-duration: 45s; 
+        }
 
         /* --- CONTADOR PROFISSIONAL --- */
         .visitor-counter-wrapper {
